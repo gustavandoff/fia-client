@@ -1,0 +1,8 @@
+// Override default variables before the import
+$grid-gutter-width:  0rem;
+
+$primary:       #2B6777;//#5CDB95;
+$secondary:     #C8D8E4;//#05386B;
+
+// Import Bootstrap and its default variables
+@import '~bootstrap/scss/bootstrap.scss';
