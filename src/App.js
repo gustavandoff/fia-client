@@ -58,7 +58,6 @@ function App() {
     setPlayers([...players]);
     setSelectedPiece(0);
     setMoveIndicator(0);
-    console.log('resetat setSelectedPiece och setMoveIndicator');
   }
 
   const movePiece = (username, pieceNr) => {
@@ -70,7 +69,6 @@ function App() {
     setPlayers([...players]);
     setSelectedPiece(0);
     setMoveIndicator(0);
-    console.log('resetat setSelectedPiece och setMoveIndicator');
   }
 
   const calcPos = (oldPos, moveAmount, playerNumber) => {
@@ -131,7 +129,6 @@ function App() {
   }
 
   useEffect(() => {
-    console.log('selectedPiece in useEffect:', selectedPiece);
     if (selectedPiece !== 0) {
       const targetStepCircle = calcPos(selectedPiece.position, moveCount, selectedPiece.playerNumber);
       setMoveIndicator(targetStepCircle ? targetStepCircle : 0);
