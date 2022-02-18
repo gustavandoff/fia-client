@@ -30,9 +30,7 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }
     return (
         <div className="align-items-center"
             style={{
-                width: '90%',
                 cursor: 'pointer',
-                display: 'inline-block',
             }}
             onPointerDown={selectPiece}
         >

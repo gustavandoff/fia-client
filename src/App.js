@@ -138,24 +138,18 @@ function App() {
     if (oldPos < playerNumber * -10 && oldPos > playerNumber * -10 - 5) { // om pjäsen står i hemmet...
       if (moveAmount === 1) { // ...ska man gå till första rutan om man slår en etta
         const startCircle = playerNumber * 10 + 1;
-        console.log('balle');
 
-        const change = moveOneStep(username, moveOneStep(username, startCircle, -1).pos, 1);
-        console.log('rullat 1:', change);
-        console.log('change testen:', moveOneStep(username, startCircle, -1));
+        const change = moveOneStep(username, startCircle + 1, -1);
         if (!change) return [false];
 
         return [playerNumber * 10 + 1];
-      } else if (moveAmount === 6) { // ...ska man gå till sjätte med en pjäs eller första rutan med två pjäser om man slår en sexa
+      } else if (moveAmount === 6) { // ...ska man gå till sjätte rutan med en pjäs eller första rutan med två pjäser om man slår en sexa
         const startCircle = playerNumber * 10 + 1;
 
-        let change = moveOneStep(username, moveOneStep(username, startCircle, -1).pos, 1);
-        console.log('change testen:', moveOneStep(username, startCircle, -1));
-        console.log('rullat 6:', change);
+        let change = moveOneStep(username, startCircle + 1, -1);
         if (!change) return [false];
 
         change = calcPos(username, startCircle, 5);
-        console.log('rullat 6:', change);
         if (!change) return [false];
 
         return [playerNumber * 10 + 6, playerNumber * 10 + 1];
@@ -173,7 +167,6 @@ function App() {
   }
 
   const moveOneStep = (username, oldPos, step) => {
-    console.log(username, oldPos, step);
     const playerNumber = players.find(p => p.username === username).playerNumber;
     let newPos = oldPos + step;
     let addedPos = playerCount > 4 ? 0 : 1; // blir 0 om playerCount är mer än 4. Annars blir det 1
@@ -195,7 +188,7 @@ function App() {
     }
 
     if (playerNumber !== undefined) {
-      if (newPos === playerNumber * 10 + 1) {// om man har gått hela varvet går man in i mållinjen
+      if (newPos === playerNumber * 10 + 1 && step > 0) {// om man har gått hela varvet går man in i mållinjen
         newPos = playerNumber * -10 - 9;
       }
     }
@@ -226,7 +219,6 @@ function App() {
   }, [selectedPiece, moveCount]);
 
   const rollDice = () => {
-    console.log('Rolling dice');
     axios.get(`http://localhost:4000/dice`)
       .then(res => {
         setMoveCount(res.data);
