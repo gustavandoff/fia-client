@@ -1,4 +1,4 @@
-const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player }) => {
+const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }) => {
 
     const thisPiece = {
         playerNumber: player.playerNumber,
@@ -8,10 +8,14 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player }) => {
 
     const comparePieces = (p1, p2) => {
         if (p1 == null || p2 == null) return false;
-        return p1.player === p2.player & p1.number === p2.number & p1.position === p2.position;
+        return p1.playerNumber === p2.playerNumber & p1.number === p2.number & p1.position === p2.position;
     }
 
-    let markSelected = comparePieces(selectedPiece, thisPiece) ? 'rgba(255, 255, 255, 0) solid 1px' : '';
+    let pieceClass = 'position-absolute';
+
+    if (comparePieces(selectedPiece, thisPiece)) {
+        pieceClass += ' piece-selected';
+    }
 
     const selectPiece = () => {
         if (comparePieces(selectedPiece, thisPiece)) {
@@ -26,19 +30,20 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player }) => {
     return (
         <div className="align-items-center"
             style={{
-                width: `${size * 0.65}rem`,
-                border: markSelected,
+                width: '90%',
                 cursor: 'pointer',
                 display: 'inline-block',
             }}
             onPointerDown={selectPiece}
         >
-            <img className="position-relative" src={image} alt='spelpjäs'
+            <img className={pieceClass} src={image} alt='spelpjäs'
                 style={{
                     width: '100%',
-                    bottom: `${size * 0.2}rem`,
+                    bottom: `${size * 0.2 + stacked}rem`,
+                    right: '0',
                     margin: 'auto',
                     display: 'inline-block',
+                    zIndex: '1',
                 }}></img>
 
         </div>

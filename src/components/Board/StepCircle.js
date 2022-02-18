@@ -16,10 +16,10 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
     }
 
     pieces.forEach((piece, i) => {
-        renderElements.push(<Piece key={i} i={i} player={player} size={size} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
+        renderElements.push(<Piece key={i} i={i} stacked={i * size * 0.2} player={player} size={size} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
     });
 
-    renderElements.push(moveIndicator.find(m => m === number) ? <MoveIndicator key={renderElements.length} players={players} movePieceToPos={movePieceToPos} selectedPiece={selectedPiece} number={number} /> : '');
+    renderElements.push(moveIndicator.find(m => m === number) ? <MoveIndicator key={renderElements.length} size={size} players={players} movePieceToPos={movePieceToPos} selectedPiece={selectedPiece} number={number} /> : '');
 
     if (renderElements[0] === undefined || renderElements[0] === '') {
         renderElements.push(

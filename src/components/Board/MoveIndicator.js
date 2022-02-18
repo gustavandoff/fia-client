@@ -1,5 +1,5 @@
 
-function MoveIndicator({ players, movePieceToPos, selectedPiece, number }) {
+function MoveIndicator({ players, movePieceToPos, selectedPiece, number, size }) {
 
     const player = players.find(p => p.playerNumber === selectedPiece.playerNumber);
 
@@ -9,10 +9,9 @@ function MoveIndicator({ players, movePieceToPos, selectedPiece, number }) {
                 width: '100%',
                 height: '100%',
                 borderRadius: '50%',
-                border: 'solid rgba(255, 255, 255, 0.8) 5px',
+                border: `solid rgba(255, 255, 255, 0.8) ${size * 0.2}rem`,
                 backgroundColor: 'rgba(0, 255, 0, 0.8)',
                 cursor: 'pointer',
-                //display: 'inline-block',
             }}
             onPointerDown={() => movePieceToPos(player.username, selectedPiece.number, number)}
         >

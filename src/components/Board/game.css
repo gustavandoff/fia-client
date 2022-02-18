@@ -11,6 +11,10 @@
 						"main"
 }
 
+.piece-selected {
+    animation: selectedPiece 600ms infinite;
+}
+
 .is-containing-piece {
     transform: scale(0);
     animation: spin 4s linear;
@@ -19,6 +23,18 @@
 .appear {
     transform: scale(0);
     animation: star 750ms linear 2s;
+}
+
+@keyframes selectedPiece {
+    100% {
+        transform: scale(100%);
+    }
+    50% {
+        transform: scale(90%);
+    }
+    0% {
+        transform: scale(100%);
+    }
 }
 
 @keyframes spin {

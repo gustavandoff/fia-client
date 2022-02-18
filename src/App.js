@@ -4,73 +4,71 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-let defaultState = {
-  players: [
-    {
-      username: 'gustav',
-      playerNumber: 1,
-      color: 'red',
-      pieces: [
-        {
-          number: 0,
-          position: -11,
-          color: 'red'
-        },
-        {
-          number: 1,
-          position: -12,
-          color: 'red'
-        },
-        {
-          number: 2,
-          position: -13,
-          color: 'red'
-        },
-        {
-          number: 3,
-          position: 15,
-          color: 'red'
-        }
-      ]
-    },
-    {
-      username: 'gun',
-      playerNumber: 2,
-      color: 'yellow',
-      pieces: [
-        {
-          number: 0,
-          position: -21,
-          color: 'yellow'
-        },
-        {
-          number: 1,
-          position: -22,
-          color: 'yellow'
-        },
-        {
-          number: 2,
-          position: -23,
-          color: 'yellow'
-        },
-        {
-          number: 3,
-          position: 25,
-          color: 'yellow'
-        }
-      ]
-    }
-  ]
-};
+let defaultPlayers = [
+  {
+    username: 'gustav',
+    playerNumber: 1,
+    color: 'red',
+    pieces: [
+      {
+        number: 0,
+        position: -11,
+        color: 'red'
+      },
+      {
+        number: 1,
+        position: -12,
+        color: 'red'
+      },
+      {
+        number: 2,
+        position: -13,
+        color: 'red'
+      },
+      {
+        number: 3,
+        position: 15,
+        color: 'red'
+      }
+    ]
+  },
+  {
+    username: 'gun',
+    playerNumber: 2,
+    color: 'yellow',
+    pieces: [
+      {
+        number: 0,
+        position: -21,
+        color: 'yellow'
+      },
+      {
+        number: 1,
+        position: -22,
+        color: 'yellow'
+      },
+      {
+        number: 2,
+        position: -23,
+        color: 'yellow'
+      },
+      {
+        number: 3,
+        position: -24,
+        color: 'yellow'
+      }
+    ]
+  }
+];
 
 function App() {
   const [playerCount, setPlayerCount] = useState(4);
   const [circleSize, setCircleSize] = useState(2);
-  const [players, setPlayers] = useState(defaultState.players);
+  const [players, setPlayers] = useState(defaultPlayers);
   const [moveCount, setMoveCount] = useState(1);
   const [selectedPiece, setSelectedPiece] = useState(0);
   const [moveIndicator, setMoveIndicator] = useState([0]);
-  const gameTitle = 'lalalalalala';
+  const gameTitle = 'Fia';
 
   const updatePlayerCount = (e) => {
     if (e.target.value.length > 0) {
@@ -82,17 +80,28 @@ function App() {
 
   const movePieceToPos = (username, pieceNr, newPiecePos) => {
     const player = players.find(p => p.username === username);
-    
+    const piece = player.pieces.find(p => p.number === pieceNr);
+
     players.forEach(player => { // går igenom alla spelare
       if (player.username !== username) { // kollar om spelaren inte är spelaren som går
         player.pieces.forEach(piece => { // går igenom spelarens pjäser
-          if (piece.position === newPiecePos){ // om pjäsen står på samma ruta som pjäsen som går hamnar på...
+          if (piece.position === newPiecePos) { // om pjäsen står på samma ruta som pjäsen som går hamnar på...
             sendPieceHome(piece, player); // ...ska den skickas till sitt hem
           }
         })
       }
     });
 
+    // om spelaren har slagit en sexa och ska gå ut till första rutan ska två pjäser gås ut istället för bara en
+    if (newPiecePos === player.playerNumber * 10 + 1 && moveCount === 6 && piece.position < player.playerNumber * -10 && piece.position > player.playerNumber * -10 - 5) {
+      for (let i = 1; i <= 4; i++) { // loopar igenom alla fyra rutor i hemmet
+        const pieceOnCircle = player.pieces.find(p => p.position === player.playerNumber * -10 - i); // den eventuella pjäsen som står på den rutan i hemmet
+        if (pieceOnCircle && pieceOnCircle.position !== piece.position) { // går igenom spelarens pjäser och kollar om någon förutom den pjäs som ska flyttas står på den rutan i hemmet
+          player.pieces[pieceOnCircle.number].position = newPiecePos; // går ut med den pjäsen också
+          break;
+        }
+      }
+    }
     player.pieces[pieceNr].position = newPiecePos;
 
     setPlayers([...players]);
@@ -102,10 +111,10 @@ function App() {
 
   const sendPieceHome = (piece, player) => {
     for (let i = 1; i <= 4; i++) { // loopar igenom alla fyra rutor i hemmet
-       if (!player.pieces.find(p => p.position === player.playerNumber * -10 - i)){ // går igenom spelarens pjäser och kollar om någon står på rutan i hemmet
+      if (!player.pieces.find(p => p.position === player.playerNumber * -10 - i)) { // går igenom spelarens pjäser och kollar om någon inte står på rutan i hemmet
         piece.position = player.playerNumber * -10 - i; // flyttar pjäsen till första rutan som är tom
         break;
-       }
+      }
     }
   }
 
@@ -121,14 +130,34 @@ function App() {
   }
 
   const calcPos = (username, oldPos, moveAmount) => {
-    const playerNumber = players.find(p => p.username === username).playerNumber;
+    const player = players.find(p => p.username === username);
+    const playerNumber = player.playerNumber;
     let newPos = oldPos;
     let step = 1;
 
     if (oldPos < playerNumber * -10 && oldPos > playerNumber * -10 - 5) { // om pjäsen står i hemmet...
       if (moveAmount === 1) { // ...ska man gå till första rutan om man slår en etta
+        const startCircle = playerNumber * 10 + 1;
+        console.log('balle');
+
+        const change = moveOneStep(username, moveOneStep(username, startCircle, -1).pos, 1);
+        console.log('rullat 1:', change);
+        console.log('change testen:', moveOneStep(username, startCircle, -1));
+        if (!change) return [false];
+
         return [playerNumber * 10 + 1];
       } else if (moveAmount === 6) { // ...ska man gå till sjätte med en pjäs eller första rutan med två pjäser om man slår en sexa
+        const startCircle = playerNumber * 10 + 1;
+
+        let change = moveOneStep(username, moveOneStep(username, startCircle, -1).pos, 1);
+        console.log('change testen:', moveOneStep(username, startCircle, -1));
+        console.log('rullat 6:', change);
+        if (!change) return [false];
+
+        change = calcPos(username, startCircle, 5);
+        console.log('rullat 6:', change);
+        if (!change) return [false];
+
         return [playerNumber * 10 + 6, playerNumber * 10 + 1];
       }
     }
@@ -137,15 +166,14 @@ function App() {
       const change = moveOneStep(username, newPos, step);
       step = change.step;
       newPos = change.pos;
-      if (!change) {
-        return [false];
-      }
+      if (!change) return [false];
     }
 
     return newPos === playerNumber * -10 - 5 ? [-1] : [newPos]; // om newPos är cirkeln efter sista i mållinjen ska man hamna i målet annars på den uträknade positionen
   }
 
   const moveOneStep = (username, oldPos, step) => {
+    console.log(username, oldPos, step);
     const playerNumber = players.find(p => p.username === username).playerNumber;
     let newPos = oldPos + step;
     let addedPos = playerCount > 4 ? 0 : 1; // blir 0 om playerCount är mer än 4. Annars blir det 1
@@ -179,8 +207,8 @@ function App() {
     if (playerNumber !== undefined) {
       const ownPiecesInPath = players.find(p => p.username === username).pieces.filter(p => p.position === newPos);
       const notThisPieceInPath = ownPiecesInPath.find(p => p.number !== selectedPiece.number);
-      if (notThisPieceInPath !== undefined) {
-        return false; // det ska inte gå att gå förbi en av sina egna spelpjäser
+      if (notThisPieceInPath !== undefined) { // det ska inte gå att gå förbi en av sina egna spelpjäser
+        return false;
       }
     }
 
