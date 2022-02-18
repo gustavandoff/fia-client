@@ -7,7 +7,7 @@ import './App.css';
 let defaultState = {
   players: [
     {
-      username: 0,
+      username: 'gustav',
       playerNumber: 1,
       color: 'red',
       pieces: [
@@ -32,6 +32,33 @@ let defaultState = {
           color: 'red'
         }
       ]
+    },
+    {
+      username: 'gun',
+      playerNumber: 2,
+      color: 'yellow',
+      pieces: [
+        {
+          number: 0,
+          position: -21,
+          color: 'yellow'
+        },
+        {
+          number: 1,
+          position: -22,
+          color: 'yellow'
+        },
+        {
+          number: 2,
+          position: -23,
+          color: 'yellow'
+        },
+        {
+          number: 3,
+          position: 25,
+          color: 'yellow'
+        }
+      ]
     }
   ]
 };
@@ -42,7 +69,7 @@ function App() {
   const [players, setPlayers] = useState(defaultState.players);
   const [moveCount, setMoveCount] = useState(1);
   const [selectedPiece, setSelectedPiece] = useState(0);
-  const [moveIndicator, setMoveIndicator] = useState(0);
+  const [moveIndicator, setMoveIndicator] = useState([0]);
   const gameTitle = 'lalalalalala';
 
   const updatePlayerCount = (e) => {
@@ -53,41 +80,73 @@ function App() {
     }
   }
 
-  const movePieceToPos = (pieceNr, piecePos) => {
-    players[0].pieces[pieceNr].position = parseInt(piecePos);
+  const movePieceToPos = (username, pieceNr, newPiecePos) => {
+    const player = players.find(p => p.username === username);
+    
+    players.forEach(player => { // går igenom alla spelare
+      if (player.username !== username) { // kollar om spelaren inte är spelaren som går
+        player.pieces.forEach(piece => { // går igenom spelarens pjäser
+          if (piece.position === newPiecePos){ // om pjäsen står på samma ruta som pjäsen som går hamnar på...
+            sendPieceHome(piece, player); // ...ska den skickas till sitt hem
+          }
+        })
+      }
+    });
+
+    player.pieces[pieceNr].position = newPiecePos;
+
     setPlayers([...players]);
     setSelectedPiece(0);
-    setMoveIndicator(0);
+    setMoveIndicator([0]);
+  }
+
+  const sendPieceHome = (piece, player) => {
+    for (let i = 1; i <= 4; i++) { // loopar igenom alla fyra rutor i hemmet
+       if (!player.pieces.find(p => p.position === player.playerNumber * -10 - i)){ // går igenom spelarens pjäser och kollar om någon står på rutan i hemmet
+        piece.position = player.playerNumber * -10 - i; // flyttar pjäsen till första rutan som är tom
+        break;
+       }
+    }
   }
 
   const movePiece = (username, pieceNr) => {
     const player = players.find(p => p.username === username);
     const oldPos = player.pieces[pieceNr].position;
-    const newPos = calcPos(oldPos, moveCount, player.playerNumber);
+    const newPos = calcPos(player.username, oldPos, moveCount);
+    player.pieces[pieceNr].position = newPos ? newPos : oldPos;
 
-    players.find(p => p.username === username).pieces[pieceNr].position = newPos ? newPos : oldPos;
     setPlayers([...players]);
     setSelectedPiece(0);
-    setMoveIndicator(0);
+    setMoveIndicator([0]);
   }
 
-  const calcPos = (oldPos, moveAmount, playerNumber) => {
+  const calcPos = (username, oldPos, moveAmount) => {
+    const playerNumber = players.find(p => p.username === username).playerNumber;
     let newPos = oldPos;
     let step = 1;
 
-    for (let i = 0; i < Math.abs(moveAmount); i++) {
-      const change = moveOneStep(newPos, step, playerNumber);
-      step = change.step;
-      newPos = change.pos;
-      if (!change) {
-        return false;
+    if (oldPos < playerNumber * -10 && oldPos > playerNumber * -10 - 5) { // om pjäsen står i hemmet...
+      if (moveAmount === 1) { // ...ska man gå till första rutan om man slår en etta
+        return [playerNumber * 10 + 1];
+      } else if (moveAmount === 6) { // ...ska man gå till sjätte med en pjäs eller första rutan med två pjäser om man slår en sexa
+        return [playerNumber * 10 + 6, playerNumber * 10 + 1];
       }
     }
 
-    return newPos === playerNumber * -10 - 5 ? -1 : newPos; // om newPos är cirkeln efter sista i mållinjen ska man hamna i målet
+    for (let i = 0; i < Math.abs(moveAmount); i++) {
+      const change = moveOneStep(username, newPos, step);
+      step = change.step;
+      newPos = change.pos;
+      if (!change) {
+        return [false];
+      }
+    }
+
+    return newPos === playerNumber * -10 - 5 ? [-1] : [newPos]; // om newPos är cirkeln efter sista i mållinjen ska man hamna i målet annars på den uträknade positionen
   }
 
-  const moveOneStep = (oldPos, step, playerNumber) => {
+  const moveOneStep = (username, oldPos, step) => {
+    const playerNumber = players.find(p => p.username === username).playerNumber;
     let newPos = oldPos + step;
     let addedPos = playerCount > 4 ? 0 : 1; // blir 0 om playerCount är mer än 4. Annars blir det 1
 
@@ -114,14 +173,14 @@ function App() {
     }
 
     if (newPos === -(playerNumber * 10 + 10)) { // om man backat ut ur mållinjen ska man tillbaka till banan
-      newPos = moveOneStep(playerNumber * 10 + 1, -1).pos;
+      newPos = moveOneStep(username, playerNumber * 10 + 1, -1).pos;
     }
 
     if (playerNumber !== undefined) {
-      const ownPiecesInPath = players.find(p => p.username === playerNumber - 1).pieces.filter(p => p.position === newPos);
+      const ownPiecesInPath = players.find(p => p.username === username).pieces.filter(p => p.position === newPos);
       const notThisPieceInPath = ownPiecesInPath.find(p => p.number !== selectedPiece.number);
       if (notThisPieceInPath !== undefined) {
-        return false; // det ska inte gå att gå om man går förbi en av sina egna spelpjäser
+        return false; // det ska inte gå att gå förbi en av sina egna spelpjäser
       }
     }
 
@@ -130,23 +189,27 @@ function App() {
 
   useEffect(() => {
     if (selectedPiece !== 0) {
-      const targetStepCircle = calcPos(selectedPiece.position, moveCount, selectedPiece.playerNumber);
+      const player = players.find(p => p.playerNumber === selectedPiece.playerNumber);
+      const targetStepCircle = calcPos(player.username, selectedPiece.position, moveCount);
       setMoveIndicator(targetStepCircle ? targetStepCircle : 0);
     } else {
-      setMoveIndicator(0);
+      setMoveIndicator([0]);
     }
   }, [selectedPiece, moveCount]);
 
   const rollDice = () => {
     console.log('Rolling dice');
     axios.get(`http://localhost:4000/dice`)
-      .then(res => setMoveCount(res.data));
+      .then(res => {
+        setMoveCount(res.data);
+        console.log(players);
+      });
   }
 
   return (
     <div className="App">
       <Header title={gameTitle} />
-      <Game movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
+      <Game movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
       Antal spelare:
       <input value={playerCount} onChange={e => { updatePlayerCount(e) }}></input>
       <br />
@@ -154,22 +217,20 @@ function App() {
       <input value={circleSize} onChange={e => { setCircleSize(e.target.value) }}></input>
       <br />
       Pjäs 1:
-      <input value={players[0].pieces[0].position} onChange={e => { movePieceToPos(0, e.target.value) }}></input>
+      <input value={players[0].pieces[0].position} onChange={e => { movePieceToPos('gustav', 0, parseInt(e.target.value)) }}></input>
       <br />
       Pjäs 2:
-      <input value={players[0].pieces[1].position} onChange={e => { movePieceToPos(1, e.target.value) }}></input>
+      <input value={players[0].pieces[1].position} onChange={e => { movePieceToPos('gustav', 1, parseInt(e.target.value)) }}></input>
       <br />
       Pjäs 3:
-      <input value={players[0].pieces[2].position} onChange={e => { movePieceToPos(2, e.target.value) }}></input>
+      <input value={players[0].pieces[2].position} onChange={e => { movePieceToPos('gustav', 2, parseInt(e.target.value)) }}></input>
       <br />
       Pjäs 4:
       <button onClick={() => movePiece(selectedPiece.playerNumber - 1, selectedPiece.number)}>Gå</button>
       <input value={moveCount} onChange={e => { setMoveCount(e.target.value) }} size='1'></input>
-      <input value={players[0].pieces[3].position} onChange={e => { movePieceToPos(3, e.target.value) }} size='1'></input>
+      <input value={players[0].pieces[3].position} onChange={e => { movePieceToPos('gustav', 3, parseInt(e.target.value)) }} size='1'></input>
       <br />
       <button onClick={rollDice}>Slå tärning</button>
-
-
     </div>
   );
 }

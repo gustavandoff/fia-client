@@ -12,8 +12,8 @@
 }
 
 .is-containing-piece {
-    animation: spin 4s linear;
     transform: scale(0);
+    animation: spin 4s linear;
 }
 
 .appear {

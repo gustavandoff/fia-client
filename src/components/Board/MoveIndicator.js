@@ -1,5 +1,8 @@
 
-function MoveIndicator({ size, movePiece, selectedPiece }) {
+function MoveIndicator({ players, movePieceToPos, selectedPiece, number }) {
+
+    const player = players.find(p => p.playerNumber === selectedPiece.playerNumber);
+
     return (
         <div className="position-absolute m-0 d-flex align-items-center justify-content-center"
             style={{
@@ -11,7 +14,7 @@ function MoveIndicator({ size, movePiece, selectedPiece }) {
                 cursor: 'pointer',
                 //display: 'inline-block',
             }}
-            onPointerDown={() => movePiece(selectedPiece.playerNumber - 1, selectedPiece.number)}
+            onPointerDown={() => movePieceToPos(player.username, selectedPiece.number, number)}
         >
 
         </div>

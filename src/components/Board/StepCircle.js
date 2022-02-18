@@ -1,7 +1,7 @@
 import Piece from "./Piece";
 import MoveIndicator from "./MoveIndicator";
 
-const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePiece }) => {
+const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, selectedPiece, moveIndicator, movePieceToPos }) => {
     
     let pieces = [];
     let player;
@@ -9,7 +9,7 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
 
     for (let i = 0; i < players.length; i++) {
         pieces = players[i].pieces.filter(p => p.position === number);
-        player = i;
+        player = players[i];
         if (pieces.length > 0) {
             break;
         }
@@ -19,7 +19,7 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
         renderElements.push(<Piece key={i} i={i} player={player} size={size} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
     });
 
-    renderElements.push(moveIndicator === number ? <MoveIndicator key={renderElements.length} movePiece={movePiece} size={size} selectedPiece={selectedPiece} /> : '');
+    renderElements.push(moveIndicator.find(m => m === number) ? <MoveIndicator key={renderElements.length} players={players} movePieceToPos={movePieceToPos} selectedPiece={selectedPiece} number={number} /> : '');
 
     if (renderElements[0] === undefined || renderElements[0] === '') {
         renderElements.push(

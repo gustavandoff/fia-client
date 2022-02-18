@@ -2,7 +2,7 @@ import Board from "./Board";
 import DragMove from '../DragMove';
 import { useState } from 'react';
 
-const Game = ({ circleSize, playerCount, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePiece }) => {
+const Game = ({ circleSize, playerCount, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
     const [boardPos, setBoardPos] = useState({ x: -60, y: 0 });
     const [boardSize, setBoardSize] = useState(1);
 
@@ -35,7 +35,7 @@ const Game = ({ circleSize, playerCount, players, setSelectedPiece, selectedPiec
                             <div style={{
                                 transform: `translateX(${boardPos.x}px) translateY(${boardPos.y}px)`
                             }}>
-                                <Board movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
+                                <Board movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
                             </div>
                         </DragMove>
                     </div>
@@ -54,8 +54,7 @@ const Game = ({ circleSize, playerCount, players, setSelectedPiece, selectedPiec
                         defaultValue={1}
                         min={0.1}
                         max={5}
-                        step={0.1}
-                        className="form-range"
+                        step={0.2}
                         id="zoomInput"
                         orient="vertical"
                         style={{
@@ -64,6 +63,7 @@ const Game = ({ circleSize, playerCount, players, setSelectedPiece, selectedPiec
                             width: '8px',
                             height: '100%',
                             padding: '0 5px',
+                            cursor: 'pointer',
                         }}
                     />
                 </div>

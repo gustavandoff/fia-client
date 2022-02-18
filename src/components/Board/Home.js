@@ -1,7 +1,7 @@
 import StepCircle from "./StepCircle";
 import './game.css';
 
-const Home = ({ degree, size, color, armNumber, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePiece }) => {
+const Home = ({ degree, size, color, armNumber, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
     let number = [];
 
@@ -27,16 +27,16 @@ const Home = ({ degree, size, color, armNumber, players, setSelectedPiece, selec
                             `,
         }}>
             <div style={{ gridArea: 'c1' }}>
-                <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[1]} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[1]} />
             </div>
             <div style={{ gridArea: 'c2' }}>
-                <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[2]} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[2]} />
             </div>
             <div style={{ gridArea: 'c3' }}>
-                <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[3]} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[3]} />
             </div>
             <div style={{ gridArea: 'c4' }}>
-                <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[4]} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree} number={number[4]} />
             </div>
         </div>
     )

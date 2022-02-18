@@ -1,14 +1,16 @@
 import StepCircle from "./StepCircle";
 
-const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePiece }) => {
+const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
-    let pieces;
+    let piece;
+    let player;
 
     const image = require(`../../assets/images/star.png`);
 
     for (let i = 0; i < players.length; i++) {
-        pieces = players[i].pieces.find(p => p.position === -1);
-        if (pieces) {
+        piece = players[i].pieces.find(p => p.position === -1);
+        player = players[i];
+        if (piece) {
             break;
         }
     }
@@ -24,7 +26,7 @@ const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece,
     let starClass = 'position-absolute';
     let starStyle = { transform: 'scale(0)' };
 
-    if (pieces) {
+    if (piece) { // målcirkeln innehåller en pjäs. dvs någon har gått ut
         isContainingPiece = {
             left: `${(distanceFromCenter - 0.5 * size) - distanceFromCenter * (1 - sp)}rem`,
             top: `${2 * ((distanceFromCenter - 0.5 * size) - distanceFromCenter * (1 - sp))}rem`,
@@ -38,6 +40,10 @@ const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece,
             width: 'size',
             height: 'size',
         };
+
+        setTimeout(() => {
+            movePieceToPos(player.username, piece.number, null);
+        }, 4000);
     }
 
     return (
@@ -51,7 +57,7 @@ const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece,
             cursor: 'move',
         }}>
             <div className={circleClass} style={isContainingPiece}>
-                <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={'black'} size={size} degree={0} number={-1} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={'black'} size={size} degree={0} number={-1} />
             </div>
             <img style={starStyle} className={starClass} src={image} width={size * 16} alt='stjärna' />
         </div>

@@ -1,6 +1,6 @@
 import StepCircle from "./StepCircle";
 
-const Line1 = ({ degree, size, color, armNumber, playerCount, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePiece }) => {
+const Line1 = ({ degree, size, color, armNumber, playerCount, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
     
     let startCircleNumber = 1 + armNumber * 10;
     let number;
@@ -20,9 +20,9 @@ const Line1 = ({ degree, size, color, armNumber, playerCount, players, setSelect
             transformOrigin: `0 -${size / 2}rem`,
 
         }}>
-            <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree - 90} number={startCircleNumber} />
-            <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color='tan' size={size} degree={degree - 90} number={number} />
-            <StepCircle movePiece={movePiece} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color='tan' size={size} degree={degree - 90} number={number - 1} />
+            <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} size={size} degree={degree - 90} number={startCircleNumber} />
+            <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color='tan' size={size} degree={degree - 90} number={number} />
+            <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color='tan' size={size} degree={degree - 90} number={number - 1} />
         </div>
     );
 }
