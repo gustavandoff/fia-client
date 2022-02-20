@@ -5,7 +5,7 @@ import axios from 'axios';
 
 const Game = ({ defaultPlayers }) => {
     const [boardPos, setBoardPos] = useState({ x: -60, y: 0 });
-    const [boardSize, setBoardSize] = useState(1);
+    const [boardSize, setBoardSize] = useState(2);
 
     const [playerCount, setPlayerCount] = useState(4);
     const [circleSize, setCircleSize] = useState(2);
@@ -216,9 +216,9 @@ const Game = ({ defaultPlayers }) => {
                         <input
                             type='range'
                             onChange={e => { setBoardSize(e.target.value) }}
-                            defaultValue={1}
+                            defaultValue={boardSize}
                             min={0.1}
-                            max={5}
+                            max={6}
                             step={0.2}
                             id="zoomInput"
                             orient="vertical"
