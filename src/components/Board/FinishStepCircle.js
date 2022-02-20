@@ -57,7 +57,7 @@ const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece,
             cursor: 'move',
         }}>
             <div className={circleClass} style={isContainingPiece}>
-                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={'black'} size={size} degree={0} number={-1} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={''} size={size} degree={0} number={-1} />
             </div>
             <img style={starStyle} className={starClass} src={image} width={size * 16} alt='stjärna' />
         </div>
