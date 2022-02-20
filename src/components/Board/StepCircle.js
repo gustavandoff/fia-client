@@ -2,7 +2,7 @@ import Piece from "./Piece";
 import MoveIndicator from "./MoveIndicator";
 
 const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, selectedPiece, moveIndicator, movePieceToPos }) => {
-    
+
     let pieces = [];
     let player;
     let renderElements = [];
@@ -16,23 +16,26 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
     }
 
     pieces.forEach((piece, i) => {
-        renderElements.push(<Piece key={i} i={i} stacked={i * size * 0.2} player={player} size={size} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
+        renderElements.push(<Piece key={i} i={i} stacked={i * size * 0.1} player={player} size={size} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
     });
 
-    renderElements.push(moveIndicator.find(m => m === number) ? <MoveIndicator key={renderElements.length} size={size} players={players} movePieceToPos={movePieceToPos} selectedPiece={selectedPiece} number={number} /> : '');
+    if (moveIndicator.find(m => m === number)) {
+        renderElements.push(<MoveIndicator key={renderElements.length} onPiece={pieces.length > 0} size={size} players={players} movePieceToPos={movePieceToPos} selectedPiece={selectedPiece} number={number} />);
+    }
 
-    if (renderElements[0] === undefined || renderElements[0] === '') {
+    if (renderElements[0] === undefined) {
         renderElements.push(
             //<p key={5000} style={{ fontSize: `${6 * size}px` }}>{number}</p>
         );
     }
 
     return (
-        <div style={{
-            width: `${size}rem`,
-            height: `${size}rem`,
-            textAlign: 'center'
-        }} className='m-0 d-flex align-items-center justify-content-center'>
+        <div className='m-0 d-flex align-items-center justify-content-center'
+            style={{
+                width: `${size}rem`,
+                height: `${size}rem`,
+                textAlign: 'center'
+            }}>
             <div style={{
                 width: '90%',
                 height: '90%',
@@ -42,7 +45,6 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
                 transform: `rotate(${-degree}deg)`,
                 pointerEvents: 'auto',
                 cursor: 'move',
-                zIndex: '0',
             }}>
                 {renderElements}
             </div>
