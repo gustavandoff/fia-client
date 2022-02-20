@@ -11,7 +11,7 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }
         return p1.playerNumber === p2.playerNumber & p1.number === p2.number & p1.position === p2.position;
     }
 
-    let pieceClass = 'position-absolute';
+    let pieceClass = 'position-absolute d-flex';
 
     if (comparePieces(selectedPiece, thisPiece)) {
         pieceClass += ' piece-selected';
@@ -31,17 +31,16 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }
         <div className="align-items-center"
             style={{
                 cursor: 'pointer',
+                zIndex: 10,
             }}
             onPointerDown={selectPiece}
         >
             <img className={pieceClass} src={image} alt='spelpjäs'
                 style={{
-                    width: '100%',
+                    width: '70%',
                     bottom: `${size * 0.2 + stacked}rem`,
                     right: '0',
                     margin: 'auto',
-                    display: 'inline-block',
-                    zIndex: '1',
                 }}></img>
 
         </div>
