@@ -6,21 +6,15 @@ import Home from './Home';
 
 const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, armNumber, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
-    let stepLine1;
-
-    //let distanceFromCenter;
-    //let v = (Math.PI / 180) * (360 / playerCount); // vinkeln mellan varje arm i radianer
-    //let d = circleSize;
+    let stepLine2;
 
     if (playerCount <= 4) {
-        //distanceFromCenter = (circleSize / 2);
-        stepLine1 =
+        stepLine2 =
             <div className='col'>
                 <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} degree={degree} size={circleSize} length='4' armNumber={armNumber} />
             </div>
     } else {
-        //distanceFromCenter = (d * (Math.cos(v / 2) + 1 / 2) / Math.sin(v / 2)) - (1.5 * d);
-        stepLine1 =
+        stepLine2 =
             <div className='col position-relative' style={{ top: `${circleSize}rem` }}>
                 <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} degree={degree} size={circleSize} length='3' armNumber={armNumber} />
             </div>
@@ -69,7 +63,7 @@ const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, 
             pointerEvents: 'none',
         }}>
             <div className='row'>
-                {stepLine1}
+                {stepLine2}
                 <div className='col'>
                     <GoalLine movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} degree={degree} armNumber={armNumber} size={circleSize} />
                 </div>
