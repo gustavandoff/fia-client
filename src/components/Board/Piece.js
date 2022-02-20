@@ -34,14 +34,9 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }
             }}
             onPointerDown={selectPiece}
         >
-            <img className={pieceClass} src={image} alt='spelpjäs'
+            <img className={pieceClass} width='80%' src={image} alt='spelpjäs'
                 style={{
-                    width: '100%',
                     bottom: `${size * 0.2 + stacked}rem`,
-                    right: '0',
-                    margin: 'auto',
-                    display: 'inline-block',
-                    zIndex: '1',
                 }}></img>
 
         </div>
