@@ -2,7 +2,7 @@
 function MoveIndicator({ onPiece, players, movePieceToPos, selectedPiece, number, size }) {
 
     const player = players.find(p => p.playerNumber === selectedPiece.playerNumber);
-    const color = onPiece ? '255, 0, 0' : '0, 255, 0';
+    const color = onPiece ? '255, 0, 0, 0.3' : '0, 255, 0, 0.8';
 
     return (
         <div className="position-absolute m-0 d-flex align-items-center justify-content-center"
@@ -10,8 +10,8 @@ function MoveIndicator({ onPiece, players, movePieceToPos, selectedPiece, number
                 width: '100%',
                 height: '100%',
                 borderRadius: '50%',
-                border: `solid rgba(255, 255, 255, 0.8) ${size * 0.2}rem`,
-                backgroundColor: `rgba(${color}, 0.8)`,
+                border: `solid rgba(255, 255, 255, 0.4) ${size * 0.2}rem`,
+                backgroundColor: `rgba(${color})`,
                 cursor: 'pointer',
             }}
             onPointerDown={() => movePieceToPos(player.username, selectedPiece.number, number)}
