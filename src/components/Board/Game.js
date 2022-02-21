@@ -69,17 +69,6 @@ const Game = ({ defaultPlayers }) => {
         }
     }
 
-    const movePiece = (username, pieceNr) => {
-        const player = players.find(p => p.username === username);
-        const oldPos = player.pieces[pieceNr].position;
-        const newPos = calcPos(player.username, oldPos, moveCount);
-        player.pieces[pieceNr].position = newPos ? newPos : oldPos;
-
-        setPlayers([...players]);
-        setSelectedPiece(0);
-        setMoveIndicator([0]);
-    }
-
     const calcPos = (username, oldPos, moveAmount) => {
         const player = players.find(p => p.username === username);
         const playerNumber = player.playerNumber;
@@ -98,12 +87,12 @@ const Game = ({ defaultPlayers }) => {
                 const startCircle = playerNumber * 10 + 1;
 
                 let change = moveOneStep(username, startCircle + 1, -1);
-                if (!change) return [false];
+                if (!change) return [false]; // om den inte kan gå till första rutan kan den inte gå nånstans
 
                 change = calcPos(username, startCircle, 5);
-                if (!change) return [false];
+                if (!change[0]) return [playerNumber * 10 + 1]; // om den nu inte kan gå till sjätte rutan returnar den bara första rutan
 
-                return [playerNumber * 10 + 6, playerNumber * 10 + 1];
+                return [playerNumber * 10 + 6, playerNumber * 10 + 1]; // om ingen change är false returnar den både första och sjätte rutan
             }
         }
 
@@ -250,9 +239,8 @@ const Game = ({ defaultPlayers }) => {
             <input value={players[0].pieces[2].position} onChange={e => { movePieceToPos('gustav', 2, parseInt(e.target.value)) }}></input>
             <br />
             Pjäs 4:
-            <button onClick={() => movePiece(selectedPiece.playerNumber - 1, selectedPiece.number)}>Gå</button>
             <input value={moveCount} onChange={e => { setMoveCount(e.target.value) }} size='1'></input>
-            <input value={players[0].pieces[3].position} onChange={e => { movePieceToPos('gustav', 3, parseInt(e.target.value)) }} size='1'></input>
+            <input value={players[0].pieces[3].position} onChange={e => { movePieceToPos('gustav', 3, parseInt(e.target.value)) }} size='10'></input>
             <br />
             <button onClick={rollDice}>Slå tärning</button>
         </div>
