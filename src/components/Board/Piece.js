@@ -28,15 +28,17 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }
     const image = require(`../../assets/images/pieces/${piece.color}.png`);
 
     return (
-        <div className="align-items-center"
+        <div className="d-flex align-items-center justify-content-center"
             style={{
                 cursor: 'pointer',
             }}
             onPointerDown={selectPiece}
         >
-            <img className={pieceClass} width='80%' src={image} alt='spelpjäs'
+            <img className={pieceClass} width='100' src={image} alt='spelpjäs'
                 style={{
-                    bottom: `${size * 0.2 + stacked}rem`,
+                    width: `70%`,
+                    bottom: `${size * 0.1 + stacked}rem`,
+                    transform: 'scale(99%)', // måste vara 99% annars blir det knas med storleken ???
                 }}></img>
 
         </div>

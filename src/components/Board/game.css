@@ -27,13 +27,13 @@
 
 @keyframes selectedPiece {
     100% {
-        transform: scale(100%);
+        transform: scale(99%);
     }
     50% {
         transform: scale(90%);
     }
     0% {
-        transform: scale(100%);
+        transform: scale(99%);
     }
 }
 
