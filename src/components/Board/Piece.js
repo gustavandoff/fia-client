@@ -25,7 +25,7 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked }
         }
     }
 
-    const image = require(`../../assets/images/pieces/${piece.color}.png`);
+    const image = require(`../../assets/images/pieces/${player.color}.png`);
 
     return (
         <div className="d-flex align-items-center justify-content-center"
