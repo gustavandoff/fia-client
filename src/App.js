@@ -1,4 +1,4 @@
-import Header from './components/Header';
+import Navbar from './components/Navbar';
 import Game from './components/Board/Game';
 
 let defaultPlayers = [
@@ -55,7 +55,7 @@ function App() {
 
   return (
     <div className="App">
-      <Header title={gameTitle} />
+      <Navbar title={gameTitle} />
       <Game defaultPlayers={defaultPlayers} />
     </div>
   );
