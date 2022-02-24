@@ -56,7 +56,7 @@ function App() {
   return (
     <div className="App">
       <Navbar title={gameTitle} />
-      <Game defaultPlayers={defaultPlayers} />
+      
     </div>
   );
 }

@@ -2,12 +2,26 @@ import '../App.css';
 
 const Navbar = ({ title }) => {
     return (
-        <nav className="container-sm text-center bg-col-primary text-col-primary rounded-bottom" style={{
-            height: '5rem',
-        }}>
-            <h1 className='text-wrap'> {title} </h1>
-            
-        </nav>
+        <header role="banner" className="navbar navbar-expand-md navbar-dark bd-navbar container-sm bg-col-primary rounded-bottom">
+            <nav className="container-xxl flex-wrap flex-md-nowrap">
+                <button className="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-toggle="#bdNavbar"></button>
+                <div className="row">
+
+                    <div className="col">
+                        <a className="nav-link text-col-primary">Hej</a>
+                    </div>
+                    <div className="col">
+                        <a className='h1 nav-link text-col-primary'> {title} </a>
+                    </div>
+                    <div className="col text-end">
+                        <a className="nav-link text-col-primary">Hej</a>
+                    </div>
+                </div>
+
+
+            </nav>
+        </header>
+
     );
 }
 
