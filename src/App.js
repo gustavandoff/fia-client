@@ -1,5 +1,5 @@
-import Navbar from './components/Navbar';
-import Game from './components/Board/Game';
+import Navbar from './components/Header/Navbar';
+import Game from './components/Game/Game';
 
 let defaultPlayers = [
   {
@@ -51,11 +51,9 @@ let defaultPlayers = [
 ];
 
 function App() {
-  const gameTitle = 'Fia';
-
   return (
     <div className="App">
-      <Navbar title={gameTitle} />
+      <Navbar />
       
     </div>
   );
