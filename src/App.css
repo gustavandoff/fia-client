@@ -14,10 +14,38 @@
     color: #2B6777;
 }
 
+.font-size-1 {
+    font-size: 1rem !important;
+}
+
+.font-size-1-5 {
+    font-size: 1.5rem !important;
+}
+
 .font-size-2 {
     font-size: 2rem !important;
 }
 
 .font-size-3 {
     font-size: 3rem !important;
+}
+
+.fia-dropdown-item {
+    border-bottom: 1px solid #C8D8E4;
+}
+
+.fia-dropdown-menu {
+    animation: menuOpen 100ms;
+    transform-origin: 0 0;
+    list-style: none;
+    text-align: left;
+}
+
+@keyframes menuOpen {
+    100% {
+        transform: scaleY(100%);
+    }
+    0% {
+        transform: scaleY(0%);
+    }
 }

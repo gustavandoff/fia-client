@@ -1,5 +1,6 @@
 import Navbar from './components/Header/Navbar';
 import Game from './components/Game/Game';
+import { useState } from 'react';
 
 let defaultPlayers = [
   {
@@ -51,10 +52,13 @@ let defaultPlayers = [
 ];
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
   return (
     <div className="App">
-      <Navbar />
-      
+      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      {<Game defaultPlayers={defaultPlayers} />
+      }
     </div>
   );
 }
