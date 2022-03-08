@@ -162,7 +162,6 @@ const Game = ({ defaultPlayers }) => {
         axios.get(`http://localhost:4000/dice`)
             .then(res => {
                 setMoveCount(res.data);
-                console.log(players);
             });
     }
 
