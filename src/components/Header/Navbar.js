@@ -1,11 +1,7 @@
 import '../../App.css';
 import NavRight from './NavRight';
-import { useState } from 'react';
 
 const Navbar = ({ loggedIn, setLoggedIn }) => {
-
-    
-
     return (
         <header style={{zIndex: '300000'}} className="container-sm bg-col-primary rounded-pill">
             <nav className="container-xxl flex-wrap flex-md-nowrap">
