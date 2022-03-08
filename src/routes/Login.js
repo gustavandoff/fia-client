@@ -1,7 +1,20 @@
 import { Link } from "react-router-dom";
+import axios from 'axios';
+
 import '../App.css';
 
 const Login = () => {
+
+    const logIn = () => {
+        //setLoggedIn(true);
+        // anropa servern med inloggnings-inputsen. om de stämmer ska man skickas till startsidan annars "kastas" fel
+        axios.post(`http://localhost:4000/login`)
+            .then(res => {
+                console.log("login logged in:", res.data);
+            });
+    }
+
+
     return (
         <div>
             <section className="vh-100 gradient-custom">
@@ -18,10 +31,10 @@ const Login = () => {
 
                                         <div className="form-outline form-white mb-4">
                                             <input type="text" id="typeUsernameX" className="form-control form-control-lg" />
-                                            <label className="form-label" htmlFor="typeUsernameX" style={{marginLeft: '0px'}}>Användarnamn</label>
+                                            <label className="form-label" htmlFor="typeUsernameX">Användarnamn</label>
                                             <div className="form-notch">
-                                                <div className="form-notch-leading" style={{width: '9px'}}></div>
-                                                <div className="form-notch-middle" style={{width: '40px'}}></div>
+                                                <div className="form-notch-leading" style={{ width: '9px' }}></div>
+                                                <div className="form-notch-middle" style={{ width: '40px' }}></div>
                                                 <div className="form-notch-trailing"></div>
                                             </div>
                                         </div>
@@ -31,7 +44,7 @@ const Login = () => {
                                             <label className="form-label" htmlFor="typePasswordX">Lösenord</label>
                                         </div>
 
-                                        <Link to="/" className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5" type="submit">Logga in</Link>
+                                        <Link to="/" onClick={logIn} className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5" type="submit">Logga in</Link>
 
                                     </div>
 
