@@ -13,7 +13,7 @@ const NavRight = ({ loggedIn, setLoggedIn }) => {
             );
         } else {
             return (
-                <NavLogIn setLoggedIn={setLoggedIn} />
+                <NavLogIn />
             );
         }
     }
