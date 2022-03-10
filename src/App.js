@@ -53,13 +53,11 @@ let defaultPlayers = [
 ];
 
 function App() {
-  let [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   axios.get(`http://localhost:4000/login`)
     .then(res => {
-      loggedIn = res.data;
-      setLoggedIn(loggedIn);
-      console.log("app logged in:", res.data)
+      setLoggedIn(res.data); // fungerar inte
     });
 
   return (
