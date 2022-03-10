@@ -1,7 +1,58 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../App.css';
 
 const Signup = () => {
+
+    const navigate = useNavigate();
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [username, setUsername] = useState();
+    const [displayname, setDisplayname] = useState();
+    const [password, setPassword] = useState();
+    const [confPassword, setConfPassword] = useState(); 
+
+    const handleUsernameInput = event => {
+        setUsername(event.target.value);
+    };
+
+    const handleDisplaynameInput = event => {
+        setDisplayname(event.target.value);
+    };
+
+    const handlePasswordInput = event => {
+        setPassword(event.target.value);
+    };
+
+    const handleConfPasswordInput = event => {
+        setConfPassword(event.target.value);
+    };
+
+    const signUp = () => {
+        //setLoggedIn(true);
+        // anropa servern med inloggnings-inputsen. om de stämmer ska man skickas till startsidan annars "kastas" fel
+        axios
+            .post(`http://localhost:4000/users`, {
+                username: username,
+                displayname: displayname,
+                password: password,
+                confPassword: confPassword
+            })
+            .then(res => {
+                setLoggedIn(res.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        if (loggedIn) {
+            console.log("login logged in:", loggedIn);
+            return navigate("/");
+        }
+    }, [loggedIn]);
+
     return (
         <div>
             <section className="vh-100 gradient-custom">
@@ -16,22 +67,27 @@ const Signup = () => {
                                         <h2 className="fw-bold mb-2 text-uppercase">Skapa konto</h2>
                                         <p className="text-white-50 mb-5">Vänligen skriv in användarnamn och lösenord</p>
 
-                                        <div className="form-outline form-white mb-4">
-                                            <input type="text" id="typeUsernameX" className="form-control form-control-lg" />
+                                        <div className="form-outline form-white mb-1">
+                                            <input onChange={handleUsernameInput} type="text" id="typeUsernameX" className="form-control form-control-lg" />
                                             <label className="form-label" htmlFor="typeUsernameX">Användarnamn</label>
                                         </div>
 
+                                        <div className="form-outline form-white mb-4">
+                                            <input onChange={handleDisplaynameInput} type="text" id="typeDisplaynameX" className="form-control form-control-lg" />
+                                            <label className="form-label" htmlFor="typeDisplaynameX">Visningsnamn</label>
+                                        </div>
+
                                         <div className="form-outline form-white mb-1">
-                                            <input type="password" id="typePasswordX" className="form-control form-control-lg" />
+                                            <input onChange={handlePasswordInput} type="password" id="typePasswordX" className="form-control form-control-lg" />
                                             <label className="form-label" htmlFor="typePasswordX">Lösenord</label>
                                         </div>
 
                                         <div className="form-outline form-white mb-4">
-                                            <input type="password" id="typeConfirmPasswordX" className="form-control form-control-lg" />
+                                            <input onChange={handleConfPasswordInput} type="password" id="typeConfirmPasswordX" className="form-control form-control-lg" />
                                             <label className="form-label" htmlFor="typeConfirmPasswordX">Bekräfta lösenord</label>
                                         </div>
 
-                                        <Link to="/" className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5" type="submit">Logga in</Link>
+                                        <button onClick={signUp} className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5" type="submit">Skapa konto</button>
 
                                     </div>
 
