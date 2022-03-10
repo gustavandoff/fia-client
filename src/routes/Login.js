@@ -1,18 +1,45 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import '../App.css';
 
 const Login = () => {
+    const navigate = useNavigate();
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [username, setUsername] = useState();
+    const [password, setPassword] = useState();
+
+    const handleUsernameInput = event => {
+        setUsername(event.target.value);
+    };
+
+    const handlePasswordInput = event => {
+        setPassword(event.target.value);
+    };
 
     const logIn = () => {
         //setLoggedIn(true);
         // anropa servern med inloggnings-inputsen. om de stämmer ska man skickas till startsidan annars "kastas" fel
-        axios.post(`http://localhost:4000/login`)
+        axios
+            .post(`http://localhost:4000/login`, {
+                username: username,
+                password: password
+            })
             .then(res => {
-                console.log("login logged in:", res.data);
+                setLoggedIn(res.data);
+            })
+            .catch(error => {
+                console.log(error);
             });
     }
+
+    useEffect(() => {
+        if (loggedIn) {
+            console.log("login logged in:", loggedIn);
+            return navigate("/");
+        }
+    }, [loggedIn]);
 
 
     return (
@@ -30,7 +57,7 @@ const Login = () => {
                                         <p className="text-white-50 mb-5">Vänligen skriv in användarnamn och lösenord</p>
 
                                         <div className="form-outline form-white mb-4">
-                                            <input type="text" id="typeUsernameX" className="form-control form-control-lg" />
+                                            <input onChange={handleUsernameInput} type="text" id="typeUsernameX" className="form-control form-control-lg" />
                                             <label className="form-label" htmlFor="typeUsernameX">Användarnamn</label>
                                             <div className="form-notch">
                                                 <div className="form-notch-leading" style={{ width: '9px' }}></div>
@@ -40,11 +67,11 @@ const Login = () => {
                                         </div>
 
                                         <div className="form-outline form-white mb-4">
-                                            <input type="password" id="typePasswordX" className="form-control form-control-lg" />
+                                            <input onChange={handlePasswordInput} type="password" id="typePasswordX" className="form-control form-control-lg" />
                                             <label className="form-label" htmlFor="typePasswordX">Lösenord</label>
                                         </div>
 
-                                        <Link to="/" onClick={logIn} className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5" type="submit">Logga in</Link>
+                                        <button onClick={logIn} className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5" type="submit">Logga in</button>
 
                                     </div>
 
