@@ -1,6 +1,6 @@
 import Navbar from './components/Header/Navbar';
 import Game from './components/Game/Game';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 let defaultPlayers = [
@@ -54,10 +54,9 @@ let defaultPlayers = [
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-
-  axios.get(`http://localhost:4000/login`)
+  axios.get(`http://localhost:4000/user`)
     .then(res => {
-      setLoggedIn(res.data); // fungerar inte
+      setLoggedIn(!!res.data);
     });
 
   return (
