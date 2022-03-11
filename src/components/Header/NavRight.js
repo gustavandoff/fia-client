@@ -4,12 +4,10 @@ import NavProfile from "./NavProfile";
 
 const NavRight = ({ loggedIn, setLoggedIn }) => {
 
-    let username = "gustav";
-
     const renderHTML = () => {
         if (loggedIn) {
             return (
-                <NavProfile setLoggedIn={setLoggedIn} username={username} />
+                <NavProfile setLoggedIn={setLoggedIn}/>
             );
         } else {
             return (
