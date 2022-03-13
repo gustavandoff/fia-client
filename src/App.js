@@ -54,10 +54,15 @@ let defaultPlayers = [
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  axios.get(`http://localhost:4000/user`)
+  axios.get(`http://localhost:4000/currentuser`)
     .then(res => {
-      setLoggedIn(!!res.data);
+      setLoggedIn(!!res.data.currentUser);
+      console.log("app current user:", res.data.currentUser);
     });
+
+  useEffect(() => {
+    console.log('app logged in:', loggedIn);
+  }, [loggedIn]);
 
   return (
     <div className="App">

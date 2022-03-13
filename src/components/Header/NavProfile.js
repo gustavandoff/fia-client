@@ -13,9 +13,9 @@ const NavProfile = ({ setLoggedIn }) => {
         axios.post(`http://localhost:4000/logout`);
     }
 
-    axios.get(`http://localhost:4000/user`)
+    axios.get(`http://localhost:4000/currentuser`)
         .then(res => {
-            setUsername(res.data.username);
+            setUsername(res.data.currentUser.username);
         });
 
     let dropDown;
