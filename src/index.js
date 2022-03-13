@@ -8,7 +8,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from './App';
 import Login from './routes/Login';
 import Signup from './routes/Signup';
-import Recovery from './routes/Recovery';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -18,7 +17,6 @@ ReactDOM.render(
       <Route path="/" element={<App />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/recovery" element={<Recovery />} />
       <Route
         path="*"
         element={
