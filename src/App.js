@@ -52,21 +52,11 @@ let defaultPlayers = [
   }
 ];
 
-function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  axios.get(`http://localhost:4000/currentuser`)
-    .then(res => {
-      setLoggedIn(!!res.data.currentUser);
-      console.log("app current user:", res.data.currentUser);
-    });
-
-  useEffect(() => {
-    console.log('app logged in:', loggedIn);
-  }, [loggedIn]);
+function App({ currentUser, setCurrentUser }) {
 
   return (
     <div className="App">
-      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+      <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       {<Game defaultPlayers={defaultPlayers} />
       }
     </div>
