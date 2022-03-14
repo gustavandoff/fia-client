@@ -4,21 +4,25 @@ import DropdownMenu from "./DropdownMenu";
 import { useState } from 'react';
 import axios from 'axios';
 
-const NavProfile = ({ setLoggedIn }) => {
+const NavProfile = ({ currentUser, setCurrentUser }) => {
     const [open, setOpen] = useState(false);
-    const [username, setUsername] = useState();
 
     const logOut = () => {
-        setLoggedIn(false);
-        axios.post(`http://localhost:4000/logout`);
-    }
-
-    axios.get(`http://localhost:4000/currentuser`)
+        axios.post(`http://localhost:4000/logout`,
+        {},
+        {
+            headers: { Authorization: 'Bearer ' + currentUser.jwt }
+        })
         .then(res => {
-            setUsername(res.data.currentUser.username);
+            setCurrentUser(null);
+        })
+        .catch(e => {
+            console.error(e);
         });
-
+    }
+    
     let dropDown;
+    const { username } = currentUser;
 
     if (open) {
         dropDown = (
