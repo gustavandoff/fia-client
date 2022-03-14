@@ -8,10 +8,9 @@ import Form from "../components/Form/Form";
 import FormInput from "../components/Form/FormInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 
-const Signup = () => {
+const Signup = ({ currentUser, setCurrentUser }) => {
 
     const navigate = useNavigate();
-    const [loggedIn, setLoggedIn] = useState(false);
     const [username, setUsername] = useState();
     const [displayname, setDisplayname] = useState();
     const [password, setPassword] = useState();
@@ -34,8 +33,6 @@ const Signup = () => {
     };
 
     const signUp = () => {
-        //setLoggedIn(true);
-        // anropa servern med inloggnings-inputsen. om de stämmer ska man skickas till startsidan annars "kastas" fel
         axios
             .post(`http://localhost:4000/signup`, {
                 username: username,
@@ -44,7 +41,7 @@ const Signup = () => {
                 confPassword: confPassword
             })
             .then(res => {
-                setLoggedIn(res.data);
+                setCurrentUser(res.data.currentUser);
             })
             .catch(error => {
                 console.log(error);
@@ -52,11 +49,11 @@ const Signup = () => {
     }
 
     useEffect(() => {
-        if (loggedIn) {
-            console.log("login logged in:", loggedIn);
+        if (currentUser) {
+            console.log("login currentUser:", currentUser);
             return navigate("/");
         }
-    }, [loggedIn]);
+    }, [currentUser]);
 
     return (
         <Form title='Skapa konto' linkPath='/login' linkText='Har du redan ett konto?'>

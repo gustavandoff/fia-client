@@ -1,7 +1,7 @@
 import '../../App.css';
 import NavRight from './NavRight';
 
-const Navbar = ({ loggedIn, setLoggedIn }) => {
+const Navbar = ({ currentUser, setCurrentUser }) => {
     return (
         <header style={{zIndex: '300000'}} className="container-sm bg-col-primary rounded-pill">
             <nav className="container-xxl flex-wrap flex-md-nowrap">
@@ -15,7 +15,7 @@ const Navbar = ({ loggedIn, setLoggedIn }) => {
                         <a className='btn btn-primary stretched rounded font-size-2 text-nowrap'>Nytt spel</a>
                     </div>
                     <div className="col-3 text-end d-flex align-items-center justify-content-end pe-3">
-                        <NavRight loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+                        <NavRight currentUser={currentUser} setCurrentUser={setCurrentUser} />
                     </div>
                 </div>
 

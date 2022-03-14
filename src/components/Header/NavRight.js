@@ -2,16 +2,16 @@ import NavLogIn from "./NavLogIn";
 import NavProfile from "./NavProfile";
 
 
-const NavRight = ({ loggedIn, setLoggedIn }) => {
+const NavRight = ({ currentUser, setCurrentUser }) => {
 
     const renderHTML = () => {
-        if (loggedIn) {
+        if (currentUser) {
             return (
-                <NavProfile setLoggedIn={setLoggedIn}/>
+                <NavProfile currentUser={currentUser} setCurrentUser={setCurrentUser}/>
             );
         } else {
             return (
-                <NavLogIn />
+                <NavLogIn  />
             );
         }
     }

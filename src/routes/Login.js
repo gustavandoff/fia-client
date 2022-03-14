@@ -8,9 +8,8 @@ import Form from "../components/Form/Form";
 import FormInput from "../components/Form/FormInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 
-const Login = () => {
+const Login = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
-    const [loggedIn, setLoggedIn] = useState(false);
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
 
@@ -29,8 +28,8 @@ const Login = () => {
                 password: password
             })
             .then(res => {
-                setLoggedIn(!!res.data.currentUser);
-                console.log("login current user:", res.data.currentUser);
+                setCurrentUser(res.data.currentUser);
+                console.log("login currentUser:", res);
             })
             .catch(error => {
                 console.log(error);
@@ -38,11 +37,11 @@ const Login = () => {
     }
 
     useEffect(() => {
-        console.log("login logged in:", loggedIn);
-        if (loggedIn) {
+        console.log("login logged in:", currentUser);
+        if (currentUser) {
             return navigate("/");
         }
-    }, [loggedIn]);
+    }, [currentUser]);
 
 
     return (
