@@ -13,7 +13,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                         <a className="text-col-primary">Hej</a>
                     </div>
                     <div className="col-6 text-center">
-                        <Link to='/newgame' className='btn btn-primary stretched rounded font-size-2 text-nowrap'>Nytt spel</Link>
+                        <Link to='/play' className='btn btn-orange stretched rounded font-size-2 px-5 text-nowrap m-2'>Spela</Link>
                     </div>
                     <div className="col-3 text-end d-flex align-items-center justify-content-end pe-3">
                         <NavRight currentUser={currentUser} setCurrentUser={setCurrentUser} />

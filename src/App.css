@@ -10,6 +10,18 @@
     background-color: #C8D8E4;
 }
 
+.btn-orange{
+    color: #fff;
+    background-color: #A13818;
+    border-color: #A13818;
+}
+
+.btn-orange:hover {
+    color: #fff;
+    animation: light 100ms;
+    filter: brightness(110%);
+}
+
 .text-col-secondary{
     color: #2B6777;
 }
@@ -39,6 +51,15 @@
     transform-origin: 0 0;
     list-style: none;
     text-align: left;
+}
+
+@keyframes light {
+    100% {
+        filter: brightness(110%);
+    }
+    0% {
+        filter: brightness(100%);
+    }
 }
 
 @keyframes menuOpen {
