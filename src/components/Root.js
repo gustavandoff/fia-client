@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import App from '../App';
 import Login from '../routes/Login';
 import Signup from '../routes/Signup';
+import NewGame from '../routes/NewGame';
 
 
 const Root = () => {
@@ -15,6 +16,7 @@ const Root = () => {
                 <Route path="/" element={<App currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/signup" element={<Signup currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+                <Route path="/newgame" element={<NewGame currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route
                     path="*"
                     element={
