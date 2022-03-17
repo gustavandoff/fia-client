@@ -1,13 +1,13 @@
 import '../../App.css';
 import FormSelectInputOption from './FormSelectInputOption';
 
-const FormSelectInput = ({ handleInputFunction, values, label, id }) => {
+const FormSelectInput = ({ handleInputFunction, values, label, id, activeValue }) => {
 
     let listItems = [];
 
-    values.forEach(e => {
+    values?.forEach((e,i) => {
         listItems.push(
-            <FormSelectInputOption value={e} onClick={handleInputFunction} />
+            <FormSelectInputOption value={e} onClick={handleInputFunction} activeValue={activeValue} key={i}/>
         );
     });
 
