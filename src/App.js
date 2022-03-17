@@ -1,7 +1,5 @@
 import Navbar from './components/Header/Navbar';
 import Game from './components/Game/Game';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 let defaultPlayers = [
   {
