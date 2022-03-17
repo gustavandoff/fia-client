@@ -5,7 +5,7 @@ import axios from 'axios';
 import '../App.css';
 
 import Form from "../components/Form/Form";
-import FormInput from "../components/Form/FormInput";
+import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 
 const Signup = ({ currentUser, setCurrentUser }) => {
@@ -57,10 +57,10 @@ const Signup = ({ currentUser, setCurrentUser }) => {
 
     return (
         <Form title='Skapa konto' linkPath='/login' linkText='Har du redan ett konto?'>
-            <FormInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
-            <FormInput handleInputFunction={handleDisplaynameInput} type='text' label='Visningsnamn' id='typeDisplaynameX' />
-            <FormInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
-            <FormInput handleInputFunction={handleConfPasswordInput} type='password' label='Bekräfta lösenord' id='typeConfirmPasswordX' />
+            <FormTextInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
+            <FormTextInput handleInputFunction={handleDisplaynameInput} type='text' label='Visningsnamn' id='typeDisplaynameX' />
+            <FormTextInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
+            <FormTextInput handleInputFunction={handleConfPasswordInput} type='password' label='Bekräfta lösenord' id='typeConfirmPasswordX' />
             <FormSubmitButton onClick={signUp} text='Skapa konto' />
         </Form>
     );

@@ -1,5 +1,6 @@
 import '../../App.css';
 import NavRight from './NavRight';
+import { Link } from 'react-router-dom';
 
 const Navbar = ({ currentUser, setCurrentUser }) => {
     return (
@@ -12,7 +13,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                         <a className="text-col-primary">Hej</a>
                     </div>
                     <div className="col-6 text-center">
-                        <a className='btn btn-primary stretched rounded font-size-2 text-nowrap'>Nytt spel</a>
+                        <Link to='/newgame' className='btn btn-primary stretched rounded font-size-2 text-nowrap'>Nytt spel</Link>
                     </div>
                     <div className="col-3 text-end d-flex align-items-center justify-content-end pe-3">
                         <NavRight currentUser={currentUser} setCurrentUser={setCurrentUser} />

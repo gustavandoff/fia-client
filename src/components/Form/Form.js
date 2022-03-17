@@ -1,6 +1,12 @@
 import { Link } from "react-router-dom";
 
 const Form = ({ children, title, linkPath, linkText }) => {
+
+    let bottomLink = '';
+    if (linkPath && linkText){
+        bottomLink = <Link to={linkPath} className="text-decoration-none text-white-50 mb-4 fw-bold">{linkText}</Link>;
+    }
+
     return (
         <div>
             <section className="vh-100 gradient-custom">
@@ -20,7 +26,7 @@ const Form = ({ children, title, linkPath, linkText }) => {
                                     </div>
 
                                     <div>
-                                        <Link to={linkPath} className="text-decoration-none text-white-50 mb-4 fw-bold">{linkText}</Link>
+                                        {bottomLink}
                                     </div>
 
                                 </div>

@@ -1,6 +1,6 @@
 import '../../App.css';
 
-const FormInput = ({ handleInputFunction, type, label, id }) => {
+const FormTextInput = ({ handleInputFunction, type, label, id }) => {
     return (
         <div className="form-outline form-white mb-2">
             <input onChange={handleInputFunction} type={type} id={id} className="form-control form-control-lg" />
@@ -9,4 +9,4 @@ const FormInput = ({ handleInputFunction, type, label, id }) => {
     );
 }
 
-export default FormInput;
+export default FormTextInput;

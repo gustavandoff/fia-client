@@ -5,7 +5,7 @@ import axios from 'axios';
 import '../App.css';
 
 import Form from "../components/Form/Form";
-import FormInput from "../components/Form/FormInput";
+import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 
 const Login = ({ currentUser, setCurrentUser }) => {
@@ -46,8 +46,8 @@ const Login = ({ currentUser, setCurrentUser }) => {
 
     return (
         <Form title='Logga in' linkPath='/signup' linkText='Skapa konto'>
-            <FormInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
-            <FormInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
+            <FormTextInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
+            <FormTextInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
             <FormSubmitButton onClick={logIn} text='Logga in' />
         </Form>
     );
