@@ -56,12 +56,21 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
         console.log('maxPlayers:', maxPlayers);
     }, [maxPlayers]);
 
+    let genitiveCurrentUserUsername = 'gästs';
+    if (currentUser){
+        if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z'){
+            genitiveCurrentUserUsername = currentUser.username;
+        } else {
+            genitiveCurrentUserUsername = currentUser.username + 's';
+        }
+    }
+
     return (
         <div>
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
-            <Form title='Skapa spel'>
-                <FormTextInput handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
+            <Form>
+                <FormTextInput defaultValue={genitiveCurrentUserUsername + ' spel'} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
                 <FormSelectInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} activeValue={maxPlayers} values={maxPlayerValueArray} />
                 <FormSubmitButton onClick={createGame} text='Starta spel' />
             </Form>
