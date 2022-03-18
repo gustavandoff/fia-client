@@ -1,6 +1,7 @@
 import '../../App.css';
 import NavRight from './NavRight';
 import { Link } from 'react-router-dom';
+import { MdHome } from "react-icons/md";
 
 const Navbar = ({ currentUser, setCurrentUser }) => {
     return (
@@ -10,7 +11,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                 }<div className="row">
 
                     <div className="col-3">
-                        <a className="text-col-primary">Hej</a>
+                        <MdHome />
                     </div>
                     <div className="col-6 text-center">
                         <Link to='/play' className='btn btn-orange stretched rounded font-size-2 px-5 text-nowrap m-2'>Spela</Link>
