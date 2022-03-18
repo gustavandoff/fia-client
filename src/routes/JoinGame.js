@@ -60,7 +60,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
         <div>
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
-            <Form title='Gå med'>
+            <Form>
                 <FormSelectInput label='Spel' handleInputFunction={handleSelectedGameInput} activeValue={selectedGame} values={gameList} />
                 <FormSubmitButton onClick={joinGame} text='Gå med' />
             </Form>
