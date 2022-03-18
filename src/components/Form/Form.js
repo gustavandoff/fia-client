@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const Form = ({ children, title, linkPath, linkText }) => {
 
     let bottomLink = '';
-    if (linkPath && linkText){
+    if (linkPath && linkText) {
         bottomLink = <Link to={linkPath} className="text-decoration-none text-white-50 mb-4 fw-bold">{linkText}</Link>;
     }
 
@@ -18,7 +18,7 @@ const Form = ({ children, title, linkPath, linkText }) => {
 
                                     <div className="mb-md-5 mt-md-4 pb-2">
 
-                                        <h2 className="fw-bold mb-5 text-uppercase">{title}</h2>
+                                        <h2 className="fw-bold mb-5 text-uppercase">{title ? title : ''}</h2>
 
                                         {children}
 
