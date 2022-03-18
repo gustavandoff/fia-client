@@ -7,6 +7,7 @@ import '../App.css';
 import Form from "../components/Form/Form";
 import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
+import Navbar from "../components/Header/Navbar";
 
 const Login = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
@@ -45,11 +46,16 @@ const Login = ({ currentUser, setCurrentUser }) => {
 
 
     return (
-        <Form title='Logga in' linkPath='/signup' linkText='Skapa konto'>
-            <FormTextInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
-            <FormTextInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
-            <FormSubmitButton onClick={logIn} text='Logga in' />
-        </Form>
+        <div>
+            <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+
+            <Form title='Logga in' linkPath='/signup' linkText='Skapa konto'>
+                <FormTextInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
+                <FormTextInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
+                <FormSubmitButton onClick={logIn} text='Logga in' />
+            </Form>
+        </div>
+
     );
 }
 
