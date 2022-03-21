@@ -7,15 +7,25 @@ import Form from "../components/Form/Form";
 import FormSelectInput from "../components/Form/FormSelectInput";
 import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
+import FormRangeInput from "../components/Form/FormRangeInput";
 
 const CreateGame = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [maxPlayers, setMaxPlayers] = useState(4);
-    const [gameName, setGameName] = useState('Nytt spel');
-    const maxPlayerValueArray = [4, 5, 6, 7, 8, 9, 10, 11, 12]; // de värden man kan välja mellan på maxPlayers
 
-    const handleMaxPlayersInput = value => {
-        setMaxPlayers(maxPlayers === value ? null : value);
+    let genitiveCurrentUserUsername = 'gästs';
+    if (currentUser) {
+        if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z') {
+            genitiveCurrentUserUsername = currentUser.username;
+        } else {
+            genitiveCurrentUserUsername = currentUser.username + 's';
+        }
+    }
+
+    const [gameName, setGameName] = useState(genitiveCurrentUserUsername + ' spel');
+
+    const handleMaxPlayersInput = e => {
+        setMaxPlayers(e.target.value);
     }
 
     const handleGameNameInput = e => {
@@ -23,7 +33,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
     }
 
     const createGame = () => {
-        if (!maxPlayers || !gameName){
+        if (!maxPlayers || !gameName) {
             return;
         }
 
@@ -34,18 +44,17 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
             })
             .then(res => {
                 console.log('created game', gameName);
-            })
-            .catch(error => {
-                console.log(error);
-            });
-
-        axios
-            .post(`http://localhost:4000/joingame`, {
-                username: currentUser ? currentUser.username : 'gäst',
-                gameName: gameName
-            })
-            .then(res => {
-                console.log("joined game:", gameName);
+                axios
+                    .post(`http://localhost:4000/joingame`, {
+                        username: currentUser ? currentUser.username : 'gäst',
+                        gameName: gameName
+                    })
+                    .then(res => {
+                        console.log("joined game:", gameName);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
             })
             .catch(error => {
                 console.log(error);
@@ -56,23 +65,14 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
         console.log('maxPlayers:', maxPlayers);
     }, [maxPlayers]);
 
-    let genitiveCurrentUserUsername = 'gästs';
-    if (currentUser){
-        if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z'){
-            genitiveCurrentUserUsername = currentUser.username;
-        } else {
-            genitiveCurrentUserUsername = currentUser.username + 's';
-        }
-    }
-
     return (
         <div>
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
-            <Form>
+            <Form title='Skapa nytt spel'>
                 <FormTextInput defaultValue={genitiveCurrentUserUsername + ' spel'} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
-                <FormSelectInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} activeValue={maxPlayers} values={maxPlayerValueArray} />
-                <FormSubmitButton onClick={createGame} text='Starta spel' />
+                <FormRangeInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} min={4} max={12} step={1} id='rangeMaxPlayersX' />
+                <FormSubmitButton onClick={createGame} text='Skapa' />
             </Form>
         </div>
 
