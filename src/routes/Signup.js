@@ -61,10 +61,10 @@ const Signup = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Skapa konto' linkPath='/login' linkText='Har du redan ett konto?'>
-                <FormTextInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
-                <FormTextInput handleInputFunction={handleDisplaynameInput} type='text' label='Visningsnamn' id='typeDisplaynameX' />
-                <FormTextInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
-                <FormTextInput handleInputFunction={handleConfPasswordInput} type='password' label='Bekräfta lösenord' id='typeConfirmPasswordX' />
+                <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' />
+                <FormTextInput handleInputFunction={handleDisplaynameInput} autocomplete='nickname' type='text' label='Visningsnamn' id='typeDisplaynameX' />
+                <FormTextInput handleInputFunction={handlePasswordInput} autocomplete='new-password' type='password' label='Lösenord' id='typePasswordX' />
+                <FormTextInput handleInputFunction={handleConfPasswordInput} autocomplete='new-password' type='password' label='Bekräfta lösenord' id='typeConfirmPasswordX' />
                 <FormSubmitButton onClick={signUp} text='Skapa konto' />
             </Form>
         </div>

@@ -50,8 +50,8 @@ const Login = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Logga in' linkPath='/signup' linkText='Skapa konto'>
-                <FormTextInput handleInputFunction={handleUsernameInput} type='text' label='Användarnamn' id='typeUsernameX' />
-                <FormTextInput handleInputFunction={handlePasswordInput} type='password' label='Lösenord' id='typePasswordX' />
+                <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' />
+                <FormTextInput handleInputFunction={handlePasswordInput} autocomplete='current-password' type='password' label='Lösenord' id='typePasswordX' />
                 <FormSubmitButton onClick={logIn} text='Logga in' />
             </Form>
         </div>
