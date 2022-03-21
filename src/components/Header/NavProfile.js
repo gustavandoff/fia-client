@@ -2,10 +2,12 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import DropdownItem from "./DropdownItem";
 import DropdownMenu from "./DropdownMenu";
 import { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const NavProfile = ({ currentUser, setCurrentUser }) => {
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     const logOut = () => {
         axios.post(`http://localhost:4000/logout`,
@@ -15,6 +17,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
         })
         .then(res => {
             setCurrentUser(null);
+            return navigate("/");
         })
         .catch(e => {
             console.error(e);
