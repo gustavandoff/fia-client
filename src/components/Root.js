@@ -7,6 +7,7 @@ import Signup from '../routes/Signup';
 import Play from '../routes/Play';
 import CreateGame from '../routes/CreateGame';
 import JoinGame from '../routes/JoinGame';
+import GameRoute from '../routes/GameRoute';
 
 
 const Root = () => {
@@ -15,7 +16,9 @@ const Root = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<App currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+                <Route path="/" element={<App currentUser={currentUser} setCurrentUser={setCurrentUser} />}>
+                    <Route path=':gameName' element={<GameRoute currentUser={currentUser} setCurrentUser={setCurrentUser} />}/>
+                </Route>
                 <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/signup" element={<Signup currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/play" element={<Play currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
