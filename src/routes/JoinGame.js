@@ -28,6 +28,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             })
             .then(res => {
                 console.log("joined game:", selectedGame);
+                navigate('/' + selectedGame)
             })
             .catch(error => {
                 console.log(error);
@@ -62,11 +63,6 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     if (!games) {
         refreshGames();
     }
-
-    let renderGames = [];
-    gamesArray?.forEach((e, i) => {
-        renderGames.push(<li key={i}>{e}</li>);
-    });
 
     return (
         <div>
