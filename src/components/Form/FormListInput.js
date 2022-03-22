@@ -77,7 +77,7 @@ const FormListInput = ({ handleInputFunction, values, valuesInfo, label, id, act
     return (
         <div className="form-outline form-white mb-2 align-items-center">
             <label className="form-label" htmlFor={id}>{label}</label>
-            <a onClick={refresh} className='refresh-arrow text-col-primary position-absolute m-3 top-0 end-0'>
+            <a onClick={refresh} className='cursor-pointer text-col-primary position-absolute m-3 top-0 end-0'>
                 <MdRefresh size='5rem' />
             </a>
 
