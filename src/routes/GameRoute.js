@@ -96,7 +96,6 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     return (
         <div className="App">
             {renderedGame}
-            {params.gameName}
         </div>
     );
 }
