@@ -26,6 +26,28 @@
     filter: brightness(110%);
 }
 
+.lobby-piece {
+    width: 2rem;
+}
+
+.lobby-piece-disabled {
+    filter: brightness(50%);
+    cursor: default;
+}
+
+.lobby-piece-selectable {
+    cursor: pointer;
+}
+
+.lobby-piece-selectable:hover {
+    transition: filter 100ms;
+    filter: brightness(80%);
+}
+
+.lobby-piece-general {
+    filter: brightness(0%);
+}
+
 .game-list {
     border: white solid;
     width: 90%;
