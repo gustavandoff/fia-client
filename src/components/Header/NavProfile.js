@@ -11,19 +11,19 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
 
     const logOut = () => {
         axios.post(`http://localhost:4000/logout`,
-        {},
-        {
-            headers: { Authorization: 'Bearer ' + currentUser.jwt }
-        })
-        .then(res => {
-            setCurrentUser(null);
-            return navigate("/");
-        })
-        .catch(e => {
-            console.error(e);
-        });
+            {},
+            {
+                headers: { Authorization: 'Bearer ' + currentUser.jwt }
+            })
+            .then(res => {
+                setCurrentUser(null);
+                return navigate("/");
+            })
+            .catch(e => {
+                console.error(e);
+            });
     }
-    
+
     let dropDown;
     const { username } = currentUser;
 
