@@ -1,11 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import { io } from 'socket.io-client'
 import axios from 'axios';
 
 
 const GameLobby = ({ currentUser, setCurrentUser, game }) => {
-    const navigate = useNavigate();
     const [takenColors, setTakenColors] = useState([]);
+    const socket = useRef();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        socket.current = io("ws://localhost:4000");
+
+        socket.current.on("connnection", () => {
+            console.log("connected to server");
+        });
+    }, []);
 
     useEffect(() => {
         const tempTakenColors = [];
@@ -18,7 +28,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game }) => {
     }, [game]);
 
     const colorClicked = (color) => {
-
+        socket.current.emit('message', 'detta kanske är ett meddelande');
     }
 
     const ColorPicker = () => {
