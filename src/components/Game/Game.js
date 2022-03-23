@@ -3,13 +3,13 @@ import DragMove from '../DragMove';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Game = ({ defaultPlayers }) => {
+const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const [boardPos, setBoardPos] = useState({ x: -60, y: 0 });
     const [boardSize, setBoardSize] = useState(2);
 
     const [playerCount, setPlayerCount] = useState(4);
     const [circleSize, setCircleSize] = useState(2);
-    const [players, setPlayers] = useState(defaultPlayers);
+    const [players, setPlayers] = useState(Object.values(game.players));
     const [moveCount, setMoveCount] = useState(1);
     const [selectedPiece, setSelectedPiece] = useState(0);
     const [moveIndicator, setMoveIndicator] = useState([0]);
@@ -93,6 +93,8 @@ const Game = ({ defaultPlayers }) => {
                 if (!change[0]) return [playerNumber * 10 + 1]; // om den nu inte kan gå till sjätte rutan returnar den bara första rutan
 
                 return [playerNumber * 10 + 6, playerNumber * 10 + 1]; // om ingen change är false returnar den både första och sjätte rutan
+            } else {
+                return [false];
             }
         }
 

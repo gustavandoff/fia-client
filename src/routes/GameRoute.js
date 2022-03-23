@@ -3,10 +3,12 @@ import GameLobby from '../components/Game/GameLobby';
 import { useNavigate, useParams } from "react-router-dom";
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { io } from 'socket.io-client'
 
 const GameRoute = ({ currentUser, setCurrentUser }) => {
     const [game, setGame] = useState(null);
     const [renderedGame, setRenderedGame] = useState();
+    const socket = io.connect('http://localhost:4000');
     let params = useParams();
     const { gameName } = params;
     const navigate = useNavigate();
@@ -21,20 +23,31 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
             .then(res => {
                 console.log(res.data);
                 setGame(res.data);
+                socket.emit('joinGame', res.data.gameName);
             })
             .catch(error => {
                 console.log(error);
             });
     }
 
+    //useEffect(() => {
+    //    socket.emit('joinGame', game.gameName);
+    //}, []);
+
+    useEffect(() => {
+        socket.on('updateGame', (data) => {
+            setGame(data);
+        })
+    }, [socket]);
+
     useEffect(() => {
         if (!game) return;
         const { status } = game;
         if (status === WAITING) {
-            return setRenderedGame(<GameLobby game={game} />);
+            return setRenderedGame(<GameLobby currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} />);
         }
         if (status === PLAYING) {
-            return setRenderedGame(<Game defaultPlayers={defaultPlayers} />);
+            return setRenderedGame(<Game currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} />);
         }
         if (status === FINISHED) {
 

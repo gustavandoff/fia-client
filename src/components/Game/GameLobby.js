@@ -1,21 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import { io } from 'socket.io-client'
-import axios from 'axios';
 
-
-const GameLobby = ({ currentUser, setCurrentUser, game }) => {
+const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const [takenColors, setTakenColors] = useState([]);
-    const socket = useRef();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        socket.current = io("ws://localhost:4000");
-
-        socket.current.on("connnection", () => {
-            console.log("connected to server");
-        });
-    }, []);
 
     useEffect(() => {
         const tempTakenColors = [];
@@ -27,8 +16,23 @@ const GameLobby = ({ currentUser, setCurrentUser, game }) => {
         setTakenColors(tempTakenColors);
     }, [game]);
 
-    const colorClicked = (color) => {
-        socket.current.emit('message', 'detta kanske är ett meddelande');
+    const colorClicked = async (color) => {
+        if (takenColors.includes(color)) return;
+
+        await socket.emit('gameLobbyPickColor', {
+            user: currentUser,
+            game: game,
+            color: color
+        });
+    }
+
+    const startGame = async () => {
+        if (takenColors.length === Object.keys(game.players).length) {
+            await socket.emit('startGame', {
+                user: currentUser,
+                game: game,
+            });
+        }
     }
 
     const ColorPicker = () => {
@@ -87,12 +91,12 @@ const GameLobby = ({ currentUser, setCurrentUser, game }) => {
         const src = require(`../../assets/images/pieces/${playerColor}.png`)
 
         return (
-            <li className="list-group-item bg-secondary w-50">
+            <li className="list-group-item bg-secondary rounded-pill m-1 w-30">
                 <div className="float-start">
                     {player.displayname}
                 </div>
                 <div className="float-end">
-                    <img src={src} className={`lobby-piece lobby-piece-icon ${generalClassName}`} />
+                    <img src={src} className={`lobby-player-piece lobby-piece-icon ${generalClassName}`} />
                 </div>
             </li>
         );
@@ -122,6 +126,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game }) => {
                                         {renderPlayers}
                                     </div>
 
+                                    <button onClick={startGame} className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 mt-4">Starta spelet</button>
                                 </div>
                             </div>
                         </div>
