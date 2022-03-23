@@ -26,12 +26,16 @@
     filter: brightness(110%);
 }
 
+.lobby-player-piece {
+    width: 1.5rem;
+}
+
 .lobby-piece {
     width: 2rem;
 }
 
 .lobby-piece-disabled {
-    filter: brightness(50%);
+    filter: brightness(25%);
     cursor: default;
 }
 
@@ -126,6 +130,10 @@
 
 .font-size-3 {
     font-size: 3rem !important;
+}
+
+.w-30 {
+    width: 30%;
 }
 
 .fia-dropdown-item {
