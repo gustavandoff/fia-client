@@ -27,7 +27,6 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
                 gameName: selectedGame
             })
             .then(res => {
-                console.log("joined game:", selectedGame);
                 navigate('/' + selectedGame)
             })
             .catch(error => {

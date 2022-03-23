@@ -30,7 +30,6 @@ const Login = ({ currentUser, setCurrentUser }) => {
             })
             .then(res => {
                 setCurrentUser(res.data.currentUser);
-                console.log("login currentUser:", res);
             })
             .catch(error => {
                 console.log(error);
@@ -38,7 +37,6 @@ const Login = ({ currentUser, setCurrentUser }) => {
     }
 
     useEffect(() => {
-        console.log("login logged in:", currentUser);
         if (currentUser) {
             return navigate("/");
         }
