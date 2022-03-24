@@ -1,10 +1,9 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const [takenColors, setTakenColors] = useState([]);
     const navigate = useNavigate();
-
 
     useEffect(() => {
         const tempTakenColors = [];
@@ -33,6 +32,15 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                 game: game,
             });
         }
+    }
+
+    const leaveGame = async () => {
+        await socket.emit('leaveGame', {
+            user: currentUser,
+            game: game,
+        });
+
+        navigate('/');
     }
 
     const ColorPicker = () => {
@@ -126,7 +134,8 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                                         {renderPlayers}
                                     </div>
 
-                                    <button onClick={startGame} className="btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 mt-4">Starta spelet</button>
+                                    <button onClick={leaveGame} className="position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4">Lämna spelet</button>
+                                    <button onClick={startGame} className="position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 me-5 mt-4">Starta spelet</button>
                                 </div>
                             </div>
                         </div>
