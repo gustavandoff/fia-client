@@ -7,12 +7,19 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const [boardPos, setBoardPos] = useState({ x: -60, y: 0 });
     const [boardSize, setBoardSize] = useState(2);
 
-    const [playerCount, setPlayerCount] = useState(4);
     const [circleSize, setCircleSize] = useState(2);
     const [players, setPlayers] = useState(Object.values(game.players));
     const [moveCount, setMoveCount] = useState(1);
     const [selectedPiece, setSelectedPiece] = useState(0);
     const [moveIndicator, setMoveIndicator] = useState([0]);
+
+    const playerCount = Object.keys(game.players).length >= 4 ? Object.keys(game.players).length : 4;
+
+    useEffect(() => {
+        socket.on('updateGamePlayers', (data) => {
+            setPlayers(data);
+        });
+    }, []);
 
     const handleDragMove = (e) => {
         setBoardPos({
@@ -21,15 +28,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         });
     };
 
-    const updatePlayerCount = (e) => {
-        if (e.target.value.length > 0) {
-            setPlayerCount(parseInt(e.target.value));
-        } else {
-            setPlayerCount(0);
-        }
-    }
-
-    const movePieceToPos = (username, pieceNr, newPiecePos) => {
+    const movePieceToPos = async (username, pieceNr, newPiecePos) => {
         const player = players.find(p => p.username === username);
         const piece = player.pieces.find(p => p.number === pieceNr);
 
@@ -58,6 +57,12 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         setPlayers([...players]);
         setSelectedPiece(0);
         setMoveIndicator([0]);
+
+        await socket.emit('updateGameBoard', {
+            game: game,
+            user: currentUser,
+            players
+        });
     }
 
     const sendPieceHome = (piece, player) => {
@@ -224,9 +229,6 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                     </div>
                 </div>
             </div >
-            Antal spelare:
-            <input value={playerCount} onChange={e => { updatePlayerCount(e) }}></input>
-            <br />
             Storlek:
             <input value={circleSize} onChange={e => { setCircleSize(e.target.value) }}></input>
             <br />
