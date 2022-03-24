@@ -15,13 +15,8 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
             {
                 headers: { Authorization: 'Bearer ' + currentUser.jwt }
             })
-            .then(res => {
-                setCurrentUser(null);
-                return navigate("/");
-            })
-            .catch(e => {
-                console.error(e);
-            });
+        setCurrentUser(null);
+        return navigate("/");
     }
 
     let dropDown;
