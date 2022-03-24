@@ -5,10 +5,12 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client'
 
+const socket = io('ws://localhost:4000');
+
 const GameRoute = ({ currentUser, setCurrentUser }) => {
     const [game, setGame] = useState(null);
     const [renderedGame, setRenderedGame] = useState();
-    const socket = io.connect('http://localhost:4000');
+
     let params = useParams();
     const { gameName } = params;
     const navigate = useNavigate();
@@ -17,7 +19,15 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     const PLAYING = 'PLAYING';
     const FINISHED = 'FINISHED';
 
-    if (!game) {
+    useEffect(() => {
+        socket.on("error", (error) => {
+            console.error(error);
+        });
+
+        socket.on('updateGame', (data) => {
+            setGame(data);
+        });
+
         axios
             .get(`http://localhost:4000/games/${gameName}`)
             .then(res => {
@@ -26,19 +36,9 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
                 socket.emit('joinGame', res.data.gameName);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
-    }
-
-    //useEffect(() => {
-    //    socket.emit('joinGame', game.gameName);
-    //}, []);
-
-    useEffect(() => {
-        socket.on('updateGame', (data) => {
-            setGame(data);
-        })
-    }, [socket]);
+    }, []);
 
     useEffect(() => {
         if (!game) return;
@@ -52,59 +52,7 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
         if (status === FINISHED) {
 
         }
-
-        setRenderedGame(<Game defaultPlayers={defaultPlayers} />);
     }, [game]);
-
-
-    let defaultPlayers = [
-        {
-            username: 'gustav',
-            playerNumber: 1,
-            color: 'red',
-            pieces: [
-                {
-                    number: 0,
-                    position: -11,
-                },
-                {
-                    number: 1,
-                    position: -12,
-                },
-                {
-                    number: 2,
-                    position: -13,
-                },
-                {
-                    number: 3,
-                    position: 15,
-                }
-            ]
-        },
-        {
-            username: 'gun',
-            playerNumber: 2,
-            color: 'yellow',
-            pieces: [
-                {
-                    number: 0,
-                    position: -21,
-                },
-                {
-                    number: 1,
-                    position: -22,
-                },
-                {
-                    number: 2,
-                    position: -23,
-                },
-                {
-                    number: 3,
-                    position: -24,
-                }
-            ]
-        }
-    ];
 
     return (
         <div className="App">
