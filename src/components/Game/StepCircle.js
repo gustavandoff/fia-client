@@ -44,7 +44,6 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
                 border: `${size / 12}rem solid black`,
                 transform: `rotate(${-degree}deg)`,
                 pointerEvents: 'auto',
-                cursor: 'move',
             }}>
                 {renderElements}
             </div>

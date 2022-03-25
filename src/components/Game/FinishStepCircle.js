@@ -54,7 +54,6 @@ const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece,
             height: `${distanceFromCenter * 2 * sp}rem`,
             backgroundColor: 'black',
             borderRadius: '50%',
-            cursor: 'move',
         }}>
             <div className={circleClass} style={isContainingPiece}>
                 <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={''} size={size} degree={0} number={-1} />

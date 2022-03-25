@@ -16,7 +16,6 @@ const Home = ({ degree, size, color, armNumber, players, setSelectedPiece, selec
             backgroundColor: color,
             border: `${size / 15}rem solid black`,
             pointerEvents: 'auto',
-            cursor: 'move',
             borderRadius: '25%',
             display: 'grid',
             gridTemplateColumns: '50% 50%',
