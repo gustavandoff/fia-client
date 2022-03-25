@@ -35,7 +35,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         players.forEach(player => { // går igenom alla spelare
             if (player.username !== username) { // kollar om spelaren inte är spelaren som går
                 player.pieces.forEach(piece => { // går igenom spelarens pjäser
-                    if (piece.position === newPiecePos) { // om pjäsen står på samma ruta som pjäsen som går hamnar på...
+                    if (piece.position && piece.position === newPiecePos) { // om pjäsen står på samma ruta som pjäsen som går hamnar på...
                         sendPieceHome(piece, player); // ...ska den skickas till sitt hem
                     }
                 })
@@ -59,7 +59,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         setMoveIndicator([0]);
 
         await socket.emit('updateGameBoard', {
-            game: game,
+            game,
             user: currentUser,
             players
         });
@@ -172,6 +172,43 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
             });
     }
 
+    const PlayerListItem = ({ player }) => {
+
+        const pieceImg = require(`../../assets/images/pieces/${player.color}.png`);
+        let renderPieces = [];
+
+        Object.keys(player.pieces).forEach((piece, i) => {
+
+            if (player.pieces[piece].position) {
+                renderPieces.push(
+                    <img key={i} className={`lobby-piece `} src={pieceImg}></img>
+                );
+            }
+        })
+
+        return (
+            <div className="d-flex">
+                <h4>{player.username}</h4>
+                {renderPieces}
+            </div>
+
+        )
+    }
+
+    const PlayerList = () => {
+        let renderPlayerList = [];
+
+        players.forEach((player, i) => {
+            renderPlayerList.push(
+                <PlayerListItem key={i} player={player} />
+            )
+        });
+
+        return(
+            renderPlayerList
+        )
+    }
+
     return (
         <div>
             <div className="container position-absolute" style={{
@@ -182,71 +219,32 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
             }}>
                 <div className="row">
                     <div className="col" style={{
-                        borderRight: 'black solid',
                         width: '100vw',
                         height: '75vh',
                     }}>
-                        <div className='position-absolute' style={{
-                            top: '50%',
-                            right: '50%',
-                            transform: `scale(${boardSize})`,
+                        <div className='position-absolute top-50 end-50' style={{
+                            transform: `scale(1.75)`,
                         }}>
-                            <DragMove onDragMove={handleDragMove}>
-                                <div style={{
-                                    transform: `translateX(${boardPos.x}px) translateY(${boardPos.y}px)`
-                                }}>
-                                    <Board movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
-                                </div>
-                            </DragMove>
+                            <div style={{
+                                transform: `translateX(-45px) translateY(0px)`
+                            }}>
+                                <Board movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
+                            </div>
                         </div>
 
                     </div>
-
-                    <div className="col position-absolute" style={{
-                        width: '40px',
-                        height: '100%',
-                        right: '-12%',
-                    }}>
-                        <label className="form-label" htmlFor="zoomInput">Zoom</label>
-                        <input
-                            type='range'
-                            onChange={e => { setBoardSize(e.target.value) }}
-                            defaultValue={boardSize}
-                            min={0.1}
-                            max={6}
-                            step={0.2}
-                            id="zoomInput"
-                            orient="vertical"
-                            style={{
-                                writingMode: 'bt-lr',
-                                WebkitAppearance: 'slider-vertical',
-                                width: '8px',
-                                height: '100%',
-                                padding: '0 5px',
-                                cursor: 'pointer',
-                            }}
-                        />
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <button onClick={rollDice} className='btn btn-primary bg-col-primary font-size-2 w-100 text-nowrap'>Slå tärning</button>
                     </div>
                 </div>
             </div >
-            Storlek:
-            <input value={circleSize} onChange={e => { setCircleSize(e.target.value) }}></input>
-            <br />
-            Pjäs 1:
-            <input value={players[0].pieces[0].position} onChange={e => { movePieceToPos('gustav', 0, parseInt(e.target.value)) }}></input>
-            <br />
-            Pjäs 2:
-            <input value={players[0].pieces[1].position} onChange={e => { movePieceToPos('gustav', 1, parseInt(e.target.value)) }}></input>
-            <br />
-            Pjäs 3:
-            <input value={players[0].pieces[2].position} onChange={e => { movePieceToPos('gustav', 2, parseInt(e.target.value)) }}></input>
-            <br />
-            Pjäs 4:
-            <input value={moveCount} onChange={e => { setMoveCount(e.target.value) }} size='1'></input>
-            <input value={players[0].pieces[3].position} onChange={e => { movePieceToPos('gustav', 3, parseInt(e.target.value)) }} size='10'></input>
-            <br />
-            <button onClick={rollDice}>Slå tärning</button>
+
+            <PlayerList />
+
         </div>
+
     );
 }
 
