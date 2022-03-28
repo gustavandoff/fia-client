@@ -11,7 +11,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
 
     const logOut = () => {
         axios.post(`http://localhost:4000/logout`,
-            {},
+            { currentUser },
             {
                 headers: { Authorization: 'Bearer ' + currentUser.jwt }
             })
@@ -62,7 +62,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
 
     return (
         <div onClick={() => setOpen(!open)} className="btn text-col-primary p-0 fia-dropdown-head">
-            {username}
+            <span className="text-col-secondary">{username}</span>
             <MdKeyboardArrowDown style={{
                 transform: `rotate(${open ? 180 : 0}deg)`,
                 transition: 'transform 300ms'
