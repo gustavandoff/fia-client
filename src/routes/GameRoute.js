@@ -13,7 +13,6 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
 
     let params = useParams();
     const { gameName } = params;
-    const navigate = useNavigate();
 
     const WAITING = 'WAITING';
     const PLAYING = 'PLAYING';
@@ -25,13 +24,15 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
         });
 
         socket.on('updateGame', (data) => {
-            setGame(data);
+            if (game && game.gameName === data.gameName) {
+                setGame(data);
+            }
         });
 
         axios
             .get(`http://localhost:4000/games/${gameName}`)
             .then(res => {
-                console.log(res.data);
+                console.log('axios get game:', res.data);
                 setGame(res.data);
                 socket.emit('joinGame', res.data.gameName);
             })
