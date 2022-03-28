@@ -54,11 +54,30 @@
 
 .game-list {
     border: white solid;
-    width: 90%;
     max-height: 20rem;
     margin-bottom: -1rem;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+/* width */
+.game-list::-webkit-scrollbar {
+    max-width: 1rem;
+}
+  
+  /* Track */
+.game-list::-webkit-scrollbar-track {
+    background: #fff;
+}
+  
+  /* Handle */
+.game-list::-webkit-scrollbar-thumb {
+    background: #888;
+}
+  
+  /* Handle on hover */
+.game-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .cursor-pointer {
@@ -130,6 +149,15 @@
 
 .font-size-3 {
     font-size: 3rem !important;
+}
+
+.fia-border-bottom {
+    border-bottom: 1px solid #2B6777;
+}
+
+.rounded-pill-bottom {
+    border-bottom-right-radius: 50rem;
+    border-bottom-left-radius: 50rem;
 }
 
 .w-30 {
