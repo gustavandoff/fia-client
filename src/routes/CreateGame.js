@@ -15,14 +15,18 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
 
     let genitiveCurrentUserDisplayname = 'gästs';
     if (currentUser) {
-        if (currentUser.displayname.slice(-1) === 's' || currentUser.displayname.slice(-1) === 'x' || currentUser.displayname.slice(-1) === 'z') {
-            genitiveCurrentUserDisplayname = currentUser.displayname;
+        if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z') {
+            genitiveCurrentUserDisplayname = currentUser.username;
         } else {
-            genitiveCurrentUserDisplayname = currentUser.displayname + 's';
+            genitiveCurrentUserDisplayname = currentUser.username + 's';
         }
     }
 
     const [gameName, setGameName] = useState(genitiveCurrentUserDisplayname + ' spel');
+
+    if (!currentUser) {
+        return navigate('/play')
+    }
 
     const handleMaxPlayersInput = e => {
         setMaxPlayers(e.target.value);
@@ -30,6 +34,20 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
 
     const handleGameNameInput = e => {
         setGameName(e.target.value);
+    }
+
+    const joinGame = () => {
+        axios
+            .post(`http://localhost:4000/joingame`, {
+                username: currentUser,
+                gameName: gameName
+            })
+            .then(res => {
+                navigate('/' + gameName)
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     const createGame = () => {
@@ -44,27 +62,12 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
             })
             .then(res => {
                 console.log('created game', gameName);
-                axios
-                    .post(`http://localhost:4000/joingame`, {
-                        username: currentUser ? currentUser.username : 'gäst',
-                        gameName: gameName
-                    })
-                    .then(res => {
-                        console.log("joined game:", gameName);
-                        navigate('/' + gameName)
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+                joinGame();
             })
             .catch(error => {
                 console.log(error);
             });
     }
-
-    useEffect(() => {
-        console.log('maxPlayers:', maxPlayers);
-    }, [maxPlayers]);
 
     return (
         <div>
