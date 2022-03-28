@@ -19,55 +19,78 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
         return navigate("/");
     }
 
-    let dropDown;
-    const { username } = currentUser;
+    const logIn = () => {
+        return navigate('/login');
+    }
 
-    if (open) {
-        dropDown = (
-            <DropdownMenu>
-                <DropdownItem>
-                    <div>
-                        {username}
-                    </div>
-                </DropdownItem>
-                <DropdownItem>
-                    <div>
-                        {username}
-                    </div>
-                </DropdownItem>
-                <DropdownItem>
-                    <div>
-                        {username}
-                    </div>
-                </DropdownItem>
-                <DropdownItem>
-                    <div>
-                        {username}
-                    </div>
-                </DropdownItem>
-                <DropdownItem>
-                    <div>
-                        {username}
-                    </div>
-                </DropdownItem>
+    const DropDown = () => {
+        let dropDown = '';
 
-                <DropdownItem>
+        const LogOutIn = () => {
+            if (currentUser.username.startsWith('gäst')) {
+                return (
+                    <a onClick={logIn} className="text-col-primary">
+                        Logga in
+                    </a>
+                );
+            } else {
+                return (
                     <a onClick={logOut} className="text-col-primary">
                         Logga ut
                     </a>
-                </DropdownItem>
-            </DropdownMenu>
-        );
+                );
+            }
+        }
+
+        if (open) {
+            dropDown = (
+                <DropdownMenu>
+                    <DropdownItem>
+                        <div>
+                            Lista mina spel
+                        </div>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <div>
+                            {currentUser.username}
+                        </div>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <div>
+                            {currentUser.username}
+                        </div>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <div>
+                            {currentUser.username}
+                        </div>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <div>
+                            {currentUser.username}
+                        </div>
+                    </DropdownItem>
+
+                    <DropdownItem>
+                        <LogOutIn />
+                    </DropdownItem>
+                </DropdownMenu>
+            );
+        }
+
+        return dropDown;
     }
+
+
 
     return (
         <div onClick={() => setOpen(!open)} className="btn text-col-primary p-0 fia-dropdown-head">
-            <span className="text-col-secondary">{username}</span>
+            <span className="text-col-secondary">{currentUser.username}</span>
             <MdKeyboardArrowDown style={{
                 transform: `rotate(${open ? 180 : 0}deg)`,
                 transition: 'transform 300ms'
             }} />
-            {dropDown}
+            <DropDown />
 
         </div>
     );
