@@ -5,6 +5,10 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const [takenColors, setTakenColors] = useState([]);
     const navigate = useNavigate();
 
+    const isInGame = () => {
+        return !!game.players[currentUser.username];
+    }
+
     useEffect(() => {
         const tempTakenColors = [];
         Object.keys(game.players).forEach((e) => {
@@ -16,6 +20,8 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }, [game]);
 
     const colorClicked = async (color) => {
+        if (!isInGame()) return;
+
         if (takenColors.includes(color)) return;
 
         await socket.emit('gameLobbyPickColor', {
@@ -35,6 +41,8 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     const leaveGame = async () => {
+        if (!isInGame()) return navigate('/');
+
         await socket.emit('leaveGame', {
             user: currentUser,
             game: game,
@@ -67,9 +75,15 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
             const src = require(`../../assets/images/pieces/${color}.png`)
 
             let disabledClassName = 'lobby-piece-selectable';
+
             if (takenColors.find(e => e === color)) {
                 disabledClassName = 'lobby-piece-disabled';
             }
+
+            if (!isInGame()) {
+                disabledClassName = '';
+            }
+
             return (
                 <img onClick={() => colorClicked(color)} className={`m-1 lobby-piece ${disabledClassName}`} src={src}></img>
             );
@@ -101,7 +115,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         return (
             <li className="list-group-item bg-secondary rounded-pill m-1 w-30">
                 <div className="float-start">
-                    {player.displayname}
+                    {player.username}
                 </div>
                 <div className="float-end">
                     <img src={src} className={`lobby-player-piece lobby-piece-icon ${generalClassName}`} />
@@ -135,7 +149,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                                     </div>
 
                                     <button onClick={leaveGame} className="position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4">Lämna spelet</button>
-                                    <button onClick={startGame} className="position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 me-5 mt-4">Starta spelet</button>
+                                    <button onClick={isInGame() ? startGame : () => { }} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!isInGame() ? 'disabled' : ''} text-col-secondary px-5 me-5 mt-4`}>Starta spelet</button>
                                 </div>
                             </div>
                         </div>
