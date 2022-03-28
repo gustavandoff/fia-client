@@ -15,22 +15,38 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const [gamesPlayerInfoArray, setGamesPlayerInfoArray] = useState();
     const [selectedGame, setSelectedGame] = useState();
 
-    const handleSelectedGameInput = value => {
-        setSelectedGame(value);
+    useEffect(() => {
+        if (!games) return;
+        let tempGamesPlayerInfoArray = [];
+        Object.keys(games).forEach((e, i) => {
+            tempGamesPlayerInfoArray.push(Object.keys(games[e].players).length + '/' + games[e].maxPlayers);
+        });
+        setGamesPlayerInfoArray(tempGamesPlayerInfoArray);
+        setGamesArray(Object.keys(games));
+    }, [games]);
+
+    if (!currentUser) {
+        return navigate('/play')
+    }
+
+    const spectateGame = () => {
+        if (!selectedGame) return;
+
+        navigate('/' + selectedGame);
     }
 
     const joinGame = () => {
         if (!selectedGame) return;
         axios
             .post(`http://localhost:4000/joingame`, {
-                username: currentUser ? currentUser.username : 'gäst',
+                username: currentUser.username,
                 gameName: selectedGame
             })
             .then(res => {
                 navigate('/' + selectedGame)
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
     }
 
@@ -45,19 +61,9 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
                 }
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
     }
-
-    useEffect(() => {
-        if (!games) return;
-        let tempGamesPlayerInfoArray = [];
-        Object.keys(games).forEach((e, i) => {
-            tempGamesPlayerInfoArray.push(Object.keys(games[e].players).length + '/' + games[e].maxPlayers);
-        });
-        setGamesPlayerInfoArray(tempGamesPlayerInfoArray);
-        setGamesArray(Object.keys(games));
-    }, [games]);
 
     if (!games) {
         refreshGames();
@@ -68,8 +74,13 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Gå med i spel'>
-                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={handleSelectedGameInput} activeValue={selectedGame} values={gamesArray} valuesInfo={gamesPlayerInfoArray} refreshFunction={refreshGames} />
-                <FormSubmitButton onClick={joinGame} text='Gå med' />
+                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={setSelectedGame} activeValue={selectedGame} values={gamesArray} valuesInfo={gamesPlayerInfoArray} refreshFunction={refreshGames} />
+                <span className='mx-4'>
+                    <FormSubmitButton onClick={spectateGame} text='Titta på spelet' />
+                </span>
+                <span className='mx-4'>
+                    <FormSubmitButton onClick={joinGame} text='Gå med' />
+                </span>
             </Form>
         </div>
 
