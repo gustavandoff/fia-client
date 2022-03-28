@@ -18,16 +18,16 @@ const FormListInput = ({ handleInputFunction, values, valuesInfo, label, id, act
         return (
             <li onClick={() => handleInputFunction(value)} className={`btn btn-secondary ${active} list-group-item m-1 w-100`}>
                 <span className='float-start'>{value}</span>
-                <span className='float-end'>{info} <FaUsers /></span>
+                <span className='float-end'> {info} <FaUsers /></span>
             </li>
         )
     }
 
-    useEffect( () => {
+    useEffect(() => {
         setCurrentValues(values);
     }, [values]);
-    
-    useEffect( () => {
+
+    useEffect(() => {
         setCurrentValuesInfo(valuesInfo);
     }, [valuesInfo]);
 
