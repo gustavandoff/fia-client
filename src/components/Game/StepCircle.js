@@ -1,22 +1,23 @@
 import Piece from "./Piece";
 import MoveIndicator from "./MoveIndicator";
 
-const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, selectedPiece, moveIndicator, movePieceToPos }) => {
+const StepCircle = ({ color, size, degree, number, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, movePieceToPos }) => {
 
     let pieces = [];
     let player;
     let renderElements = [];
+    const players = game.players;
 
-    for (let i = 0; i < players.length; i++) {
-        pieces = players[i].pieces.filter(p => p.position === number);
-        player = players[i];
+    for (let i = 0; i < Object.keys(players).length; i++) {
+        player = players[Object.keys(players)[i]];
+        pieces = player.pieces.filter(p => p.position === number);
         if (pieces.length > 0) {
             break;
         }
     }
 
     pieces.forEach((piece, i) => {
-        renderElements.push(<Piece key={i} i={i} stacked={i * size * 0.1} player={player} size={size} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
+        renderElements.push(<Piece key={i} i={i} stacked={i * size * 0.1} player={player} size={size} game={game} currentUser={currentUser} piece={piece} setSelectedPiece={setSelectedPiece} selectedPiece={selectedPiece} />);
     });
 
     if (moveIndicator.find(m => m === number)) {
@@ -43,7 +44,6 @@ const StepCircle = ({ color, size, degree, number, players, setSelectedPiece, se
                 borderRadius: '50%',
                 border: `${size / 12}rem solid black`,
                 transform: `rotate(${-degree}deg)`,
-                pointerEvents: 'auto',
             }}>
                 {renderElements}
             </div>

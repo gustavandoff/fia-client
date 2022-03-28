@@ -4,19 +4,19 @@ import Line3 from './Line3';
 import GoalLine from './GoalLine';
 import Home from './Home';
 
-const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, armNumber, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
+const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, armNumber, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
     let stepLine2;
 
     if (playerCount <= 4) {
         stepLine2 =
             <div className='col'>
-                <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} degree={degree} size={circleSize} length='4' armNumber={armNumber} />
+                <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} degree={degree} size={circleSize} length='4' armNumber={armNumber} />
             </div>
     } else {
         stepLine2 =
             <div className='col position-relative' style={{ top: `${circleSize}rem` }}>
-                <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} degree={degree} size={circleSize} length='3' armNumber={armNumber} />
+                <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} degree={degree} size={circleSize} length='3' armNumber={armNumber} />
             </div>
     }
 
@@ -60,18 +60,17 @@ const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, 
             height: `${circleSize * 6}rem`,
             transform: `rotate(${degree}deg)`,
             transformOrigin: `50% -${distanceFromCenter}rem`,
-            pointerEvents: 'none',
         }}>
             <div className='row'>
                 {stepLine2}
                 <div className='col'>
-                    <GoalLine movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={color} degree={degree} armNumber={armNumber} size={circleSize} />
+                    <GoalLine movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} color={color} degree={degree} armNumber={armNumber} size={circleSize} />
                 </div>
                 <div className='col' style={{
                     transform: 'rotate(180deg)',
                     transformOrigin: `${circleSize / 2}rem ${2 * circleSize}rem`,
                 }}>
-                    <Line3 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} degree={180 + degree} size={circleSize} armNumber={armNumber} playerCount={playerCount} />
+                    <Line3 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} degree={180 + degree} size={circleSize} armNumber={armNumber} playerCount={playerCount} />
                 </div>
             </div>
             <div className='row'>
@@ -80,7 +79,7 @@ const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, 
                     transformOrigin: '0',
                     top: `${5 * circleSize}rem`,
                 }}>
-                    <Line1 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} degree={degree} size={circleSize} color={color} armNumber={armNumber} playerCount={playerCount} />
+                    <Line1 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} degree={degree} size={circleSize} color={color} armNumber={armNumber} playerCount={playerCount} />
                 </div>
             </div>
 
@@ -88,7 +87,7 @@ const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, 
                 top: `${topHomeDistanceFromCenter}rem`,
                 right: `${rightHomeDistanceFromCenter}rem`,
             }}>
-                <Home movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players}color={color} degree={degree} size={circleSize} armNumber={armNumber} />
+                <Home movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} color={color} degree={degree} size={circleSize} armNumber={armNumber} />
             </div>
         </div>
     );

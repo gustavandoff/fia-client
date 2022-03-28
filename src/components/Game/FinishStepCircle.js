@@ -1,15 +1,16 @@
 import StepCircle from "./StepCircle";
 
-const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
+const FinishStepCircle = ({ distanceFromCenter, size, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
     let piece;
     let player;
+    const players = game.players;
 
     const image = require(`../../assets/images/star.png`);
 
-    for (let i = 0; i < players.length; i++) {
-        piece = players[i].pieces.find(p => p.position === -1);
-        player = players[i];
+    for (let i = 0; i < Object.keys(players).length; i++) {
+        player = players[Object.keys(players)[i]];
+        piece = player.pieces.find(p => p.position === -1);
         if (piece) {
             break;
         }
@@ -56,7 +57,7 @@ const FinishStepCircle = ({ distanceFromCenter, size, players, setSelectedPiece,
             borderRadius: '50%',
         }}>
             <div className={circleClass} style={isContainingPiece}>
-                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} players={players} color={''} size={size} degree={0} number={-1} />
+                <StepCircle movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} color={''} size={size} degree={0} number={-1} />
             </div>
             <img style={starStyle} className={starClass} src={image} width={size * 16} alt='stjärna' />
         </div>

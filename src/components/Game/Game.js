@@ -4,11 +4,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
-    const [boardPos, setBoardPos] = useState({ x: -60, y: 0 });
-    const [boardSize, setBoardSize] = useState(2);
-
     const [circleSize, setCircleSize] = useState(2);
-    const [players, setPlayers] = useState(Object.values(game.players));
+    const [players, setPlayers] = useState(game.players);
     const [moveCount, setMoveCount] = useState(1);
     const [selectedPiece, setSelectedPiece] = useState(0);
     const [moveIndicator, setMoveIndicator] = useState([0]);
@@ -21,22 +18,19 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         });
     }, []);
 
-    const handleDragMove = (e) => {
-        setBoardPos({
-            x: boardPos.x + e.movementX,
-            y: boardPos.y + e.movementY
-        });
-    };
+    useEffect(() => {
+        setPlayers(game.players);
+    }, [game]);
 
     const movePieceToPos = async (username, pieceNr, newPiecePos) => {
-        const player = players.find(p => p.username === username);
+        const player = players[username];
         const piece = player.pieces.find(p => p.number === pieceNr);
 
-        players.forEach(player => { // går igenom alla spelare
-            if (player.username !== username) { // kollar om spelaren inte är spelaren som går
-                player.pieces.forEach(piece => { // går igenom spelarens pjäser
-                    if (piece.position && piece.position === newPiecePos) { // om pjäsen står på samma ruta som pjäsen som går hamnar på...
-                        sendPieceHome(piece, player); // ...ska den skickas till sitt hem
+        Object.keys(players).forEach(u => { // går igenom alla spelare
+            if (u !== username) { // kollar om spelaren inte är spelaren som går
+                players[u].pieces.forEach(p => { // går igenom spelarens pjäser
+                    if (p.position && p.position === newPiecePos) { // om pjäsen står på samma ruta som pjäsen som går hamnar på...
+                        sendPieceHome(p, players[u]); // ...ska den skickas till sitt hem
                     }
                 })
             }
@@ -52,16 +46,25 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                 }
             }
         }
+
         player.pieces[pieceNr].position = newPiecePos;
 
-        setPlayers([...players]);
+        setPlayers({ ...players });
         setSelectedPiece(0);
         setMoveIndicator([0]);
+
+        let nextTurn = true;
+        if (newPiecePos === -1 || moveCount === 6) {
+            /* newPiecePos är null då målgångsanimationen har körts
+            på sexor får man slå igen */
+            nextTurn = false;
+        }
 
         await socket.emit('updateGameBoard', {
             game,
             user: currentUser,
-            players
+            players,
+            nextTurn
         });
     }
 
@@ -75,8 +78,11 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     const calcPos = (username, oldPos, moveAmount) => {
-        const player = players.find(p => p.username === username);
+        const player = players[username];
         const playerNumber = player.playerNumber;
+        console.log(username);
+        console.log(player);
+        console.log(player.playerNumber);
         let newPos = oldPos;
         let step = 1;
 
@@ -114,7 +120,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     const moveOneStep = (username, oldPos, step) => {
-        const playerNumber = players.find(p => p.username === username).playerNumber;
+        const playerNumber = players[username].playerNumber;
         let newPos = oldPos + step;
         let addedPos = playerCount > 4 ? 0 : 1; // blir 0 om playerCount är mer än 4. Annars blir det 1
 
@@ -145,7 +151,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         }
 
         if (playerNumber !== undefined) {
-            const ownPiecesInPath = players.find(p => p.username === username).pieces.filter(p => p.position === newPos);
+            const ownPiecesInPath = players[username].pieces.filter(p => p.position === newPos);
             const notThisPieceInPath = ownPiecesInPath.find(p => p.number !== selectedPiece.number);
             if (notThisPieceInPath !== undefined) { // det ska inte gå att gå förbi en av sina egna spelpjäser
                 return false;
@@ -157,8 +163,9 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
 
     useEffect(() => {
         if (selectedPiece !== 0) {
-            const player = players.find(p => p.playerNumber === selectedPiece.playerNumber);
-            const targetStepCircle = calcPos(player.username, selectedPiece.position, moveCount);
+            const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber);
+            console.log('player2:', username);
+            const targetStepCircle = calcPos(username, selectedPiece.position, moveCount);
             setMoveIndicator(targetStepCircle ? targetStepCircle : 0);
         } else {
             setMoveIndicator([0]);
@@ -188,7 +195,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
 
         return (
             <div className="d-flex">
-                <h4>{player.username}</h4>
+                <h4>{game.turn === player.username ? '-' : ''}{player.username}</h4>
                 {renderPieces}
             </div>
 
@@ -198,15 +205,20 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const PlayerList = () => {
         let renderPlayerList = [];
 
-        players.forEach((player, i) => {
+        Object.keys(players).forEach((player, i) => {
             renderPlayerList.push(
-                <PlayerListItem key={i} player={player} />
+                <PlayerListItem key={i} player={players[player]} />
             )
         });
 
-        return(
+        return (
             renderPlayerList
         )
+    }
+
+    const RollDiceButton = () => {
+        if (game.turn === currentUser.username) return <button onClick={rollDice} className='btn btn-primary bg-col-primary font-size-2 w-100 text-nowrap'>Slå tärning {moveCount}</button>
+        else return '';
     }
 
     return (
@@ -228,7 +240,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                             <div style={{
                                 transform: `translateX(-45px) translateY(0px)`
                             }}>
-                                <Board movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} players={players} />
+                                <Board movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} game={game} currentUser={currentUser} />
                             </div>
                         </div>
 
@@ -236,7 +248,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <button onClick={rollDice} className='btn btn-primary bg-col-primary font-size-2 w-100 text-nowrap'>Slå tärning</button>
+                        <RollDiceButton />
                     </div>
                 </div>
             </div >
