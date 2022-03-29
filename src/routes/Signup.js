@@ -13,16 +13,11 @@ const Signup = ({ currentUser, setCurrentUser }) => {
 
     const navigate = useNavigate();
     const [username, setUsername] = useState();
-    const [displayname, setDisplayname] = useState();
     const [password, setPassword] = useState();
     const [confPassword, setConfPassword] = useState();
 
     const handleUsernameInput = event => {
         setUsername(event.target.value);
-    };
-
-    const handleDisplaynameInput = event => {
-        setDisplayname(event.target.value);
     };
 
     const handlePasswordInput = event => {
@@ -37,7 +32,6 @@ const Signup = ({ currentUser, setCurrentUser }) => {
         axios
             .post(`http://localhost:4000/signup`, {
                 username: username,
-                displayname: displayname,
                 password: password,
                 confPassword: confPassword
             })
@@ -62,7 +56,6 @@ const Signup = ({ currentUser, setCurrentUser }) => {
 
             <Form title='Skapa konto' linkPath='/login' linkText='Har du redan ett konto?'>
                 <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' />
-                <FormTextInput handleInputFunction={handleDisplaynameInput} autocomplete='nickname' type='text' label='Visningsnamn' id='typeDisplaynameX' />
                 <FormTextInput handleInputFunction={handlePasswordInput} autocomplete='new-password' type='password' label='Lösenord' id='typePasswordX' />
                 <FormTextInput handleInputFunction={handleConfPasswordInput} autocomplete='new-password' type='password' label='Bekräfta lösenord' id='typeConfirmPasswordX' />
                 <FormSubmitButton onClick={signUp} text='Skapa konto' />
