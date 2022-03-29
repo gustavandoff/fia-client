@@ -11,13 +11,24 @@ const Play = ({ currentUser, setCurrentUser }) => {
     let linkPath;
 
     useEffect(() => {
-        if (!currentUser) {
+        if (!currentUser || currentUser.username.startsWith('gäst')) {
             setModal(
                 new Modal(exampleModal.current)
             );
         }
-
     }, []);
+
+    const generateGuestUsername = () => {
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        let result = 'gäst_';
+        const charactersLength = characters.length;
+        for (let i = 0; i < 5; i++) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+
+        return result;
+    }
 
     const linkClicked = (path) => {
         if (currentUser) return navigate(path);
@@ -27,6 +38,9 @@ const Play = ({ currentUser, setCurrentUser }) => {
 
     const closeModal = () => {
         modal.hide();
+        if (!currentUser) {
+            setCurrentUser({ username: generateGuestUsername() });
+        }
         return navigate(linkPath);
     }
 
@@ -36,7 +50,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
     }
 
     let guestMessage = '';
-    if (!currentUser) {
+    if (!currentUser || currentUser.username.startsWith('gäst')) {
         guestMessage = (
             <div className="modal" ref={exampleModal} tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                 <div className="modal-dialog">
@@ -62,7 +76,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
         <div>
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
-            <div className="container position-relative h-100" style={{top: '25vh'}}>
+            <div className="container position-relative h-100" style={{ top: '25vh' }}>
                 {guestMessage}
                 <div className="row d-flex justify-content-center align-items-center h-50">
                     <div className="col-12 col-md-8 col-lg-6 col-xl-5">
