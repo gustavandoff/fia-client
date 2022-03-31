@@ -4,12 +4,13 @@ import { FaUsers } from "react-icons/fa";
 import { MdRefresh } from "react-icons/md";
 
 
-const FormListInput = ({ handleInputFunction, values, valuesInfo, label, id, activeValue, nothingFoundMessage, refreshFunction }) => {
+const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInfoBottom, label, id, activeValue, nothingFoundMessage, refreshFunction }) => {
     const [currentValues, setCurrentValues] = useState(values);
-    const [currentValuesInfo, setCurrentValuesInfo] = useState(valuesInfo);
+    const [currentValuesInfoRight, setCurrentValuesInfoRight] = useState(valuesInfoRight);
+    const [currentValuesInfoBottom, setCurrentValuesInfoBottom] = useState(valuesInfoBottom);
     const [searchedValue, setSearchedValue] = useState();
 
-    const ListOption = ({ value, info }) => {
+    const ListOption = ({ value, infoRight, infoBottom }) => {
         let active = '';
         if (activeValue === value) {
             active = 'bg-secondary';
@@ -18,7 +19,9 @@ const FormListInput = ({ handleInputFunction, values, valuesInfo, label, id, act
         return (
             <li onClick={() => handleInputFunction(value)} className={`btn btn-secondary ${active} list-group-item m-1 w-100`}>
                 <span className='float-start'>{value}</span>
-                <span className='float-end'> {info} <FaUsers /></span>
+                <span className='float-end'> {infoRight} <FaUsers /></span>
+                <br />
+                <span className='float-start text-info fw-bold'> {infoBottom} </span>
             </li>
         )
     }
@@ -28,27 +31,34 @@ const FormListInput = ({ handleInputFunction, values, valuesInfo, label, id, act
     }, [values]);
 
     useEffect(() => {
-        setCurrentValuesInfo(valuesInfo);
-    }, [valuesInfo]);
+        setCurrentValuesInfoRight(valuesInfoRight);
+    }, [valuesInfoRight]);
 
     useEffect(() => {
-        console.log('searched:', searchedValue);
+        setCurrentValuesInfoBottom(valuesInfoBottom);
+    }, [valuesInfoBottom]);
+
+    useEffect(() => {
         if (!searchedValue) {
             setCurrentValues(values);
-            setCurrentValuesInfo(valuesInfo);
+            setCurrentValuesInfoRight(valuesInfoRight);
+            setCurrentValuesInfoBottom(valuesInfoBottom);
             return;
         }
         let tempCurrentValues = [];
-        let tempCurrentValuesInfo = []
+        let tempCurrentValuesInfoRight = [];
+        let tempCurrentValuesInfoBottom = [];
         values.forEach((e, i) => {
             if (e.includes(searchedValue)) {
                 tempCurrentValues.push(e);
-                tempCurrentValuesInfo.push(valuesInfo[i]);
+                tempCurrentValuesInfoRight.push(valuesInfoRight[i]);
+                tempCurrentValuesInfoBottom.push(valuesInfoBottom[i])
             }
         });
-        console.log(tempCurrentValues, tempCurrentValuesInfo);
+        console.log(tempCurrentValues, tempCurrentValuesInfoRight, tempCurrentValuesInfoBottom);
         setCurrentValues(tempCurrentValues);
-        setCurrentValuesInfo(tempCurrentValuesInfo);
+        setCurrentValuesInfoRight(tempCurrentValuesInfoRight);
+        setCurrentValuesInfoBottom(tempCurrentValuesInfoBottom);
     }, [searchedValue]);
 
     const searchValues = v => {
@@ -56,13 +66,16 @@ const FormListInput = ({ handleInputFunction, values, valuesInfo, label, id, act
     }
 
     const refresh = () => {
+        setCurrentValues([]);
+        setCurrentValuesInfoRight([]);
+        setCurrentValuesInfoBottom([]);
         refreshFunction();
     }
 
     let listItems = [];
     currentValues?.forEach((e, i) => {
         listItems.push(
-            <ListOption key={i} value={e} info={currentValuesInfo[i]} />
+            <ListOption key={i} value={e} infoRight={currentValuesInfoRight[i]} infoBottom={currentValuesInfoBottom[i]} />
         );
     });
 
