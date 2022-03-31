@@ -13,7 +13,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
                     <div className="col-1 col-sm-2 col-md-3 col-lg-4 col-xl-4"></div>
                     <div className="col-10 col-sm-8 col-md-6 col-lg-4 col-xl-4 text-center fia-border-bottom">
                         <div className="container-sm w-75 rounded-pill">
-                            <Link to='/play' className='text-center position-relative btn btn-orange rounded stretched font-size-2 px-5 text-nowrap m-2'>Nytt spel</Link>
+                            <Link to='/' className='text-center position-relative btn btn-orange rounded stretched font-size-2 px-5 text-nowrap m-2'>Nytt spel</Link>
                         </div>
 
                     </div>

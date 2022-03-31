@@ -25,7 +25,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
     const [gameName, setGameName] = useState(genitiveCurrentUserDisplayname + ' spel');
 
     if (!currentUser) {
-        return navigate('/play')
+        return navigate('/')
     }
 
     const handleMaxPlayersInput = e => {
@@ -39,11 +39,11 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
     const joinGame = () => {
         axios
             .post(`http://localhost:4000/joingame`, {
-                username: currentUser,
+                username: currentUser.username,
                 gameName: gameName
             })
             .then(res => {
-                navigate('/' + gameName)
+                navigate('/games/' + gameName)
             })
             .catch(error => {
                 console.log(error);

@@ -8,6 +8,7 @@ import Play from '../routes/Play';
 import CreateGame from '../routes/CreateGame';
 import JoinGame from '../routes/JoinGame';
 import GameRoute from '../routes/GameRoute';
+import Error404 from '../routes/Error404';
 
 
 const Root = () => {
@@ -19,28 +20,21 @@ const Root = () => {
     }, []);
 
     useEffect(() => {
-        window.localStorage.setItem('currentUser', JSON.stringify (currentUser));
+        window.localStorage.setItem('currentUser', JSON.stringify(currentUser));
     }, [currentUser]);
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<App currentUser={currentUser} setCurrentUser={setCurrentUser} />}>
+                <Route path="/" element={<Play currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+                <Route path="/games" element={<App currentUser={currentUser} setCurrentUser={setCurrentUser} />}>
                     <Route path=':gameName' element={<GameRoute currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 </Route>
                 <Route path="/login" element={<Login currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/signup" element={<Signup currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-                <Route path="/play" element={<Play currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/creategame" element={<CreateGame currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
                 <Route path="/joingame" element={<JoinGame currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-                <Route
-                    path="*"
-                    element={
-                        <main style={{ padding: "1rem" }}>
-                            <p>There's nothing here!</p>
-                        </main>
-                    }
-                />
+                <Route path="*" element={<Error404 currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
             </Routes>
         </BrowserRouter>
     );
