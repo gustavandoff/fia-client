@@ -11,6 +11,7 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     const [game, setGame] = useState(null);
     const [renderedGame, setRenderedGame] = useState();
 
+    const navigate = useNavigate();
     let params = useParams();
     const { gameName } = params;
 
@@ -29,6 +30,10 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
             }
         });
 
+        if (!gameName) {
+            return navigate('/');
+        }
+
         axios
             .get(`http://localhost:4000/games/${gameName}`)
             .then(res => {
@@ -38,6 +43,7 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
             })
             .catch(error => {
                 console.error(error);
+                return navigate('/joingame');
             });
     }, []);
 
