@@ -1,5 +1,4 @@
 import Navbar from './components/Header/Navbar';
-import Game from './components/Game/Game';
 import { Outlet } from "react-router-dom";
 
 function App({ currentUser, setCurrentUser }) {
