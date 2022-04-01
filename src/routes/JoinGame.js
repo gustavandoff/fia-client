@@ -13,15 +13,27 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const [games, setGames] = useState();
     const [gamesArray, setGamesArray] = useState();
     const [gamesPlayerInfoArray, setGamesPlayerInfoArray] = useState();
+    const [gamesStatusArray, setGamesStatusArray] = useState();
     const [selectedGame, setSelectedGame] = useState();
 
     useEffect(() => {
         if (!games) return;
         let tempGamesPlayerInfoArray = [];
+        let tempGameStatusArray = [];
         Object.keys(games).forEach((e, i) => {
             tempGamesPlayerInfoArray.push(Object.keys(games[e].players).length + '/' + games[e].maxPlayers);
+            switch (games[e].status) {
+                case 'WAITING':
+                    tempGameStatusArray.push('Väntar på att startas');
+                    break;
+                case 'PLAYING':
+                    tempGameStatusArray.push('Spelet är igång');
+                    break;
+            }
+
         });
         setGamesPlayerInfoArray(tempGamesPlayerInfoArray);
+        setGamesStatusArray(tempGameStatusArray);
         setGamesArray(Object.keys(games));
     }, [games]);
 
@@ -32,7 +44,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const spectateGame = () => {
         if (!selectedGame) return;
 
-        navigate('/' + selectedGame);
+        navigate('/games/' + selectedGame);
     }
 
     const joinGame = () => {
@@ -43,7 +55,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
                 gameName: selectedGame
             })
             .then(res => {
-                navigate('/' + selectedGame)
+                navigate('/games/' + selectedGame)
             })
             .catch(error => {
                 console.error(error);
@@ -58,6 +70,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
                 if (Object.keys(res.data).length === 0) {
                     setGamesArray([]);
                     setGamesPlayerInfoArray([]);
+                    setGamesStatusArray([]);
                 }
             })
             .catch(error => {
@@ -74,7 +87,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Gå med i spel'>
-                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={setSelectedGame} activeValue={selectedGame} values={gamesArray} valuesInfo={gamesPlayerInfoArray} refreshFunction={refreshGames} />
+                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={setSelectedGame} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} />
                 <span className='mx-4'>
                     <FormSubmitButton onClick={spectateGame} text='Titta på spelet' />
                 </span>
