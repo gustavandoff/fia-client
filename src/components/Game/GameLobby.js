@@ -31,8 +31,21 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         });
     }
 
-    const startGame = async () => {
-        if (takenColors.length === Object.keys(game.players).length) {
+    const toggleReady = async () => {
+
+        await socket.emit('toggleReady', {
+            user: currentUser,
+            game: game,
+        });
+
+        let startGame = true;
+        Object.keys(game.players).forEach((e, i) => {
+            if (!game.players[e].ready && e !== currentUser.username) {
+                startGame = false;
+            }
+        });
+
+        if (startGame && takenColors.length === Object.keys(game.players).length) {
             await socket.emit('startGame', {
                 user: currentUser,
                 game: game,
@@ -111,10 +124,12 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         }
 
         const src = require(`../../assets/images/pieces/${playerColor}.png`)
+        const isReadyClass = !!player.ready;
 
         return (
             <li className="list-group-item bg-secondary rounded-pill m-1 w-30">
-                <div className="float-start">
+                <div className="float-start d-flex align-items-center justify-content-center">
+                    <div className={`ready-indicator ready-indicator-${isReadyClass} bg-col-primary me-2`} />
                     {player.username}
                 </div>
                 <div className="float-end">
@@ -148,8 +163,8 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                                         {renderPlayers}
                                     </div>
 
-                                    <button onClick={leaveGame} className="position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4">Lämna spelet</button>
-                                    <button onClick={isInGame() ? startGame : () => { }} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!isInGame() ? 'disabled' : ''} text-col-secondary px-5 me-5 mt-4`}>Starta spelet</button>
+                                    <button onClick={leaveGame} className={`position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4`}>Lämna spelet</button>
+                                    <button onClick={isInGame() ? toggleReady : () => { }} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!game.players[currentUser.username].color ? 'disabled' : ''} text-col-secondary px-5 me-5 mt-4`}>{game.players[currentUser.username].ready ? 'Inte Redo' : 'Bli redo'}</button>
                                 </div>
                             </div>
                         </div>
