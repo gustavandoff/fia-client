@@ -1,12 +1,12 @@
 import Board from "./Board";
-import DragMove from '../DragMove';
+import Dice from "./Dice";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const [circleSize, setCircleSize] = useState(2);
     const [players, setPlayers] = useState(game.players);
-    const [moveCount, setMoveCount] = useState(1);
+    const [moveCount, setMoveCount] = useState(null);
     const [selectedPiece, setSelectedPiece] = useState(0);
     const [moveIndicator, setMoveIndicator] = useState([0]);
 
@@ -174,7 +174,38 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         return { pos: newPos, step: step }; // pos är ett steg i riktningen step
     }
 
-    useEffect(() => {
+    const checkIfAnyPieceCanMove = () => {
+        let canMove = false;
+
+        Object.keys(players).forEach(u => {
+            Object.keys(players[u].pieces).forEach(p => {
+                const thisPiecePosition = players[u].pieces[p].position;
+                if (thisPiecePosition) {
+                    if (calcPos(u, thisPiecePosition, moveCount)) {
+                        canMove = true;
+                    }
+                }
+
+            })
+        });
+
+        return canMove;
+    }
+
+    useEffect(async () => {
+        if (!moveCount) {
+            setSelectedPiece(0);
+        }
+
+        if (!checkIfAnyPieceCanMove()) {
+            await socket.emit('updateGameBoard', {
+                game,
+                user: currentUser,
+                players,
+                nextTurn: true
+            });
+        }
+
         if (selectedPiece !== 0) {
             const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber);
             console.log('player2:', username);
@@ -230,8 +261,10 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     const RollDiceButton = () => {
-        if (game.turn === currentUser.username) return <button onClick={rollDice} className='btn btn-primary bg-col-primary font-size-2 w-100 text-nowrap'>Slå tärning {moveCount}</button>
-        else return '';
+        if (game.turn === currentUser.username)
+            return <Dice currentDiceRoll={moveCount} setCurrentDiceRoll={setMoveCount} />
+        else
+            return '';
     }
 
     return (
@@ -260,7 +293,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col">
+                    <div className="col text-center">
                         <RollDiceButton />
                     </div>
                 </div>
