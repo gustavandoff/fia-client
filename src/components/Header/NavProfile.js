@@ -47,27 +47,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
                 <DropdownMenu>
                     <DropdownItem>
                         <div>
-                            Lista mina spel
-                        </div>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <div>
-                            {currentUser.username}
-                        </div>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <div>
-                            {currentUser.username}
-                        </div>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <div>
-                            {currentUser.username}
-                        </div>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <div>
-                            {currentUser.username}
+                            Lista mina spel (Fungerar inte)
                         </div>
                     </DropdownItem>
 
@@ -85,8 +65,8 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
 
     return (
         <div onClick={() => setOpen(!open)} className="btn text-col-primary p-0 fia-dropdown-head">
-            <span className="text-col-secondary">{currentUser.username}</span>
-            <MdKeyboardArrowDown style={{
+            <span className="text-col-secondary font-size-1-5 fw-bold">{currentUser.username}</span>
+            <MdKeyboardArrowDown className="text-col-secondary font-size-1-5" style={{
                 transform: `rotate(${open ? 180 : 0}deg)`,
                 transition: 'transform 300ms'
             }} />
