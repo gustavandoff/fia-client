@@ -2,7 +2,7 @@ const DropdownItem = ({ loggedIn, setLoggedIn, children }) => {
 
 
     return (
-        <li className="fia-dropdown-item">
+        <li className="fia-dropdown-item p-1">
             {children}
         </li>
     );
