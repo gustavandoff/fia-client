@@ -184,7 +184,7 @@
 }
 
 .fia-dropdown-menu {
-    animation: menuOpen 100ms;
+    animation: menuOpen 150ms;
     transform-origin: 0 0;
     list-style: none;
     text-align: left;
