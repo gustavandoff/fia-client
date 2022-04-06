@@ -186,8 +186,10 @@
 .fia-dropdown-menu {
     animation: menuOpen 150ms;
     transform-origin: 0 0;
+    right: 0;
+    transform: translateX(00%);
+    width: 10%;
     list-style: none;
-    text-align: left;
 }
 
 @keyframes light {

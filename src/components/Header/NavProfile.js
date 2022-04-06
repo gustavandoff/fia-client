@@ -2,7 +2,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import DropdownItem from "./DropdownItem";
 import DropdownMenu from "./DropdownMenu";
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const NavProfile = ({ currentUser, setCurrentUser }) => {
@@ -20,11 +20,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
         return navigate("/");
     }
 
-    const logIn = () => {
-        return navigate('/login');
-    }
-
-    const GameList = () => {
+    const MyGamesList = () => {
         let result = [];
         let gameList;
 
@@ -56,15 +52,13 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
     }
 
     const DropDown = () => {
-        let dropDown = '';
-
         const LogOutIn = () => {
             const aClassName = "text-col-primary text-center text-decoration-none text-white-50 ms-1";
             if (currentUser.username.startsWith('gäst')) {
                 return (
-                    <a onClick={logIn} className={aClassName}>
+                    <Link to="/login" className={aClassName}>
                         Logga in
-                    </a>
+                    </Link>
                 );
             } else {
                 return (
@@ -75,38 +69,37 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
             }
         }
 
-        if (openDd) {
-            dropDown = (
-                <DropdownMenu>
-                    <DropdownItem>
-                        <GameList />
-                    </DropdownItem>
+        return (openDd ?
+            <DropdownMenu>
+                <DropdownItem>
+                    <MyGamesList />
+                </DropdownItem>
 
-                    <DropdownItem>
-                        <LogOutIn />
-                    </DropdownItem>
-                </DropdownMenu>
-            );
-        }
-
-        return dropDown;
+                <DropdownItem>
+                    <LogOutIn />
+                </DropdownItem>
+            </DropdownMenu>
+            : ''
+        );
     }
 
     return (
         <div className="btn text-col-primary p-0 fia-dropdown-head">
-            <div onClick={() => {
-                setOpenMyGames(false);
-                setOpenDd(!openDd);
-            }}>
-                <span className="text-col-secondary font-size-1-5 fw-bold">{currentUser.username}</span>
-                <MdKeyboardArrowDown className="text-col-secondary font-size-1-5" style={{
-                    transform: `rotate(${openDd ? 180 : 0}deg)`,
-                    transition: 'transform 150ms'
-                }} />
+            <div className="col">
+                <div onClick={() => {
+                    setOpenMyGames(false);
+                    setOpenDd(!openDd);
+                }}>
+                    <span className="text-col-secondary font-size-1-5 fw-bold">{currentUser.username}</span>
+                    <MdKeyboardArrowDown className="text-col-secondary font-size-1-5" style={{
+                        transform: `rotate(${openDd ? 180 : 0}deg)`,
+                        transition: 'transform 150ms'
+                    }} />
+                </div>
+
+                <DropDown />
+
             </div>
-
-            <DropDown />
-
         </div>
     );
 }
