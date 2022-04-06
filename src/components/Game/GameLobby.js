@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
+const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }) => {
     const [takenColors, setTakenColors] = useState([]);
+    const [canStart, setCanStart] = useState(false);
     const navigate = useNavigate();
 
     const isInGame = () => {
@@ -10,12 +11,25 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     useEffect(() => {
-        const tempTakenColors = [];
+        initSocket();
+    }, []);
+
+    useEffect(() => {
+        let tempTakenColors = [];
+        let everyoneIsReady = true;
         Object.keys(game.players).forEach((e) => {
             if (game.players[e].color) {
                 tempTakenColors.push(game.players[e].color);
             }
-        })
+            if (!game.players[e].ready) {
+                everyoneIsReady = false;
+            }
+        });
+
+        if (takenColors.length === Object.keys(game.players).length) {
+            setCanStart(everyoneIsReady);
+        }
+
         setTakenColors(tempTakenColors);
     }, [game]);
 
@@ -32,25 +46,10 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     const toggleReady = async () => {
-
         await socket.emit('toggleReady', {
             user: currentUser,
             game: game,
         });
-
-        let startGame = true;
-        Object.keys(game.players).forEach((e, i) => {
-            if (!game.players[e].ready && e !== currentUser.username) {
-                startGame = false;
-            }
-        });
-
-        if (startGame && takenColors.length === Object.keys(game.players).length) {
-            await socket.emit('startGame', {
-                user: currentUser,
-                game: game,
-            });
-        }
     }
 
     const leaveGame = async () => {
@@ -62,6 +61,17 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         });
 
         navigate('/');
+    }
+
+    const startGame = async () => {
+        if (!isInGame()) return navigate('/'); // ifall man av någon anledning skulle lyckas nå hit utan att vara med i splet
+
+        if (canStart && takenColors.length === Object.keys(game.players).length) {
+            await socket.emit('startGame', {
+                user: currentUser,
+                game: game,
+            });
+        }
     }
 
     const ColorPicker = () => {
@@ -164,7 +174,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
                                     </div>
 
                                     <button onClick={leaveGame} className={`position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4`}>Lämna spelet</button>
-                                    <button onClick={isInGame() ? toggleReady : () => { }} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!game.players[currentUser.username].color ? 'disabled' : ''} text-col-secondary px-5 me-5 mt-4`}>{game.players[currentUser.username].ready ? 'Inte Redo' : 'Bli redo'}</button>
+                                    <button onClick={isInGame() ? (canStart ? startGame : toggleReady) : () => { }} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!game.players[currentUser.username].color ? 'disabled' : ''} text-col-secondary px-5 me-5 mt-4`}>{game.players[currentUser.username].ready ? (canStart ? 'Starta' : 'Inte Redo') : 'Bli redo'}</button>
                                 </div>
                             </div>
                         </div>
