@@ -1,23 +1,36 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-const Dice = ({ currentDiceRoll, setCurrentDiceRoll }) => {
-    const [roll, setRoll] = useState();
+const Dice = ({ currentDiceRoll, setCurrentDiceRoll, socket, game }) => {
     const [showedRoll, setShowedRoll] = useState(1);
+
+    useEffect(() => {
+        let animationInterval;
+        if (!currentDiceRoll && !animationInterval) {
+            animationInterval = setInterval(() => {
+                setShowedRoll((oldRoll) => oldRoll === 6 ? 1 : oldRoll + 1);
+            }, 400);
+        } else {
+            clearInterval(animationInterval);
+            setShowedRoll(currentDiceRoll);
+        }
+
+        return () => {
+            clearInterval(animationInterval);
+        }
+    }, [currentDiceRoll]);
 
     const Side = ({ number }) => {
 
-        const canRollDice = () => {
-            return !number || number === 6;
-        }
 
-        const boxShadow = canRollDice() ? `0 0 1rem 1rem white` : '';
-        const cursor = canRollDice() ? 'pointer' : 'default';
 
-        const src = require(`../../assets/images/dice/${number ? number : 1}.jpg`);
+        const boxShadow = !currentDiceRoll ? `0 0 1rem 1rem white` : '';
+        const cursor = !currentDiceRoll ? 'pointer' : 'default';
+
+        const src = require(`../../assets/images/dice/${number ? number : showedRoll}.jpg`);
 
         return (
-            <img className='cursor-pointer' onClick={canRollDice() ? rollDice : () => { }} src={src} style={{
+            <img className='cursor-pointer' onClick={diceClicked} src={src} style={{
                 width: '7rem',
                 height: '7rem',
                 boxShadow: boxShadow,
@@ -26,28 +39,22 @@ const Dice = ({ currentDiceRoll, setCurrentDiceRoll }) => {
         )
     }
 
-    //useEffect(() => {
-    //    if (!roll) return;
-    //
-    //    const rollLength = Math.floor(Math.random() * 5) + 7;
-    //
-    //    for (let i = 0; i < rollLength; i++) {
-    //        setTimeout(() => {
-    //            const randRoll = Math.floor(Math.random() * 6) + 1;
-    //            setShowedRoll(randRoll);
-    //        }, 50);
-    //    }
-    //
-    //    setCurrentDiceRoll(roll);
-    //    setShowedRoll(roll);
-    //}, [roll])
+    const diceClicked = () => {
+        console.log('diceClicked currentDiceRoll:', currentDiceRoll);
+        if (!currentDiceRoll) {
+            rollDice();
+        }
+    }
 
-    const rollDice = () => {
+    const rollDice = async () => {
+        console.log('Rolling dice');
         axios.get(`http://localhost:4000/dice`)
-            .then(res => {
-                //setRoll(res.data);
+            .then(async res => {
                 setCurrentDiceRoll(res.data);
-                //setShowedRoll(res.data);
+                await socket.emit('updateGameDiceRoll', {
+                    game,
+                    newDiceRoll: res.data,
+                });
             });
     }
 
