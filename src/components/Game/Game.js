@@ -3,7 +3,7 @@ import Dice from "./Dice";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
+const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }) => {
     const [circleSize, setCircleSize] = useState(2);
     const [players, setPlayers] = useState(game.players);
     const [moveCount, setMoveCount] = useState(null);
@@ -13,6 +13,8 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const playerCount = Object.keys(game.players).length >= 4 ? Object.keys(game.players).length : 4;
 
     useEffect(() => {
+        initSocket();
+
         socket.on('updateGamePlayers', (data) => {
             setPlayers(data);
         });
@@ -26,18 +28,18 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         const player = players[username];
         const piece = player.pieces.find(p => p.number === pieceNr);
 
-        axios.get(`http://localhost:4000/games/${game.gameName}`) // fuckar upp lite
-            .then(res => {
-                if (res.data.sequence !== game.sequence) {
-                    setGame(res.data);
-                    setSelectedPiece(0);
-                    setMoveIndicator([0]);
-                    return;
-                }
-            })
-            .catch(error => {
-                console.error(error);
-            });
+        //axios.get(`http://localhost:4000/games/${game.gameName}`) // fuckar upp lite
+        //    .then(res => {
+        //        if (res.data.sequence !== game.sequence) {
+        //            setGame(res.data);
+        //            setSelectedPiece(0);
+        //            setMoveIndicator([0]);
+        //            return;
+        //        }
+        //    })
+        //    .catch(error => {
+        //        console.error(error);
+        //    });
 
         Object.keys(players).forEach(u => { // går igenom alla spelare
             if (u !== username) { // kollar om spelaren inte är spelaren som går
@@ -67,8 +69,8 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         setMoveIndicator([0]);
 
         let nextTurn = true;
-        if (newPiecePos === -1 || moveCount === 6) {
-            /* newPiecePos är null då målgångsanimationen har körts
+        if (newPiecePos === -1 /*|| moveCount === 6*/) {
+            /* newPiecePos är -1 då målgångsanimationen börjar köras,
             på sexor får man slå igen */
             nextTurn = false;
         }
@@ -93,9 +95,6 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     const calcPos = (username, oldPos, moveAmount) => {
         const player = players[username];
         const playerNumber = player.playerNumber;
-        console.log(username);
-        console.log(player);
-        console.log(player.playerNumber);
         let newPos = oldPos;
         let step = 1;
 
@@ -174,20 +173,33 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
         return { pos: newPos, step: step }; // pos är ett steg i riktningen step
     }
 
-    const checkIfAnyPieceCanMove = () => {
+    const checkIfCurrentUserCanMove = () => {
+        if (!moveCount) return true;
+
         let canMove = false;
 
-        Object.keys(players).forEach(u => {
-            Object.keys(players[u].pieces).forEach(p => {
-                const thisPiecePosition = players[u].pieces[p].position;
-                if (thisPiecePosition) {
-                    if (calcPos(u, thisPiecePosition, moveCount)) {
-                        canMove = true;
-                    }
-                }
+        const thisPlayer = players[Object.keys(players).find(u => u === currentUser.username)];
+        if (!thisPlayer){
+            console.log('spelaren hittas inte');
+            return false;
+        } 
 
-            })
+        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+
+        console.log('thisPlayer.pieces:', thisPlayer.pieces);
+
+        Object.keys(thisPlayer.pieces).forEach(p => {
+            const thisPiecePosition = thisPlayer.pieces[p].position;
+            if (thisPiecePosition) {
+                console.log('thisPiecePosition:', thisPiecePosition);
+                if (calcPos(currentUser.username, thisPiecePosition, moveCount)[0]) {
+                    console.log('calcPos:', calcPos(currentUser.username, thisPiecePosition, moveCount)[0]);
+                    canMove = true;
+                }
+            }
         });
+        console.log('canMove:', canMove);
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 
         return canMove;
     }
@@ -197,7 +209,8 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
             setSelectedPiece(0);
         }
 
-        if (!checkIfAnyPieceCanMove()) {
+        if (!checkIfCurrentUserCanMove()) {
+            console.log('kan inte gå');
             await socket.emit('updateGameBoard', {
                 game,
                 user: currentUser,
@@ -215,13 +228,6 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
             setMoveIndicator([0]);
         }
     }, [selectedPiece, moveCount]);
-
-    const rollDice = () => {
-        axios.get(`http://localhost:4000/dice`)
-            .then(res => {
-                setMoveCount(res.data);
-            });
-    }
 
     const PlayerListItem = ({ player }) => {
 
@@ -261,10 +267,17 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket }) => {
     }
 
     const RollDiceButton = () => {
-        if (game.turn === currentUser.username)
-            return <Dice currentDiceRoll={moveCount} setCurrentDiceRoll={setMoveCount} />
-        else
+        axios.get(`http://localhost:4000/gameDiceRoll/${game.gameName}`)
+            .then(res => {
+                setMoveCount(res.data);
+            });
+
+        if (game.turn === currentUser.username) {
+            return <Dice currentDiceRoll={moveCount} setCurrentDiceRoll={setMoveCount} socket={socket} game={game} />
+        }
+        else {
             return '';
+        }
     }
 
     return (
