@@ -19,7 +19,7 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     const PLAYING = 'PLAYING';
     const FINISHED = 'FINISHED';
 
-    useEffect(() => {
+    const initSocket = () => {
         socket.on("error", (error) => {
             console.error(error);
         });
@@ -29,6 +29,10 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
                 setGame(data);
             }
         });
+    }
+
+    useEffect(() => {
+        initSocket();
 
         if (!gameName) {
             return navigate('/');
@@ -51,10 +55,10 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
         if (!game) return;
         const { status } = game;
         if (status === WAITING) {
-            return setRenderedGame(<GameLobby currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} />);
+            return setRenderedGame(<GameLobby currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} initSocket={initSocket} />);
         }
         if (status === PLAYING) {
-            return setRenderedGame(<Game currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} />);
+            return setRenderedGame(     <Game currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} initSocket={initSocket} />);
         }
         if (status === FINISHED) {
 
