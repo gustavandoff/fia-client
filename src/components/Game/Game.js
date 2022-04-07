@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }) => {
-    const [circleSize, setCircleSize] = useState(2);
     const [players, setPlayers] = useState(game.players);
     const [moveCount, setMoveCount] = useState(null);
     const [selectedPiece, setSelectedPiece] = useState(0);
     const [moveIndicator, setMoveIndicator] = useState([0]);
 
+    const circleSize = 2;
     const playerCount = Object.keys(game.players).length >= 4 ? Object.keys(game.players).length : 4;
 
     useEffect(() => {
@@ -179,10 +179,10 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         let canMove = false;
 
         const thisPlayer = players[Object.keys(players).find(u => u === currentUser.username)];
-        if (!thisPlayer){
+        if (!thisPlayer) {
             console.log('spelaren hittas inte');
             return false;
-        } 
+        }
 
         console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
 
@@ -204,19 +204,23 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         return canMove;
     }
 
-    useEffect(async () => {
-        if (!moveCount) {
-            setSelectedPiece(0);
-        }
-
-        if (!checkIfCurrentUserCanMove()) {
-            console.log('kan inte gå');
+    useEffect(() => {
+        const emitUpdateGameBoard = async () => { // egen funktion för att useEffect inte ska vara async
             await socket.emit('updateGameBoard', {
                 game,
                 user: currentUser,
                 players,
                 nextTurn: true
             });
+        }
+
+        if (!moveCount) {
+            setSelectedPiece(0);
+        }
+
+        if (!checkIfCurrentUserCanMove()) {
+            console.log('kan inte gå');
+            emitUpdateGameBoard();
         }
 
         if (selectedPiece !== 0) {
@@ -238,7 +242,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
 
             if (player.pieces[piece].position) {
                 renderPieces.push(
-                    <img key={i} className={`lobby-piece `} src={pieceImg}></img>
+                    <img key={i} className={`lobby-piece `} src={pieceImg} alt={player.color}></img>
                 );
             }
         })
