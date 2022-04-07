@@ -32,11 +32,10 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     }
 
     useEffect(() => {
-        initSocket();
+        if (!currentUser) return navigate('/');
+        if (!gameName) return navigate('/');
 
-        if (!gameName) {
-            return navigate('/');
-        }
+        initSocket();
 
         axios
             .get(`http://localhost:4000/games/${gameName}`)
