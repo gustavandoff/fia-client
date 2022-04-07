@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
 const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }) => {
     const [takenColors, setTakenColors] = useState([]);
@@ -7,6 +8,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     const navigate = useNavigate();
 
     const isInGame = () => {
+        if (!currentUser) return false;
         return !!game.players[currentUser.username];
     }
 
@@ -77,6 +79,8 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     const ColorPicker = () => {
         const colors = [];
 
+        if (!isInGame()) return '';
+
         colors.push('blue');
         colors.push('cyan');
         colors.push('darkgreen');
@@ -118,7 +122,8 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
         });
 
         return (
-            <div>
+            <div className="text-start">
+                <h3 className="w-75 border-bottom">Välj färg</h3>
                 {renderColors}
             </div>
         );
@@ -149,6 +154,31 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
         );
     }
 
+    const joinGame = () => {
+        axios
+            .post(`http://${window.location.hostname}:4000/joingame`, {
+                username: currentUser.username,
+                gameName: game.gameName
+            })
+            .then(res => {
+                navigate('/games/' + game.gameName)
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+
+    const ReadyStartButton = () => {
+        if (!currentUser) return '';
+        const thisPlayer = game.players[currentUser.username];
+        if (!isInGame())
+            return <button onClick={joinGame} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 me-5 mt-4`}>Gå med i spel</button>
+
+        return (
+            <button onClick={canStart ? startGame : toggleReady} title={`${!thisPlayer.color ? 'Du måste välja en färg' : ''}`} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!thisPlayer.color ? 'disabled pe-auto cursor-default' : ''} text-col-secondary px-5 me-5 mt-4`}>{thisPlayer.ready ? (canStart ? 'Starta' : 'Inte Redo') : 'Bli redo'}</button>
+        )
+    }
+
     let renderPlayers = [];
     Object.keys(game.players).forEach((e, i) => {
         renderPlayers.push(<PlayerListItem key={i} player={game.players[e]} />);
@@ -164,17 +194,15 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
                                 <div className="mb-md-5 mt-md-4 pb-2">
                                     <h2 className="fw-bold mb-5 text-uppercase">{game.gameName}</h2>
 
-                                    <div className="text-start">
-                                        <h3 className="w-75 border-bottom">Välj färg</h3>
-                                        <ColorPicker />
-                                    </div>
+                                    <ColorPicker />
+
                                     <div className="row text-start">
-                                        <h3 className="w-75 border-bottom">Spelare</h3>
+                                        <h3 className="w-75 border-bottom">Spelare {Object.keys(game.players).length + '/' + game.maxPlayers}</h3>
                                         {renderPlayers}
                                     </div>
 
                                     <button onClick={leaveGame} className={`position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4`}>Lämna spelet</button>
-                                    <button onClick={isInGame() ? (canStart ? startGame : toggleReady) : () => { }} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!game.players[currentUser.username].color ? 'disabled' : ''} text-col-secondary px-5 me-5 mt-4`}>{game.players[currentUser.username].ready ? (canStart ? 'Starta' : 'Inte Redo') : 'Bli redo'}</button>
+                                    <ReadyStartButton />
                                 </div>
                             </div>
                         </div>
