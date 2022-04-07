@@ -89,10 +89,10 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             <Form title='Gå med i spel'>
                 <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={setSelectedGame} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} />
                 <span className='mx-4'>
-                    <FormSubmitButton onClick={spectateGame} text='Titta på spelet' />
+                    <FormSubmitButton onClick={joinGame} text='Gå med' />
                 </span>
                 <span className='mx-4'>
-                    <FormSubmitButton onClick={joinGame} text='Gå med' />
+                    <FormSubmitButton onClick={spectateGame} text='Titta på spelet' />
                 </span>
             </Form>
         </div>
