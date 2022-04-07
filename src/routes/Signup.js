@@ -30,7 +30,7 @@ const Signup = ({ currentUser, setCurrentUser }) => {
 
     const signUp = () => {
         axios
-            .post(`http://localhost:4000/signup`, {
+            .post(`http://${window.location.hostname}:4000/signup`, {
                 username: username,
                 password: password,
                 confPassword: confPassword

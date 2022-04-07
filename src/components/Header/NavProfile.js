@@ -11,7 +11,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
 
     const logOut = () => {
-        axios.post(`http://localhost:4000/logout`,
+        axios.post(`http://${window.location.hostname}:4000/logout`,
             { currentUser },
             {
                 headers: { Authorization: 'Bearer ' + currentUser.jwt }
@@ -24,7 +24,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
         let result = [];
         let gameList;
 
-        axios.get(`http://localhost:4000/gamesUser/${currentUser.username}/`)
+        axios.get(`http://${window.location.hostname}:4000/gamesUser/${currentUser.username}/`)
             .then(res => {
                 gameList = res.data;
             })

@@ -50,7 +50,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const joinGame = () => {
         if (!selectedGame) return;
         axios
-            .post(`http://localhost:4000/joingame`, {
+            .post(`http://${window.location.hostname}:4000/joingame`, {
                 username: currentUser.username,
                 gameName: selectedGame
             })
@@ -64,7 +64,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
 
     const refreshGames = () => {
         axios
-            .get(`http://localhost:4000/games`)
+            .get(`http://${window.location.hostname}:4000/games`)
             .then(res => {
                 setGames(res.data);
                 if (Object.keys(res.data).length === 0) {

@@ -48,7 +48,7 @@ const Dice = ({ currentDiceRoll, setCurrentDiceRoll, socket, game }) => {
 
     const rollDice = async () => {
         console.log('Rolling dice');
-        axios.get(`http://localhost:4000/dice`)
+        axios.get(`http://${window.location.hostname}:4000/dice`)
             .then(async res => {
                 setCurrentDiceRoll(res.data);
                 await socket.emit('updateGameDiceRoll', {

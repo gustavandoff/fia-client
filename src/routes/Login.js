@@ -24,7 +24,7 @@ const Login = ({ currentUser, setCurrentUser }) => {
 
     const logIn = () => {
         axios
-            .post(`http://localhost:4000/login`, {
+            .post(`http://${window.location.hostname}:4000/login`, {
                 username: username,
                 password: password
             })

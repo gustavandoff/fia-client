@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client'
 
-const socket = io('ws://localhost:4000');
+const socket = io(`ws://${window.location.hostname}:4000`);
 
 const GameRoute = ({ currentUser, setCurrentUser }) => {
     const [game, setGame] = useState(null);
@@ -38,7 +38,7 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
         initSocket();
 
         axios
-            .get(`http://localhost:4000/games/${gameName}`)
+            .get(`http://${window.location.hostname}:4000/games/${gameName}`)
             .then(res => {
                 console.log('axios get game:', res.data);
                 setGame(res.data);

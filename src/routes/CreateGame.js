@@ -38,7 +38,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
 
     const joinGame = () => {
         axios
-            .post(`http://localhost:4000/joingame`, {
+            .post(`http://${window.location.hostname}:4000/joingame`, {
                 username: currentUser.username,
                 gameName: gameName
             })
@@ -56,7 +56,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
         }
 
         axios
-            .post(`http://localhost:4000/games`, {
+            .post(`http://${window.location.hostname}:4000/games`, {
                 gameName: gameName,
                 maxPlayers: maxPlayers
             })

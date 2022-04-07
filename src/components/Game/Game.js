@@ -271,7 +271,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
     }
 
     const RollDiceButton = () => {
-        axios.get(`http://localhost:4000/gameDiceRoll/${game.gameName}`)
+        axios.get(`http://${window.location.hostname}:4000/gameDiceRoll/${game.gameName}`)
             .then(res => {
                 setMoveCount(res.data);
             });
