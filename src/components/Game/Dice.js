@@ -30,7 +30,7 @@ const Dice = ({ currentDiceRoll, setCurrentDiceRoll, socket, game }) => {
         const src = require(`../../assets/images/dice/${number ? number : showedRoll}.jpg`);
 
         return (
-            <img className='cursor-pointer' onClick={diceClicked} src={src} style={{
+            <img className='cursor-pointer' onClick={diceClicked} src={src} alt={'tärning som visar', number ? number : showedRoll} style={{
                 width: '7rem',
                 height: '7rem',
                 boxShadow: boxShadow,

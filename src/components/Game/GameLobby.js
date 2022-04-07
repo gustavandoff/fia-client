@@ -108,7 +108,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
             }
 
             return (
-                <img onClick={() => colorClicked(color)} className={`m-1 lobby-piece ${disabledClassName}`} src={src}></img>
+                <img onClick={() => colorClicked(color)} className={`m-1 lobby-piece ${disabledClassName}`} src={src} alt={color}></img>
             );
         }
 
@@ -143,7 +143,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
                     {player.username}
                 </div>
                 <div className="float-end">
-                    <img src={src} className={`lobby-player-piece lobby-piece-icon ${generalClassName}`} />
+                    <img src={src} alt={playerColor} className={`lobby-player-piece lobby-piece-icon ${generalClassName}`} />
                 </div>
             </li>
         );
