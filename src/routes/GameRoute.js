@@ -29,13 +29,6 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
                 setGame(data);
             }
         });
-    }
-
-    useEffect(() => {
-        if (!currentUser) return navigate('/');
-        if (!gameName) return navigate('/');
-
-        initSocket();
 
         axios
             .get(`http://${window.location.hostname}:4000/games/${gameName}`)
@@ -48,6 +41,13 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
                 console.error(error);
                 return navigate('/joingame');
             });
+    }
+
+    useEffect(() => {
+        console.log('currentUser:', currentUser);
+        if (!gameName) return navigate('/');
+
+        initSocket();
     }, []);
 
     useEffect(() => {
