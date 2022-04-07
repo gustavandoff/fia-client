@@ -218,7 +218,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
             setSelectedPiece(0);
         }
 
-        if (!checkIfCurrentUserCanMove()) {
+        if (game.turn === currentUser.username && !checkIfCurrentUserCanMove()) {
             console.log('kan inte gå');
             emitUpdateGameBoard();
         }
