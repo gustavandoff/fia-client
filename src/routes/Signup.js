@@ -39,7 +39,7 @@ const Signup = ({ currentUser, setCurrentUser }) => {
                 setCurrentUser(res.data.currentUser);
             })
             .catch(error => {
-                console.log(error);
+                console.error(error);
             });
     }
 
