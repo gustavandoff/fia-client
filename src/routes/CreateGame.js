@@ -77,7 +77,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
 
             <Form title='Skapa nytt spel'>
                 <FormTextInput defaultValue={gameName} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
-                <FormRangeInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} min={4} max={12} step={1} id='rangeMaxPlayersX' />
+                <FormRangeInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} min={1} max={12} defaultValue={4} step={1} id='rangeMaxPlayersX' />
                 <FormSubmitButton onClick={createGame} text='Skapa' />
             </Form>
         </div>
