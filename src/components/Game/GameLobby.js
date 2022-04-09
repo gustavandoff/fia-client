@@ -161,14 +161,16 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
                 gameName: game.gameName
             })
             .then(res => {
-                navigate('/games/' + game.gameName)
+                navigate('/games/' + game.gameName);
+                setGame(res.data);
+                socket.emit('joinGame', res.data.gameName);
             })
             .catch(error => {
                 console.error(error);
             });
     }
 
-    const ReadyStartButton = () => {
+    const ReadyStartJoinButton = () => {
         if (!currentUser) return '';
         const thisPlayer = game.players[currentUser.username];
         if (!isInGame())
@@ -196,13 +198,13 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
 
                                     <ColorPicker />
 
-                                    <div className="row text-start">
+                                    <div className="row text-start mt-4 mb-3">
                                         <h3 className="w-75 border-bottom">Spelare {Object.keys(game.players).length + '/' + game.maxPlayers}</h3>
                                         {renderPlayers}
                                     </div>
 
                                     <button onClick={leaveGame} className={`position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4`}>Lämna spelet</button>
-                                    <ReadyStartButton />
+                                    <ReadyStartJoinButton />
                                 </div>
                             </div>
                         </div>
