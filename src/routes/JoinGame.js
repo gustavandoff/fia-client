@@ -82,6 +82,25 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             });
     }
 
+    const JoinGameButton = () => {
+        let disabled = false;
+        let title = '';
+        if (selectedGame) {
+            if (Object.keys(games[selectedGame].players).length === games[selectedGame].maxPlayers) {
+                disabled = true;
+                title = 'Max antal spelare uppnått';
+            }
+            if (games[selectedGame].status !== "WAITING") {
+                disabled = true;
+                title = 'Spelet är redan igång';
+            }
+        }
+
+        return (
+            <FormSubmitButton onClick={joinGame} disabled={disabled} title={title} text='Gå med' />
+        )
+    }
+
     return (
         <div>
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
@@ -89,7 +108,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             <Form title='Gå med i spel'>
                 <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={setSelectedGame} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} />
                 <span className='mx-4'>
-                    <FormSubmitButton onClick={joinGame} text='Gå med' />
+                    <JoinGameButton />
                 </span>
                 <span className='mx-4'>
                     <FormSubmitButton onClick={spectateGame} text='Titta på spelet' />
