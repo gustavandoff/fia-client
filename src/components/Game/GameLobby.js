@@ -170,15 +170,21 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
             });
     }
 
-    const ReadyStartJoinButton = () => {
+    const ReadyJoinButton = () => {
         if (!currentUser) return '';
         const thisPlayer = game.players[currentUser.username];
         if (!isInGame())
-            return <button onClick={joinGame} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 me-5 mt-4`}>Gå med i spel</button>
+            return <button onClick={joinGame} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-4 me-5 mt-4`}>Gå med i spel</button>
 
         return (
-            <button onClick={canStart ? startGame : toggleReady} title={`${!thisPlayer.color ? 'Du måste välja en färg' : ''}`} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!thisPlayer.color ? 'disabled pe-auto cursor-default' : ''} text-col-secondary px-5 me-5 mt-4`}>{thisPlayer.ready ? (canStart ? 'Starta' : 'Inte Redo') : 'Bli redo'}</button>
+            <button onClick={toggleReady} title={!thisPlayer.color ? 'Du måste välja en färg' : ''} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary ${!thisPlayer.color ? 'disabled pe-auto cursor-default' : ''} text-col-secondary px-4 me-5 mt-4`}>{thisPlayer.ready ? 'Inte Redo' : 'Bli redo'}</button>
         )
+    }
+
+    const StartButton = () => {
+        if (!isInGame()) return '';
+
+        return <button onClick={canStart ? startGame : () => { }} title={!canStart ? 'Alla är inte redo' : ''} className={`position-relative btn btn-outline-light btn-lg bg-col-secondary ${!canStart ? 'disabled pe-auto cursor-default' : ''} text-col-secondary px-5 mt-4`}>Starta</button>
     }
 
     let renderPlayers = [];
@@ -193,7 +199,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
                     <div className="col-12 col-md-10 col-lg-8 col-xl-6">
                         <div className="card bg-col-primary text-col-primary" style={{ borderRadius: '2rem' }}>
                             <div className="card-body p-5 text-center">
-                                <div className="mb-md-5 mt-md-4 pb-2">
+                                <div className={`${!isInGame() ? 'mb-5' : ''} mt-md-4 pb-2`}>
                                     <h2 className="fw-bold mb-5 text-uppercase">{game.gameName}</h2>
 
                                     <ColorPicker />
@@ -203,8 +209,9 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
                                         {renderPlayers}
                                     </div>
 
-                                    <button onClick={leaveGame} className={`position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-5 ms-5 mt-4`}>Lämna spelet</button>
-                                    <ReadyStartJoinButton />
+                                    <button onClick={leaveGame} className={`position-absolute start-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-4 ms-5 mt-4`}>Lämna</button>
+                                    <StartButton />
+                                    <ReadyJoinButton />
                                 </div>
                             </div>
                         </div>
