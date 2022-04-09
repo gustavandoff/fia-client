@@ -130,13 +130,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     }
 
     const PlayerListItem = ({ player }) => {
-
-        let generalClassName = '';
-        let playerColor = player.color;
-        if (!playerColor) {
-            generalClassName = 'lobby-piece-general';
-            playerColor = 'red';
-        }
+        const playerColor = player.color ? player.color : 'default';
 
         const src = require(`../../assets/images/pieces/${playerColor}.png`)
         const isReadyClass = !!player.ready;
@@ -148,7 +142,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
                     {player.username}
                 </div>
                 <div className="float-end">
-                    <img src={src} alt={playerColor} className={`lobby-player-piece lobby-piece-icon ${generalClassName}`} />
+                    <img src={src} alt={playerColor} className={`lobby-player-piece lobby-piece-icon`} />
                 </div>
             </li>
         );

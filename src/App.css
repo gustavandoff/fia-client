@@ -48,10 +48,6 @@
     filter: brightness(80%);
 }
 
-.lobby-piece-general {
-    filter: brightness(0%);
-}
-
 .ready-indicator {
     width: 1rem;
     height: 1rem;
