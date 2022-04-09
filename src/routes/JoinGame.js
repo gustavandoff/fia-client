@@ -83,9 +83,11 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     }
 
     const JoinGameButton = () => {
-        let disabled = false;
-        let title = '';
+        let disabled = true;
+        let title = 'Välj ett av spelen';
         if (selectedGame) {
+            disabled = false;
+            title = '';
             if (Object.keys(games[selectedGame].players).length === games[selectedGame].maxPlayers) {
                 disabled = true;
                 title = 'Max antal spelare uppnått';
@@ -101,17 +103,30 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
         )
     }
 
+    const SpectateGameButton = () => {
+        let disabled = false;
+        let title = '';
+        if (!selectedGame) {
+            disabled = true;
+            title = 'Välj ett av spelen';
+        }
+
+        return (
+            <FormSubmitButton onClick={spectateGame} disabled={disabled} title={title} text='Titta på' />
+        )
+    }
+
     return (
         <div>
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Gå med i spel'>
-                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={setSelectedGame} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} />
+                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={(value) => setSelectedGame(selectedGame === value ? null : value)} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} />
                 <span className='mx-4'>
                     <JoinGameButton />
                 </span>
                 <span className='mx-4'>
-                    <FormSubmitButton onClick={spectateGame} text='Titta på spelet' />
+                    <SpectateGameButton />
                 </span>
             </Form>
         </div>
