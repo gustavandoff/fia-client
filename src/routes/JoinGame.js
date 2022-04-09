@@ -17,7 +17,13 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const [selectedGame, setSelectedGame] = useState();
 
     useEffect(() => {
-        if (!games) return;
+        if (!currentUser) {
+            return navigate('/')
+        }
+        if (!games) {
+            refreshGames();
+            return;
+        }
         let tempGamesPlayerInfoArray = [];
         let tempGameStatusArray = [];
         Object.keys(games).forEach((e, i) => {
@@ -37,9 +43,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
         setGamesArray(Object.keys(games));
     }, [games]);
 
-    if (!currentUser) {
-        return navigate('/play')
-    }
+
 
     const spectateGame = () => {
         if (!selectedGame) return;
@@ -76,10 +80,6 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             .catch(error => {
                 console.error(error);
             });
-    }
-
-    if (!games) {
-        refreshGames();
     }
 
     return (

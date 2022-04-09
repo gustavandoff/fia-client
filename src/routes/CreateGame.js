@@ -12,21 +12,23 @@ import FormRangeInput from "../components/Form/FormRangeInput";
 const CreateGame = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [maxPlayers, setMaxPlayers] = useState(4);
+    const [gameName, setGameName] = useState();
 
-    let genitiveCurrentUserDisplayname = 'gästs';
-    if (currentUser) {
-        if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z') {
-            genitiveCurrentUserDisplayname = currentUser.username;
+    let genitiveCurrentUserUsername = '';
+
+    useEffect(() => {
+        if (currentUser) {
+            if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z') {
+                genitiveCurrentUserUsername = currentUser.username;
+            } else {
+                genitiveCurrentUserUsername = currentUser.username + 's';
+            }
+
+            setGameName(genitiveCurrentUserUsername + ' spel');
         } else {
-            genitiveCurrentUserDisplayname = currentUser.username + 's';
+            return navigate('/');
         }
-    }
-
-    const [gameName, setGameName] = useState(genitiveCurrentUserDisplayname + ' spel');
-
-    if (!currentUser) {
-        return navigate('/')
-    }
+    }, []);
 
     const handleMaxPlayersInput = e => {
         setMaxPlayers(e.target.value);
@@ -74,7 +76,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Skapa nytt spel'>
-                <FormTextInput defaultValue={genitiveCurrentUserDisplayname + ' spel'} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
+                <FormTextInput defaultValue={genitiveCurrentUserUsername + ' spel'} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
                 <FormRangeInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} min={4} max={12} step={1} id='rangeMaxPlayersX' />
                 <FormSubmitButton onClick={createGame} text='Skapa' />
             </Form>
