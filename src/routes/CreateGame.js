@@ -76,7 +76,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Skapa nytt spel'>
-                <FormTextInput defaultValue={genitiveCurrentUserUsername + ' spel'} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
+                <FormTextInput defaultValue={gameName} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
                 <FormRangeInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} min={4} max={12} step={1} id='rangeMaxPlayersX' />
                 <FormSubmitButton onClick={createGame} text='Skapa' />
             </Form>
