@@ -31,7 +31,7 @@ const StepCircle = ({ color, size, degree, number, game, currentUser, setSelecte
     }
 
     return (
-        <div className='d-flex align-items-center justify-content-center'
+        <div className={`d-flex align-items-center justify-content-center pe-auto`}
             style={{
                 width: `${size}rem`,
                 height: `${size}rem`,
