@@ -13,12 +13,38 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
     const playerCount = Object.keys(game.players).length >= 4 ? Object.keys(game.players).length : 4;
 
     useEffect(() => {
-        initSocket();
+        initSocket(); // skapar socket
 
         socket.on('updateGamePlayers', (data) => {
             setPlayers(data);
         });
     }, []);
+
+    // tar fram skärmens/webbläsarens storlek
+    const hasWindow = typeof window !== 'undefined';
+
+    const getWindowDimensions = () => {
+        const width = hasWindow ? window.innerWidth : null;
+        const height = hasWindow ? window.innerHeight : null;
+        return {
+            width,
+            height,
+        };
+    }
+
+    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+    useEffect(() => {
+        if (hasWindow) {
+            function handleResize() {
+                setWindowDimensions(getWindowDimensions());
+            }
+
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }
+    }, [hasWindow]);
+    //
 
     useEffect(() => {
         setPlayers(game.players);
@@ -266,7 +292,9 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         });
 
         return (
-            renderPlayerList
+            <div className="position-absolute top-25">
+                {renderPlayerList}
+            </div>
         )
     }
 
@@ -277,7 +305,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
             });
 
         if (game.turn === currentUser.username) {
-            return <Dice currentDiceRoll={moveCount} setCurrentDiceRoll={setMoveCount} socket={socket} game={game} />
+            return <Dice windowDimensions={windowDimensions} currentDiceRoll={moveCount} setCurrentDiceRoll={setMoveCount} socket={socket} game={game} />
         }
         else {
             return '';
@@ -285,34 +313,15 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
     }
 
     return (
-        <div>
-            <div className="container position-absolute" style={{
-                right: '25%',
-                top: '12.5%',
-                width: '50vw',
-                height: '75h',
-            }}>
-                <div className="row">
-                    <div className="col" style={{
-                        width: '100vw',
-                        height: '75vh',
-                    }}>
-                        <div className='position-absolute top-50 end-50' style={{
-                            transform: `scale(1.75)`,
-                        }}>
-                            <div style={{
-                                transform: `translateX(-45px) translateY(0px)`
-                            }}>
-                                <Board movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} game={game} currentUser={currentUser} />
-                            </div>
-                        </div>
+        <div className="position-relative pe-none">
+            <div className="position-relative d-flex justify-content-center align-items-center">
+                <div>
+                    <div className="d-flex pe-auto justify-content-center">
+                        <Board windowDimensions={windowDimensions} movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} playerCount={playerCount} circleSize={circleSize} game={game} currentUser={currentUser} />
+                    </div>
 
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col text-center">
-                        <RollDiceButton />
-                    </div>
+                    <RollDiceButton />
+
                 </div>
             </div >
 
