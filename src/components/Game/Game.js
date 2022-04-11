@@ -210,22 +210,14 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
             return false;
         }
 
-        console.log('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
-
-        console.log('thisPlayer.pieces:', thisPlayer.pieces);
-
         Object.keys(thisPlayer.pieces).forEach(p => {
             const thisPiecePosition = thisPlayer.pieces[p].position;
             if (thisPiecePosition) {
-                console.log('thisPiecePosition:', thisPiecePosition);
                 if (calcPos(currentUser.username, thisPiecePosition, moveCount)[0]) {
-                    console.log('calcPos:', calcPos(currentUser.username, thisPiecePosition, moveCount)[0]);
                     canMove = true;
                 }
             }
         });
-        console.log('canMove:', canMove);
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 
         return canMove;
     }
