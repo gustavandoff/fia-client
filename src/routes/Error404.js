@@ -1,5 +1,6 @@
 import Navbar from "../components/Header/Navbar";
 
+// om ingen lämplig route angetts hamnas man här
 const Error404 = ({ currentUser, setCurrentUser }) => {
 
   return (

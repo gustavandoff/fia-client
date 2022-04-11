@@ -4,11 +4,11 @@ import axios from 'axios';
 
 import Navbar from "../components/Header/Navbar";
 import Form from "../components/Form/Form";
-import FormSelectInput from "../components/Form/FormSelectInput";
 import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 import FormRangeInput from "../components/Form/FormRangeInput";
 
+// Där man går för att skapa ett spel
 const CreateGame = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [maxPlayers, setMaxPlayers] = useState(4);
@@ -18,7 +18,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
     let genitiveCurrentUserUsername = '';
 
     useEffect(() => {
-        if (currentUser) {
+        if (currentUser) { // genitiveCurrentUserUsername är användarnamnet pluss ett s på slutet om det inte slutar på s, x eller z
             if (currentUser.username.slice(-1) === 's' || currentUser.username.slice(-1) === 'x' || currentUser.username.slice(-1) === 'z') {
                 genitiveCurrentUserUsername = currentUser.username;
             } else {

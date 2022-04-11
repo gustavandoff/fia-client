@@ -1,5 +1,6 @@
 import '../../App.css';
 
+// ett textfält där man kan skriva in värden till formuläret
 const FormTextInput = ({ handleInputFunction, type, label, id, autocomplete, defaultValue, errorMessage }) => {
     return (
         <div className="form-outline form-white mb-2">

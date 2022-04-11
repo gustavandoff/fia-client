@@ -1,5 +1,6 @@
 import StepCircle from "./StepCircle";
 
+// sträckan efter Line2
 const Line3 = ({ degree, size, armNumber, playerCount, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
     let startCircleNumber = 1 + armNumber * 10;

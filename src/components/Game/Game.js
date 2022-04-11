@@ -7,8 +7,8 @@ import axios from 'axios';
 const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }) => {
     const [players, setPlayers] = useState(game.players);
     const [moveCount, setMoveCount] = useState(null);
-    const [selectedPiece, setSelectedPiece] = useState(0);
-    const [moveIndicator, setMoveIndicator] = useState([0]);
+    const [selectedPiece, setSelectedPiece] = useState(0); // pjäsen man tryckt på
+    const [moveIndicator, setMoveIndicator] = useState([0]); // markörerna som visar var man kan gå med pjäsen
 
     const circleSize = 2;
     const playerCount = Object.keys(game.players).length >= 4 ? Object.keys(game.players).length : 4;
@@ -187,20 +187,21 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         return { pos: newPos, step: step }; // pos är ett steg i riktningen step
     }
 
+    // kollar om spelaren kan gå med någon pjäs
     const checkIfCurrentUserCanMove = () => {
         if (!moveCount) return true;
 
         let canMove = false;
 
-        const thisPlayer = players[Object.keys(players).find(u => u === currentUser.username)];
+        const thisPlayer = players[Object.keys(players).find(u => u === currentUser.username)]; // kollar om användaren är med i spelet
         if (!thisPlayer) {
             return false;
         }
 
-        Object.keys(thisPlayer.pieces).forEach(p => {
+        Object.keys(thisPlayer.pieces).forEach(p => { // går igenom spelarens pjäser
             const thisPiecePosition = thisPlayer.pieces[p].position;
-            if (thisPiecePosition) {
-                if (calcPos(currentUser.username, thisPiecePosition, moveCount)[0]) {
+            if (thisPiecePosition) { // om pjäsen har en position dvs den har inte gått ut
+                if (calcPos(currentUser.username, thisPiecePosition, moveCount)[0]) { // kollar om pjäsen kan gå
                     canMove = true;
                 }
             }
@@ -210,7 +211,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
     }
 
     useEffect(() => {
-        const emitUpdateGameBoard = async () => { // egen funktion för att useEffect inte ska vara async
+        const emitUpdateGameBoard = async () => {
             await socket.emit('updateGameBoard', {
                 game,
                 user: currentUser,
@@ -223,13 +224,13 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
             setSelectedPiece(0);
         }
 
-        if (game.turn === currentUser.username && !checkIfCurrentUserCanMove()) {
-            emitUpdateGameBoard();
+        if (game.turn === currentUser.username && !checkIfCurrentUserCanMove()) { // om det är användarens tur och den inte kan gå
+            emitUpdateGameBoard(); // det blir nästas tur
         }
 
         if (selectedPiece !== 0) {
-            const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber);
-            const targetStepCircle = calcPos(username, selectedPiece.position, moveCount);
+            const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber); // användaren som tryckt på en pjäs
+            const targetStepCircle = calcPos(username, selectedPiece.position, moveCount); // de rutorna där pjäsen kan gå
             setMoveIndicator(targetStepCircle ? targetStepCircle : 0);
         } else {
             setMoveIndicator([0]);

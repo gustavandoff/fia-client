@@ -1,3 +1,4 @@
+// huvuddelen av en dropdown
 const DropdownMenu = ({ children }) => {
 
     return (

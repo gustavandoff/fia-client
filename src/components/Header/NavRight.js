@@ -1,19 +1,13 @@
 import NavLogIn from "./NavLogIn";
 import NavProfile from "./NavProfile";
 
-
+// den delen av navbaren som är till höger
 const NavRight = ({ currentUser, setCurrentUser }) => {
 
-    const RenderHTML = () => {
-        if (currentUser)
-            return <NavProfile currentUser={currentUser} setCurrentUser={setCurrentUser}/>
-        else
-            return <NavLogIn  />
-    }
-
-    return (
-        <RenderHTML />
-    );
+    if (currentUser) // om man är inloggad ska NavProfile visas
+        return <NavProfile currentUser={currentUser} setCurrentUser={setCurrentUser} />
+    else // annats ska NavLogIn visas
+        return <NavLogIn />
 }
 
 export default NavRight;

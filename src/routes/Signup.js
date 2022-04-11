@@ -9,6 +9,7 @@ import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 import Navbar from "../components/Header/Navbar";
 
+// Sidan där man skapar ett konto
 const Signup = ({ currentUser, setCurrentUser }) => {
 
     const navigate = useNavigate();

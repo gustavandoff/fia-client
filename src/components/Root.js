@@ -10,17 +10,17 @@ import JoinGame from '../routes/JoinGame';
 import GameRoute from '../routes/GameRoute';
 import Error404 from '../routes/Error404';
 
-
+// roten till allt på sidan
 const Root = () => {
     const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
-        const localStorageCurrentUser = window.localStorage.getItem('currentUser');
+        const localStorageCurrentUser = window.localStorage.getItem('currentUser'); // hämtar currentUer ur localStorage
         setCurrentUser(JSON.parse(localStorageCurrentUser));
     }, []);
 
     useEffect(() => {
-        window.localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        window.localStorage.setItem('currentUser', JSON.stringify(currentUser)); // sparar currentUer i localStorage
     }, [currentUser]);
 
     return (

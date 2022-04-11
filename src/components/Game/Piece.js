@@ -10,26 +10,26 @@ const Piece = ({ size, piece, setSelectedPiece, selectedPiece, player, stacked, 
         return game.turn === player.username;
     }
 
-    const isMyPiece = () => {
+    const isMyPiece = () => { // om denna pjäs tillhör den inloggade användaren
         return player.username === currentUser.username;
     }
 
-    const comparePieces = (p1, p2) => {
+    const comparePieces = (p1, p2) => { // jämför om två pjäser är samma
         if (p1 == null || p2 == null) return false;
         return p1.playerNumber === p2.playerNumber & p1.number === p2.number & p1.position === p2.position;
     }
 
     let pieceClass = 'position-absolute';
 
-    if (comparePieces(selectedPiece, thisPiece)) {
+    if (comparePieces(selectedPiece, thisPiece)) { // om denna pjäs är den markerade pjäsen
         pieceClass += ' piece-selected';
     }
 
-    const selectPiece = () => {
+    const selectPiece = () => { // när man trycker på pjäsen
         if (comparePieces(selectedPiece, thisPiece)) {
-            setSelectedPiece(0);
+            setSelectedPiece(0); // om denna pjäs redan är markerad ska den avmarkeras
         } else {
-            setSelectedPiece(thisPiece);
+            setSelectedPiece(thisPiece); // annars markeras den
         }
     }
 

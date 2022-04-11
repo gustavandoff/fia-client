@@ -7,13 +7,14 @@ import { io } from 'socket.io-client'
 
 const socket = io(`ws://${window.location.hostname}:4000`);
 
+// Om man är inne i ett spel hamnar man här
 const GameRoute = ({ currentUser, setCurrentUser }) => {
     const [game, setGame] = useState(null);
-    const [renderedGame, setRenderedGame] = useState();
+    const [renderedGame, setRenderedGame] = useState(); // det som visas på skärmen
 
     const navigate = useNavigate();
     let params = useParams();
-    const { gameName } = params;
+    const { gameName } = params; // spelnamnet från URL:n
 
     const WAITING = 'WAITING';
     const PLAYING = 'PLAYING';
@@ -50,10 +51,10 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     useEffect(() => {
         if (!game) return;
         const { status } = game;
-        if (status === WAITING) {
+        if (status === WAITING) { // om spelet inte har startats ritas spellobbyn ut
             return setRenderedGame(<GameLobby currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} initSocket={initSocket} />);
         }
-        if (status === PLAYING) {
+        if (status === PLAYING) { // om spelet är igång ritas spelplanen ut
             return setRenderedGame(     <Game currentUser={currentUser} setCurrentUser={setCurrentUser} game={game} setGame={setGame} socket={socket} initSocket={initSocket} />);
         }
         if (status === FINISHED) {

@@ -13,7 +13,7 @@ const BoardArm = ({ distanceFromCenter, homeDistanceFromCenter, color, degree, c
             <div className='col'>
                 <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} degree={degree} size={circleSize} length='4' armNumber={armNumber} />
             </div>
-    } else {
+    } else { // Line2 skjuts 1 cirkel nedåt om det är fler än 4 spelare eftersom det inte ska finnas någon hörncirkel mellan armarna
         stepLine2 =
             <div className='col position-relative' style={{ top: `${circleSize}rem` }}>
                 <Line2 movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} degree={degree} size={circleSize} length='3' armNumber={armNumber} />
@@ -22,10 +22,10 @@ const BoardArm = ({ distanceFromCenter, homeDistanceFromCenter, color, degree, c
 
     return (
         <div className='container position-absolute pe-none' style={{
-            width: `${circleSize * 3}rem`,
-            height: `${circleSize * 6}rem`,
-            transform: `rotate(${degree}deg)`,
-            transformOrigin: `50% -${distanceFromCenter}rem`,
+            width: `${circleSize * 3}rem`, // armen är 3 cirklar bred
+            height: `${circleSize * 6}rem`, // armen är 6 cirklar lång
+            transform: `rotate(${degree}deg)`, // armen roteras degree grader
+            transformOrigin: `50% -${distanceFromCenter}rem`, // källan som armen roteras kring ska alltid vara centrum av spelb
         }}>
             <div className='row'>
                 {stepLine2}

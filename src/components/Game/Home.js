@@ -1,20 +1,22 @@
 import StepCircle from "./StepCircle";
 import './game.css';
 
+// Hemmet där pjäserna startas och hamnar om de blir utknuffade
 const Home = ({ degree, size, color, armNumber, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
     let number = [];
 
     for (let i = 4; i >= 1; i--) {
-        number[i] = -(parseFloat(i) + armNumber * 10);
+        number[i] = -(parseFloat(i) + armNumber * 10); // första cirkelns nummer är -[armnumret]4. t.ex. -14, -24, -34 osv. och sista blir -[armnumret]1
     }
 
+    // kollar om det är hemmets spelares tur
     const isMyTurn = () => {
         const username = Object.keys(game.players).find(u => game.players[u].playerNumber === armNumber);
         return game.turn === username;
     }
 
-    const boxShadow = isMyTurn() ? `0 0 ${size / 4}rem ${size / 4}rem ${color}` : '';
+    const boxShadow = isMyTurn() ? `0 0 ${size / 4}rem ${size / 4}rem ${color}` : ''; // det hem vars spelares tur det är kommer att "lysa"
     return (
         <div className='container' style={{
             width: `${size * 2 + size / 12}rem`,

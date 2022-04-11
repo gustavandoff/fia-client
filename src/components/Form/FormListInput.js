@@ -3,16 +3,16 @@ import { useState, useEffect } from 'react';
 import { FaUsers } from "react-icons/fa";
 import { MdRefresh } from "react-icons/md";
 
-
+// listar en rad olika saker man kan välja mellan samt söka bland dem
 const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInfoBottom, label, id, activeValue, nothingFoundMessage, refreshFunction, errorMessage }) => {
-    const [currentValues, setCurrentValues] = useState(values);
-    const [currentValuesInfoRight, setCurrentValuesInfoRight] = useState(valuesInfoRight);
-    const [currentValuesInfoBottom, setCurrentValuesInfoBottom] = useState(valuesInfoBottom);
-    const [searchedValue, setSearchedValue] = useState();
+    const [currentValues, setCurrentValues] = useState(values); // de värdena som visas i listan
+    const [currentValuesInfoRight, setCurrentValuesInfoRight] = useState(valuesInfoRight); // information som visas längst till höger om värdet
+    const [currentValuesInfoBottom, setCurrentValuesInfoBottom] = useState(valuesInfoBottom); // information som visas under värdet
+    const [searchedValue, setSearchedValue] = useState(); // det värde man sökt efter
 
-    const ListOption = ({ value, infoRight, infoBottom }) => {
+    const ListOption = ({ value, infoRight, infoBottom }) => { // varje värde
         let active = '';
-        if (activeValue === value) {
+        if (activeValue === value) { // om detta värde är aktivt ska det byta färg 
             active = 'bg-secondary';
         }
 
@@ -48,8 +48,8 @@ const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInf
         let tempCurrentValues = [];
         let tempCurrentValuesInfoRight = [];
         let tempCurrentValuesInfoBottom = [];
-        values.forEach((e, i) => {
-            if (e.includes(searchedValue)) {
+        values.forEach((e, i) => { // values, valuesInfoRight och valuesInfoBottom är arrays där indexet i varje lista hör ihop
+            if (e.includes(searchedValue)) { // endast om elementet innehåller det man sökt efter ska det visas
                 tempCurrentValues.push(e);
                 tempCurrentValuesInfoRight.push(valuesInfoRight[i]);
                 tempCurrentValuesInfoBottom.push(valuesInfoBottom[i])
@@ -78,7 +78,7 @@ const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInf
         );
     });
 
-    if (!currentValues || currentValues.length === 0) {
+    if (!currentValues || currentValues.length === 0) { // Om det inte finns några värden att visa
         listItems.push(
             <li key={1} className={`list-group-item m-1 w-100`}>
                 <span className='float-start'>{nothingFoundMessage}</span>

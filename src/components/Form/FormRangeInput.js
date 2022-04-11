@@ -1,8 +1,9 @@
 import '../../App.css';
 import { useState } from 'react';
 
+// en slider där man kan dra från ett min-värde till ett max-värde
 const FormRangeInput = ({ handleInputFunction, label, id, min, max, step, defaultValue }) => {
-    const [currentValue, setCurrentValue] = useState(defaultValue ? defaultValue : min);
+    const [currentValue, setCurrentValue] = useState(defaultValue ? defaultValue : min); // det valda värdet
     
     const handleInput = e => {
         handleInputFunction(e);

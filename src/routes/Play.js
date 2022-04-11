@@ -4,11 +4,12 @@ import { useState, useEffect, useRef } from "react";
 import { Modal } from 'bootstrap'
 import Navbar from "../components/Header/Navbar";
 
+// startsidan
 const Play = ({ currentUser, setCurrentUser }) => {
     const [modal, setModal] = useState(null);
     const exampleModal = useRef();
     const navigate = useNavigate();
-    let linkPath;
+    let linkPath; // den sprar vilken knapp men tryckt på när modalen dyker upp
 
     useEffect(() => {
         if (!currentUser || currentUser.username.startsWith('gäst')) {
@@ -18,7 +19,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
         }
     }, [currentUser]);
 
-    const generateGuestUsername = () => {
+    const generateGuestUsername = () => { // om man ska köra som en gäst genereras en slumpad gästkod
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
         let result = 'gäst_';
@@ -36,7 +37,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
         modal.show();
     }
 
-    const closeModal = () => {
+    const playAsGuest = () => {
         modal.hide();
         if (!currentUser) {
             setCurrentUser({ username: generateGuestUsername() });
@@ -51,7 +52,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
 
     let guestMessage = '';
     if (!currentUser || currentUser.username.startsWith('gäst')) {
-        guestMessage = (
+        guestMessage = ( // modal
             <div className="modal" ref={exampleModal} tabIndex="-1" aria-labelledby="modalLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -64,7 +65,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
                         </div>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-primary" onClick={linkLogin}>Logga in</button>
-                            <button type="button" className="btn btn-primary" onClick={closeModal}>Fortsätt ändå</button>
+                            <button type="button" className="btn btn-primary" onClick={playAsGuest}>Fortsätt ändå</button>
                         </div>
                     </div>
                 </div>

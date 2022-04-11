@@ -5,9 +5,9 @@ import { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+// det som visas i navbaren när man är inloggad
 const NavProfile = ({ currentUser, setCurrentUser }) => {
-    const [openDd, setOpenDd] = useState(false);
-    const [openMyGames, setOpenMyGames] = useState(false);
+    const [openDd, setOpenDd] = useState(false); // om navbaren ska var öppen
     const navigate = useNavigate();
 
     const logOut = () => {
@@ -21,9 +21,9 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
     }
 
     const DropDown = () => {
-        const LogOutIn = () => {
+        const LogOutIn = () => { // visar antingen logga in eller logga ut beroende på man man kör som ett gästkonto eller inte
             const aClassName = "text-col-primary text-center text-decoration-none text-white-50 ms-1";
-            if (currentUser.username.startsWith('gäst')) {
+            if (currentUser.username.startsWith('gäst')) { // om man kör som ett gästkonto
                 return (
                     <Link to="/login" className={aClassName}>
                         Logga in
@@ -38,6 +38,7 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
             }
         }
 
+        // openDd är true ska dropdown visas
         return (openDd ?
             <DropdownMenu>
                 <DropdownItem>
@@ -52,7 +53,6 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
         <div className="btn text-col-primary p-0 fia-dropdown-head">
             <div className="col">
                 <div onClick={() => {
-                    setOpenMyGames(false);
                     setOpenDd(!openDd);
                 }}>
                     <span className="text-col-secondary font-size-1-5 fw-bold">{currentUser.username}</span>

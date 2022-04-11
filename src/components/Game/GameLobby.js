@@ -2,33 +2,34 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 
+// Där man hamnar innan spelet startar
 const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }) => {
-    const [takenColors, setTakenColors] = useState([]);
-    const [canStart, setCanStart] = useState(false);
+    const [takenColors, setTakenColors] = useState([]); // de färger som någon redan har valt
+    const [canStart, setCanStart] = useState(false); // true eller false beroende på om man ska kunna starta spelet
     const navigate = useNavigate();
 
     const isInGame = () => {
         if (!currentUser) return false;
-        return !!game.players[currentUser.username];
+        return !!game.players[currentUser.username]; // true eller false beroende på om användaren är med i spelet
     }
 
     useEffect(() => {
-        initSocket();
+        initSocket(); // skapar socket
     }, []);
 
     useEffect(() => {
         let tempTakenColors = [];
         let everyoneIsReady = true;
-        Object.keys(game.players).forEach((e) => {
-            if (game.players[e].color) {
+        Object.keys(game.players).forEach((e) => { // går igenom alla spelare i spelet
+            if (game.players[e].color) { // om spelaren har valt en färg
                 tempTakenColors.push(game.players[e].color);
             }
-            if (!game.players[e].ready) {
+            if (!game.players[e].ready) { // om spelaren är redo
                 everyoneIsReady = false;
             }
         });
 
-        if (takenColors.length === Object.keys(game.players).length) {
+        if (takenColors.length === Object.keys(game.players).length) { // om alla har valt en färg
             setCanStart(everyoneIsReady);
         }
 
@@ -38,9 +39,9 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     const colorClicked = async (color) => {
         if (!isInGame()) return;
 
-        if (takenColors.includes(color)) return;
+        if (takenColors.includes(color)) return; // om färgen man tryckt på redan är tagen av någon annan
 
-        await socket.emit('gameLobbyPickColor', {
+        await socket.emit('gameLobbyPickColor', { // skickar färgbytet i socketen
             user: currentUser,
             game: game,
             color: color
@@ -48,7 +49,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     }
 
     const toggleReady = async () => {
-        await socket.emit('toggleReady', {
+        await socket.emit('toggleReady', { // växlar mellan att vara redo och inte
             user: currentUser,
             game: game,
         });
@@ -57,7 +58,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     const leaveGame = async () => {
         if (!isInGame()) return navigate('/');
 
-        await socket.emit('leaveGame', {
+        await socket.emit('leaveGame', { // lämnar spelet
             user: currentUser,
             game: game,
         });
@@ -99,11 +100,11 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
         colors.push('yellow');
 
         const Color = ({ color }) => {
-            const src = require(`../../assets/images/pieces/${color}.png`)
+            const src = require(`../../assets/images/pieces/${color}.png`) // pjäsbilden
 
             let disabledClassName = 'lobby-piece-selectable';
 
-            if (takenColors.find(e => e === color)) {
+            if (takenColors.find(e => e === color)) { // om färgen redan är tagen
                 disabledClassName = 'lobby-piece-disabled';
             }
 
@@ -129,7 +130,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
         );
     }
 
-    const PlayerListItem = ({ player }) => {
+    const PlayerListItem = ({ player }) => { // varje spelare som är med i spelet
         const playerColor = player.color ? player.color : 'default';
 
         const src = require(`../../assets/images/pieces/${playerColor}.png`)
@@ -164,10 +165,11 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
             });
     }
 
+    // knappen där man antingen växlar om man är redo eller där man trycker för att gå med om man bara tittar på spelet
     const ReadyJoinButton = () => {
         if (!currentUser) return '';
         const thisPlayer = game.players[currentUser.username];
-        if (!isInGame())
+        if (!isInGame()) // är man inte med i spelet kan man trycka på knappen för att gå med
             return <button onClick={joinGame} className={`position-absolute end-0 btn btn-outline-light btn-lg bg-col-secondary text-col-secondary px-4 me-5 mt-4`}>Gå med i spel</button>
 
         return (
@@ -182,7 +184,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
     }
 
     let renderPlayers = [];
-    Object.keys(game.players).forEach((e, i) => {
+    Object.keys(game.players).forEach((e, i) => { // går igenom alla spelare i spelet
         renderPlayers.push(<PlayerListItem key={i} player={game.players[e]} />);
     });
 

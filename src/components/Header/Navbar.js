@@ -2,6 +2,7 @@ import '../../App.css';
 import NavRight from './NavRight';
 import { Link } from 'react-router-dom';
 
+// Den delen som är högst upp på skärmen
 const Navbar = ({ currentUser, setCurrentUser }) => {
     return (
         <header className="container-sm w-100 start-0 end-0 top-0 position-fixed">

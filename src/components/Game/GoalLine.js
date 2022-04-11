@@ -1,8 +1,9 @@
 import StepCircle from "./StepCircle";
 
+// Den färgade sträckan på varje arm precis innan målet
 const GoalLine = ({ color, degree, armNumber, size, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
-    let startCircleNumber = -6 - armNumber * 10;
+    let startCircleNumber = -6 - armNumber * 10; // första cirkelns nummer är -[armnumret]6. t.ex. -16, -26, -36 osv. och sista blir -[armnumret]9
 
     return (
         <div className="position-absolute container" style={{

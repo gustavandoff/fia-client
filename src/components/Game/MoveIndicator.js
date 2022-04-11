@@ -1,8 +1,8 @@
-
+// det som visar var en pjäs kan gå
 function MoveIndicator({ onPiece, players, movePieceToPos, selectedPiece, number, size }) {
 
-    const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber);
-    const color = onPiece ? '255, 0, 0, 0.3' : '0, 255, 0, 0.8';
+    const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber); // användaren vars pjäs är tryckt
+    const color = onPiece ? '255, 0, 0, 0.3' : '0, 255, 0, 0.8'; // om indikatorn ligger på en annan pjäs ändras färgen
 
     return (
         <div className="position-absolute m-0 d-flex align-items-center justify-content-center"

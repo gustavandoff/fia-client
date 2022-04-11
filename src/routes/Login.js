@@ -9,6 +9,7 @@ import FormTextInput from "../components/Form/FormTextInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 import Navbar from "../components/Header/Navbar";
 
+// Sidan där man loggar in
 const Login = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [username, setUsername] = useState();
@@ -38,7 +39,7 @@ const Login = ({ currentUser, setCurrentUser }) => {
     }
 
     useEffect(() => {
-        if (currentUser && !currentUser.username.startsWith('gäst')) {
+        if (currentUser && !currentUser.username.startsWith('gäst')) { // om man redan är inloggad som en användare
             return navigate("/");
         }
     }, [currentUser]);

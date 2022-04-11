@@ -4,16 +4,16 @@ import axios from 'axios';
 
 import Navbar from "../components/Header/Navbar";
 import Form from "../components/Form/Form";
-import FormSelectInput from "../components/Form/FormSelectInput";
 import FormSubmitButton from "../components/Form/FormSubmitButton";
 import FormListInput from "../components/Form/FormListInput";
 
+// Där man kan gå med eller titta på alla spel
 const JoinGame = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [games, setGames] = useState();
-    const [gamesArray, setGamesArray] = useState();
-    const [gamesPlayerInfoArray, setGamesPlayerInfoArray] = useState();
-    const [gamesStatusArray, setGamesStatusArray] = useState();
+    const [gamesArray, setGamesArray] = useState(); // alla spelen
+    const [gamesPlayerInfoArray, setGamesPlayerInfoArray] = useState(); // antalet spelare i varje spel / max antal spelare. t.ex. 2/5
+    const [gamesStatusArray, setGamesStatusArray] = useState(); // alla spelens status
     const [selectedGame, setSelectedGame] = useState();
     const [errorMessage, setErrorMessage] = useState();
 
@@ -27,9 +27,9 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
         }
         let tempGamesPlayerInfoArray = [];
         let tempGameStatusArray = [];
-        Object.keys(games).forEach((e, i) => {
-            tempGamesPlayerInfoArray.push(Object.keys(games[e].players).length + '/' + games[e].maxPlayers);
-            switch (games[e].status) {
+        Object.keys(games).forEach((e, i) => { // går igenom alla spelen
+            tempGamesPlayerInfoArray.push(Object.keys(games[e].players).length + '/' + games[e].maxPlayers); // antalet spelare i spelet / max antal spelare
+            switch (games[e].status) { // beroende på status visas olika meddelanden
                 case 'WAITING':
                     tempGameStatusArray.push('Väntar på att startas');
                     break;
@@ -67,7 +67,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             });
     }
 
-    const refreshGames = () => {
+    const refreshGames = () => { // uppdaterar listan med spel från servern
         axios
             .get(`http://${window.location.hostname}:4000/games`)
             .then(res => {
@@ -86,16 +86,16 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     }
 
     const JoinGameButton = () => {
-        let disabled = true;
-        let title = 'Välj ett av spelen';
-        if (selectedGame) {
+        let disabled = true; // innan man valt ett spel ska "Gå med"-knappen vara avaktiverad
+        let title = 'Välj ett av spelen'; // denna text visas när man hållar musen över knappen
+        if (selectedGame) { // om något spel är valt
             disabled = false;
             title = '';
             if (Object.keys(games[selectedGame].players).length === games[selectedGame].maxPlayers) { // om antal spelare i spelet är lika mycket som spelets max antal spelare
                 disabled = true;
                 title = 'Max antal spelare uppnått';
             }
-            if (games[selectedGame].status !== "WAITING") { // om spelet inte väntar på att startas
+            if (games[selectedGame].status !== "WAITING") { // om spelet inte väntar på att startas dvs det är igång
                 disabled = true;
                 title = 'Spelet är redan igång';
             }
