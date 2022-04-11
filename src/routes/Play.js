@@ -16,7 +16,7 @@ const Play = ({ currentUser, setCurrentUser }) => {
                 new Modal(exampleModal.current)
             );
         }
-    }, []);
+    }, [currentUser]);
 
     const generateGuestUsername = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
