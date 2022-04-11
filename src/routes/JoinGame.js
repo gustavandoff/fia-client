@@ -88,13 +88,17 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
         if (selectedGame) {
             disabled = false;
             title = '';
-            if (Object.keys(games[selectedGame].players).length === games[selectedGame].maxPlayers) {
+            if (Object.keys(games[selectedGame].players).length === games[selectedGame].maxPlayers) { // om antal spelare i spelet är lika mycket som spelets max antal spelare
                 disabled = true;
                 title = 'Max antal spelare uppnått';
             }
-            if (games[selectedGame].status !== "WAITING") {
+            if (games[selectedGame].status !== "WAITING") { // om spelet inte väntar på att startas
                 disabled = true;
                 title = 'Spelet är redan igång';
+            }
+            if (games[selectedGame].players[currentUser.username]) { // om currentUser är med i spelet
+                disabled = false;
+                title = '';
             }
         }
 
