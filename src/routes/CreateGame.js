@@ -64,7 +64,6 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
                 maxPlayers: maxPlayers
             })
             .then(res => {
-                console.log('created game', gameName);
                 joinGame();
             })
             .catch(error => {

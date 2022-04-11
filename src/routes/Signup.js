@@ -46,7 +46,6 @@ const Signup = ({ currentUser, setCurrentUser }) => {
 
     useEffect(() => {
         if (currentUser && !currentUser.username.startsWith('gäst')) {
-            console.log("login currentUser:", currentUser);
             return navigate("/");
         }
     }, [currentUser]);

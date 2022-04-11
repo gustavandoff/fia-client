@@ -194,7 +194,6 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
 
         const thisPlayer = players[Object.keys(players).find(u => u === currentUser.username)];
         if (!thisPlayer) {
-            console.log('spelaren hittas inte');
             return false;
         }
 
@@ -225,13 +224,11 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         }
 
         if (game.turn === currentUser.username && !checkIfCurrentUserCanMove()) {
-            console.log('kan inte gå');
             emitUpdateGameBoard();
         }
 
         if (selectedPiece !== 0) {
             const username = Object.keys(players).find(username => players[username].playerNumber === selectedPiece.playerNumber);
-            console.log('player2:', username);
             const targetStepCircle = calcPos(username, selectedPiece.position, moveCount);
             setMoveIndicator(targetStepCircle ? targetStepCircle : 0);
         } else {

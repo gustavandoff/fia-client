@@ -55,7 +55,6 @@ const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInf
                 tempCurrentValuesInfoBottom.push(valuesInfoBottom[i])
             }
         });
-        console.log(tempCurrentValues, tempCurrentValuesInfoRight, tempCurrentValuesInfoBottom);
         setCurrentValues(tempCurrentValues);
         setCurrentValuesInfoRight(tempCurrentValuesInfoRight);
         setCurrentValuesInfoBottom(tempCurrentValuesInfoBottom);
