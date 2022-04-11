@@ -15,6 +15,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const [gamesPlayerInfoArray, setGamesPlayerInfoArray] = useState();
     const [gamesStatusArray, setGamesStatusArray] = useState();
     const [selectedGame, setSelectedGame] = useState();
+    const [errorMessage, setErrorMessage] = useState();
 
     useEffect(() => {
         if (!currentUser) {
@@ -62,7 +63,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
                 navigate('/games/' + selectedGame)
             })
             .catch(error => {
-                console.error(error);
+                setErrorMessage(error.response.data);
             });
     }
 
@@ -70,7 +71,9 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
         axios
             .get(`http://${window.location.hostname}:4000/games`)
             .then(res => {
+                setSelectedGame(null);
                 setGames(res.data);
+                setErrorMessage('');
                 if (Object.keys(res.data).length === 0) {
                     setGamesArray([]);
                     setGamesPlayerInfoArray([]);
@@ -125,7 +128,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Gå med i spel'>
-                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={(value) => setSelectedGame(selectedGame === value ? null : value)} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} />
+                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={(value) => setSelectedGame(selectedGame === value ? null : value)} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} errorMessage={errorMessage} />
                 <span className='mx-4'>
                     <JoinGameButton />
                 </span>

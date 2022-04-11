@@ -15,6 +15,7 @@ const Signup = ({ currentUser, setCurrentUser }) => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [confPassword, setConfPassword] = useState();
+    const [errorMessage, setErrorMessage] = useState();
 
     const handleUsernameInput = event => {
         setUsername(event.target.value);
@@ -39,7 +40,7 @@ const Signup = ({ currentUser, setCurrentUser }) => {
                 setCurrentUser(res.data.currentUser);
             })
             .catch(error => {
-                console.error(error);
+                setErrorMessage(error.response.data);
             });
     }
 
@@ -55,7 +56,7 @@ const Signup = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Skapa konto' linkPath='/login' linkText='Har du redan ett konto?'>
-                <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' />
+                <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' errorMessage={errorMessage} />
                 <FormTextInput handleInputFunction={handlePasswordInput} autocomplete='new-password' type='password' label='Lösenord' id='typePasswordX' />
                 <FormTextInput handleInputFunction={handleConfPasswordInput} autocomplete='new-password' type='password' label='Bekräfta lösenord' id='typeConfirmPasswordX' />
                 <FormSubmitButton onClick={signUp} text='Skapa konto' />

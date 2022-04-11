@@ -13,6 +13,7 @@ const Login = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
+    const [errorMessage, setErrorMessage] = useState();
 
     const handleUsernameInput = event => {
         setUsername(event.target.value);
@@ -32,7 +33,7 @@ const Login = ({ currentUser, setCurrentUser }) => {
                 setCurrentUser(res.data.currentUser);
             })
             .catch(error => {
-                console.error(error);
+                setErrorMessage(error.response.data);
             });
     }
 
@@ -48,7 +49,7 @@ const Login = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Logga in' linkPath='/signup' linkText='Skapa konto'>
-                <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' />
+                <FormTextInput handleInputFunction={handleUsernameInput} autocomplete='username' type='text' label='Användarnamn' id='typeUsernameX' errorMessage={errorMessage} />
                 <FormTextInput handleInputFunction={handlePasswordInput} autocomplete='current-password' type='password' label='Lösenord' id='typePasswordX' />
                 <FormSubmitButton onClick={logIn} text='Logga in' />
             </Form>

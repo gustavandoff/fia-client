@@ -38,7 +38,6 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
                 socket.emit('joinGame', res.data.gameName);
             })
             .catch(error => {
-                console.error(error);
                 return navigate('/joingame');
             });
     }

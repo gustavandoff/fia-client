@@ -13,6 +13,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
     const navigate = useNavigate();
     const [maxPlayers, setMaxPlayers] = useState(4);
     const [gameName, setGameName] = useState();
+    const [errorMessage, setErrorMessage] = useState();
 
     let genitiveCurrentUserUsername = '';
 
@@ -67,7 +68,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
                 joinGame();
             })
             .catch(error => {
-                console.log(error);
+                setErrorMessage(error.response.data);
             });
     }
 
@@ -76,7 +77,7 @@ const CreateGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Skapa nytt spel'>
-                <FormTextInput defaultValue={gameName} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' />
+                <FormTextInput defaultValue={gameName} handleInputFunction={handleGameNameInput} type='text' label='Spelnamn' id='typeNameX' errorMessage={errorMessage} />
                 <FormRangeInput label='Max antal spelare' handleInputFunction={handleMaxPlayersInput} min={1} max={12} defaultValue={4} step={1} id='rangeMaxPlayersX' />
                 <FormSubmitButton onClick={createGame} text='Skapa' />
             </Form>
