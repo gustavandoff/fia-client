@@ -4,7 +4,7 @@ import { FaUsers } from "react-icons/fa";
 import { MdRefresh } from "react-icons/md";
 
 
-const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInfoBottom, label, id, activeValue, nothingFoundMessage, refreshFunction }) => {
+const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInfoBottom, label, id, activeValue, nothingFoundMessage, refreshFunction, errorMessage }) => {
     const [currentValues, setCurrentValues] = useState(values);
     const [currentValuesInfoRight, setCurrentValuesInfoRight] = useState(valuesInfoRight);
     const [currentValuesInfoBottom, setCurrentValuesInfoBottom] = useState(valuesInfoBottom);
@@ -96,6 +96,7 @@ const FormListInput = ({ handleInputFunction, values, valuesInfoRight, valuesInf
 
             <div className='align-items-center'>
                 <input onChange={searchValues} type='text' placeholder='Sök...' className="form-control w-75 form-control-lg mx-auto mb-2"></input>
+                <span className='text-warning'>{errorMessage ? errorMessage : ''}</span>
                 <ul className='game-list px-1 list-group align-items-center mx-auto'>
                     {listItems}
                 </ul>
