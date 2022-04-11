@@ -4,7 +4,7 @@ import Line3 from './Line3';
 import GoalLine from './GoalLine';
 import Home from './Home';
 
-const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, armNumber, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
+const BoardArm = ({ distanceFromCenter, homeDistanceFromCenter, color, degree, circleSize, playerCount, armNumber, game, currentUser, setSelectedPiece, selectedPiece, moveIndicator, setMoveIndicator, movePieceToPos }) => {
 
     let stepLine2;
 
@@ -20,42 +20,8 @@ const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, 
             </div>
     }
 
-    let topHomeDistanceFromCenter;
-    let rightHomeDistanceFromCenter;
-
-    switch (playerCount) {
-        case 4:
-            topHomeDistanceFromCenter = 2.5 * circleSize;
-            rightHomeDistanceFromCenter = 4 * circleSize;
-            break;
-        case 5:
-            topHomeDistanceFromCenter = 2.5 * circleSize;
-            rightHomeDistanceFromCenter = 3 * circleSize;
-            break;
-        case 6:
-            topHomeDistanceFromCenter = 2.7 * circleSize;
-            rightHomeDistanceFromCenter = 2.7 * circleSize;
-            break;
-        case 7:
-            topHomeDistanceFromCenter = 3 * circleSize;
-            rightHomeDistanceFromCenter = 2.7 * circleSize;
-            break;
-        case 8:
-            topHomeDistanceFromCenter = 3.6 * circleSize;
-            rightHomeDistanceFromCenter = 2.7 * circleSize;
-            break;
-        case 9:
-            topHomeDistanceFromCenter = 4 * circleSize;
-            rightHomeDistanceFromCenter = 2.7 * circleSize;
-            break;
-        default:
-            topHomeDistanceFromCenter = 5.1 * circleSize;
-            rightHomeDistanceFromCenter = 0.5 * circleSize;
-            break;
-    }
-
     return (
-        <div className='container position-absolute' style={{
+        <div className='container position-absolute pe-none' style={{
             width: `${circleSize * 3}rem`,
             height: `${circleSize * 6}rem`,
             transform: `rotate(${degree}deg)`,
@@ -84,8 +50,8 @@ const BoardArm = ({ distanceFromCenter, color, degree, circleSize, playerCount, 
             </div>
 
             <div className='position-relative' style={{
-                top: `${topHomeDistanceFromCenter}rem`,
-                right: `${rightHomeDistanceFromCenter}rem`,
+                top: `${homeDistanceFromCenter.top}rem`,
+                right: `${homeDistanceFromCenter.right}rem`,
             }}>
                 <Home movePieceToPos={movePieceToPos} moveIndicator={moveIndicator} setMoveIndicator={setMoveIndicator} selectedPiece={selectedPiece} setSelectedPiece={setSelectedPiece} game={game} currentUser={currentUser} color={color} degree={degree} size={circleSize} armNumber={armNumber} />
             </div>
