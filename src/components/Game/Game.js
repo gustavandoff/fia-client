@@ -54,19 +54,6 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         const player = players[username];
         const piece = player.pieces.find(p => p.number === pieceNr);
 
-        //axios.get(`http://localhost:4000/games/${game.gameName}`) // fuckar upp lite
-        //    .then(res => {
-        //        if (res.data.sequence !== game.sequence) {
-        //            setGame(res.data);
-        //            setSelectedPiece(0);
-        //            setMoveIndicator([0]);
-        //            return;
-        //        }
-        //    })
-        //    .catch(error => {
-        //        console.error(error);
-        //    });
-
         Object.keys(players).forEach(u => { // går igenom alla spelare
             if (u !== username) { // kollar om spelaren inte är spelaren som går
                 players[u].pieces.forEach(p => { // går igenom spelarens pjäser
