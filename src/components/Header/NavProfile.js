@@ -20,37 +20,6 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
         return navigate("/");
     }
 
-    const MyGamesList = () => {
-        let result = [];
-        let gameList;
-
-        axios.get(`http://${window.location.hostname}:4000/gamesUser/${currentUser.username}/`)
-            .then(res => {
-                gameList = res.data;
-            })
-            .catch(error => {
-                console.error(error);
-            });
-
-        if (openMyGames) {
-            result.push(
-                <div key={0} onClick={() => setOpenMyGames(false)}>
-                    Mina spel:
-                </div>
-            );
-        } else {
-            result.push(
-                <div key={2} onClick={() => setOpenMyGames(true)}>
-                    Lista mina spel
-                </div>
-            );
-        }
-
-
-
-        return result;
-    }
-
     const DropDown = () => {
         const LogOutIn = () => {
             const aClassName = "text-col-primary text-center text-decoration-none text-white-50 ms-1";
@@ -71,10 +40,6 @@ const NavProfile = ({ currentUser, setCurrentUser }) => {
 
         return (openDd ?
             <DropdownMenu>
-                <DropdownItem>
-                    <MyGamesList />
-                </DropdownItem>
-
                 <DropdownItem>
                     <LogOutIn />
                 </DropdownItem>
