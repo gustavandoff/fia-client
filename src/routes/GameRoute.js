@@ -33,7 +33,6 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
         axios
             .get(`http://${window.location.hostname}:4000/games/${gameName}`)
             .then(res => {
-                console.log('axios get game:', res.data);
                 setGame(res.data);
                 socket.emit('joinGame', res.data.gameName);
             })
@@ -43,7 +42,6 @@ const GameRoute = ({ currentUser, setCurrentUser }) => {
     }
 
     useEffect(() => {
-        console.log('currentUser:', currentUser);
         if (!gameName) return navigate('/');
 
         initSocket();
