@@ -1,5 +1,6 @@
 import Board from "./Board";
 import Dice from "./Dice";
+import PlayerList from "./PlayerList";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -238,45 +239,6 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         }
     }, [selectedPiece, moveCount]);
 
-    const PlayerListItem = ({ player }) => {
-
-        const pieceImg = require(`../../assets/images/pieces/${player.color}.png`);
-        let renderPieces = [];
-
-        Object.keys(player.pieces).forEach((piece, i) => {
-
-            if (player.pieces[piece].position) {
-                renderPieces.push(
-                    <img key={i} className={`lobby-piece `} src={pieceImg} alt={player.color}></img>
-                );
-            }
-        })
-
-        return (
-            <div className="d-flex">
-                <h4>{game.turn === player.username ? '-' : ''}{player.username}</h4>
-                {renderPieces}
-            </div>
-
-        )
-    }
-
-    const PlayerList = () => {
-        let renderPlayerList = [];
-
-        Object.keys(players).forEach((player, i) => {
-            renderPlayerList.push(
-                <PlayerListItem key={i} player={players[player]} />
-            )
-        });
-
-        return (
-            <div className="position-absolute top-25">
-                {renderPlayerList}
-            </div>
-        )
-    }
-
     const RollDiceButton = () => {
         axios.get(`http://${window.location.hostname}:4000/gameDiceRoll/${game.gameName}`)
             .then(res => {
@@ -292,7 +254,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
     }
 
     return (
-        <div className="position-relative pe-none">
+        <div className="position-relative pe-none vh-100 text-center">
             <div className="position-relative d-flex justify-content-center align-items-center">
                 <div>
                     <div className="d-flex pe-auto justify-content-center">
@@ -304,7 +266,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
                 </div>
             </div >
 
-            <PlayerList />
+            <PlayerList players={players} game={game} windowDimensions={windowDimensions} />
 
         </div>
 

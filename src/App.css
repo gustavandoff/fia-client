@@ -48,6 +48,11 @@
     filter: brightness(80%);
 }
 
+.player-list-piece {
+    height: 1.5rem;
+    bottom: 0;
+}
+
 .ready-indicator {
     width: 1rem;
     height: 1rem;
