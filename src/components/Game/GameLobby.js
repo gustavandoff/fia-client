@@ -22,7 +22,7 @@ const GameLobby = ({ currentUser, setCurrentUser, game, setGame, socket, initSoc
         let everyoneIsReady = true;
         Object.keys(game.players).forEach((e) => { // går igenom alla spelare i spelet
             if (game.players[e].color) { // om spelaren har valt en färg
-                tempTakenColors.push(game.players[e].color);
+                tempTakenColors.push(game.players[e].color); // ska färgen läggas till en array
             }
             if (!game.players[e].ready) { // om spelaren är redo
                 everyoneIsReady = false;
