@@ -44,10 +44,7 @@ const Dice = ({ windowDimensions, currentDiceRoll, setCurrentDiceRoll, socket, g
     }
 
     const rollDice = async () => {
-        return axios.get(`http://${window.location.hostname}:4000/dice`) // skickar get-request för att få tärningskastet och returnerar promisen
-            .then(async res => {
-                return res.data;
-            });
+        return Math.floor(Math.random() * 6) + 1;
     }
 
     const boxShadow = !currentDiceRoll && !isClicked ? `0 0 1rem 1rem white` : ''; // innan tärningen är tryckt ska den "lysa"
