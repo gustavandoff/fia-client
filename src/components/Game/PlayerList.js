@@ -6,15 +6,23 @@ const PlayerList = ({ players, game, windowDimensions }) => {
 
         const pieceImg = require(`../../assets/images/pieces/${player.color}.png`);
         let renderPieces = [];
+        let finishedPiecesCount = 0;
 
         Object.keys(player.pieces).forEach((piece, i) => { // går igenom spelarens pjäser
-
             if (player.pieces[piece].position) { // om pjäsen har en position dvs den ar inte gått ut läggs den till i listan som ritas ut
+                finishedPiecesCount++;
                 renderPieces.push(
                     <img key={i} className={`player-list-piece align-bottom`} src={pieceImg} alt={player.color}></img>
                 );
             }
         })
+        for (let i = 0; i < 4 - finishedPiecesCount; i++) {
+            const defaultImgSrc = require(`../../assets/images/pieces/default.png`);
+            renderPieces.push(
+                <img key={4 - i} className={`player-list-piece align-bottom`} src={defaultImgSrc} alt={'Tom pjäs'}></img>
+            );
+            
+        }
 
         return (
             <div className={`d-flex my-1 px-2 ${isPortrait ? 'border-start border-end border-dark' : ''}`}>
