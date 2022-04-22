@@ -16,6 +16,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     const [gamesStatusArray, setGamesStatusArray] = useState(); // alla spelens status
     const [selectedGame, setSelectedGame] = useState();
     const [errorMessage, setErrorMessage] = useState();
+    const [isLoadingGames, setIsLoadingGames] = useState(true); // boolean - om spelen håller på att hämtas från servern
 
     useEffect(() => {
         if (!currentUser) {
@@ -68,9 +69,11 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
     }
 
     const refreshGames = () => { // uppdaterar listan med spel från servern
+        setIsLoadingGames(true);
         axios
             .get(`http://${window.location.hostname}:4000/games`)
             .then(res => {
+                setIsLoadingGames(false);
                 setSelectedGame(null);
                 setGames(res.data);
                 setErrorMessage('');
@@ -128,7 +131,7 @@ const JoinGame = ({ currentUser, setCurrentUser }) => {
             <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
 
             <Form title='Gå med i spel'>
-                <FormListInput nothingFoundMessage='Hittar inga spel...' handleInputFunction={(value) => setSelectedGame(selectedGame === value ? null : value)} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} errorMessage={errorMessage} />
+                <FormListInput nothingFoundMessage={isLoadingGames ? 'Laddar in spellistan...' : 'Hittar inga spel'} handleInputFunction={(value) => setSelectedGame(selectedGame === value ? null : value)} activeValue={selectedGame} values={gamesArray} valuesInfoRight={gamesPlayerInfoArray} valuesInfoBottom={gamesStatusArray} refreshFunction={refreshGames} errorMessage={errorMessage} />
                 <span className='mx-4'>
                     <JoinGameButton />
                 </span>
