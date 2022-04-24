@@ -106,6 +106,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         }
     }
 
+    // räknar ut den nya positionen utifrån vem som går, startpunkten och hur man steg man tar
     const calcPos = (username, oldPos, moveAmount) => {
         const player = players[username];
         const playerNumber = player.playerNumber;
@@ -145,7 +146,8 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         return newPos === playerNumber * -10 - 5 ? [-1] : [newPos]; // om newPos är cirkeln efter sista i mållinjen ska man hamna i målet annars på den uträknade positionen
     }
 
-    const moveOneStep = (username, oldPos, step) => {
+    // räknar ut den nya positionen ett steg. Step är 1 eller -1 
+    const moveOneStep = (username, oldPos, step) => { 
         const playerNumber = players[username].playerNumber;
         let newPos = oldPos + step;
         let addedPos = playerCount > 4 ? 0 : 1; // blir 0 om playerCount är mer än 4. Annars blir det 1
@@ -211,7 +213,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
     }
 
     useEffect(() => {
-        const emitUpdateGameBoard = async () => {
+        const skipTurn = async () => {
             await socket.emit('updateGameBoard', {
                 game,
                 user: currentUser,
@@ -225,7 +227,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         }
 
         if (game.turn === currentUser.username && !checkIfCurrentUserCanMove()) { // om det är användarens tur och den inte kan gå
-            emitUpdateGameBoard(); // det blir nästas tur
+            skipTurn(); // det blir nästas tur
         }
 
         if (selectedPiece !== 0) {
