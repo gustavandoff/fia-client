@@ -83,9 +83,7 @@ const Game = ({ currentUser, setCurrentUser, game, setGame, socket, initSocket }
         setMoveIndicator([0]);
 
         let nextTurn = true;
-        if (newPiecePos === -1 /*|| moveCount === 6*/) {
-            /* newPiecePos är -1 då målgångsanimationen börjar köras,
-            på sexor får man slå igen */
+        if (newPiecePos === -1) {// newPiecePos är -1 då målgångsanimationen börjar köras
             nextTurn = false;
         }
 
